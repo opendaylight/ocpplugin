@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<features name="odl-ocpjava-${project.version}" xmlns="http://karaf.apache.org/xmlns/features/v1.2.0"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://karaf.apache.org/xmlns/features/v1.2.0 http://karaf.apache.org/xmlns/features/v1.2.0">
+    <repository>mvn:org.opendaylight.yangtools/features-yangtools/{{VERSION}}/xml/features</repository>
+    <repository>mvn:org.opendaylight.controller/features-config/{{VERSION}}/xml/features</repository>
+    <repository>mvn:org.opendaylight.mdsal/features-mdsal/{{VERSION}}/xml/features</repository>
+    <repository>mvn:org.opendaylight.controller/features-mdsal/{{VERSION}}/xml/features</repository>
+    <repository>mvn:org.opendaylight.mdsal.model/features-mdsal-model/{{VERSION}}/xml/features</repository>
+    <repository>mvn:org.opendaylight.odlparent/features-odlparent/{{VERSION}}/xml/features</repository>
+    <feature name='odl-ocpjava-all' version='${project.version}' description="OpenDaylight :: OCP Java :: All">
+        <feature version='${project.version}'>odl-ocpjava-protocol</feature>
+    </feature>
+    <feature name='odl-ocpjava-protocol' version='${project.version}' description="OpenDaylight :: OCP Java :: Protocol">
+        <feature version='${mdsal.version}'>odl-mdsal-binding-base</feature>
+        <feature version='${mdsal.model.version}'>odl-mdsal-models</feature>
+        <feature version='${config.version}'>odl-config-api</feature>
+        <feature version='${controller.mdsal.version}'>odl-mdsal-common</feature>
+        <feature version='[4.0.30,4.1.0)'>odl-netty</feature>
+        <feature version='[0.2.2-SNAPSHOT,0.3.0-SNAPSHOT)'>odl-openflowplugin-all</feature>
+        <bundle>mvn:org.slf4j/slf4j-log4j12/1.7.10</bundle>
+        <bundle>mvn:org.codehaus.woodstox/stax2-api/3.1.3</bundle>
+        <bundle>wrap:mvn:org.opendaylight.ocpjava/aalto-xml-patch/{{VERSION}}</bundle>
+        <bundle>mvn:org.opendaylight.ocpjava/ocp-protocol-api/{{VERSION}}</bundle>
+        <bundle>mvn:org.opendaylight.ocpjava/ocp-protocol-spi/{{VERSION}}</bundle>
+        <bundle>mvn:org.opendaylight.ocpjava/ocp-protocol-impl/{{VERSION}}</bundle>
+        <bundle>mvn:org.opendaylight.ocpjava/util/{{VERSION}}</bundle>
+        <configfile finalname="etc/opendaylight/karaf/65-ocpjava-stats.xml">mvn:org.opendaylight.ocpjava/ocpjava-config/${project.version}/xml/configstats</configfile>
+    </feature>
+</features>
