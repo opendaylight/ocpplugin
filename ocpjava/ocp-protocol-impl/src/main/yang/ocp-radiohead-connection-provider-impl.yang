@@ -1,0 +1,191 @@
+/*
+ * Copyright (c) 2015 Foxconn Corporation and others.  All rights reserved.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ */
+
+module ocp-radiohead-connection-provider-impl {
+	yang-version 1;
+    namespace "urn:opendaylight:params:xml:ns:yang:ocp:radiohead:connection:provider:impl";
+    prefix "ocp-radiohead-connection-provider-impl";
+
+    import config {prefix config; revision-date 2013-04-05; }
+    import ocp-radiohead-connection-provider {prefix ocp-radiohead-connection-provider; revision-date 2015-08-11; }
+    import ietf-inet-types {prefix ietf-inet; revision-date 2010-09-24; }
+    import ocp-configuration {prefix ocp-config; revision-date 2015-08-11; }
+    import rpc-context { prefix rpcx; revision-date 2013-06-17; }
+
+    description
+        "ocp-radiohead-connection-provider";
+
+    revision "2015-08-11" {
+        description
+            "Initial revision";
+    }
+
+    identity ocp-radiohead-connection-provider-impl {
+        base "config:module-type";
+        config:provided-service ocp-radiohead-connection-provider:ocp-radiohead-connection-provider;
+        config:java-name-prefix RadioHeadConnectionProvider;
+    }
+
+    identity ocp-statistics-collection-service-impl {
+        description
+            "This is the definition of ocp-statistics collection module identity.";
+        base config:module-type;
+        config:provided-service ocp-radiohead-connection-provider:ocp-statistics-collection-service;
+        config:java-name-prefix OcpStatisticsCollection;
+    }
+
+    augment "/config:modules/config:module/config:configuration" {
+        case ocp-radiohead-connection-provider-impl {
+            when "/config:modules/config:module/config:type = 'ocp-radiohead-connection-provider-impl'";
+
+            leaf port {
+                description "local listening port";
+                type uint16;
+                mandatory true;
+            }
+            leaf address {
+                description "address of local listening interface";
+                type ietf-inet:ip-address;
+            }
+            leaf transport-protocol {
+                description "Transport protocol used for communication.";
+                type ocp-config:transport-protocol;
+                mandatory true;
+            }
+            leaf radioHead-idle-timeout {
+                description "idle timeout in [ms]";
+                type uint32;
+                mandatory true;
+            }
+            container tls {
+                leaf keystore {
+                    description "keystore location";
+                    type string;
+                }
+                leaf keystore-type {
+                    description "keystore type (JKS or PKCS12)";
+                    type ocp-config:keystore-type;
+                }
+                leaf keystore-path-type {
+                    description "keystore path type (CLASSPATH or PATH)";
+                    type ocp-config:path-type;
+                }
+                leaf keystore-password {
+                    description "password protecting keystore";
+                    type string;
+                }
+                leaf certificate-password {
+                    description "password protecting certificate";
+                    type string;
+                }
+                leaf truststore {
+                    description "truststore location";
+                    type string;
+                }
+                leaf truststore-type {
+                    description "truststore type (JKS or PKCS12)";
+                    type ocp-config:keystore-type;
+                }
+                leaf truststore-path-type {
+                    description "truststore path type (CLASSPATH or PATH)";
+                    type ocp-config:path-type;
+                }
+                leaf truststore-password {
+                    description "password protecting truststore";
+                    type string;
+                }
+            }
+            container threads {
+                leaf boss-threads {
+                    type uint16;
+                }
+                leaf worker-threads {
+                    type uint16;
+                }
+            }
+        }
+
+        case ocp-statistics-collection-service-impl {
+            when "/config:modules/config:module/config:type = 'ocp-statistics-collection-service-impl'";
+
+            container ocp-statistics {
+                leaf ocp-statistics-collect {
+                    description "Toggle ocp-statistics collecting";
+                    type boolean;
+                }
+                leaf log-report-delay {
+                    description "Delay between ocp-statistics logs";
+                    type uint16;
+                }
+            }
+            list ocp-radiohead-connection-provider {
+                uses config:service-ref {
+                    refine type {
+                        mandatory true;
+                        config:required-identity ocp-radiohead-connection-provider:ocp-radiohead-connection-provider;
+                    }
+                }
+            }
+        }
+    }
+
+    
+    augment "/config:modules/config:module/config:state" {
+        case ocp-statistics-collection-service-impl {
+            when "/config:modules/config:module/config:type = 'ocp-statistics-collection-service-impl'";
+
+            description
+                "MXBean designed for Message OcpStatistic providing to JConsole.";
+
+            leaf msgOcpStatistics {
+                type string;
+            }
+
+            rpcx:rpc-context-instance "print-ocpjava-ocp-statistics-rpc";
+            rpcx:rpc-context-instance "reset-ocpjava-ocp-statistics-rpc";
+        }
+    }
+    
+
+    identity print-ocpjava-ocp-statistics-rpc;
+    identity reset-ocpjava-ocp-statistics-rpc;
+
+    rpc print-ocpjava-ocp-statistics {
+        description
+            "Shortcut JMX call to printOcpjavaStatistics.";
+        input {
+            uses rpcx:rpc-context-ref {
+                refine context-instance {
+                    rpcx:rpc-context-instance print-ocpjava-ocp-statistics-rpc;
+                }
+            }
+        }
+        output {
+            leaf result {
+                type string;
+            }
+        }
+    }
+
+    rpc reset-ocpjava-ocp-statistics {
+        description
+            "Shortcut JMX call to resetOcpjavaStatistics.";
+        input {
+            uses rpcx:rpc-context-ref {
+                refine context-instance {
+                    rpcx:rpc-context-instance reset-ocpjava-ocp-statistics-rpc;
+                }
+            }
+        }
+        output {
+            leaf result {
+                type string;
+            }
+        }
+    }
+}
