@@ -1,0 +1,49 @@
+module sal-config-mgmt {
+
+    yang-version 1;
+    namespace "urn:opendaylight:ocp:config:mgmt";
+    prefix config-mgmt;
+
+    import ocp-types { prefix ocpt; }
+    import ietf-yang-types { prefix yang; }
+    import ietf-inet-types { prefix inet; }
+    import opendaylight-inventory { prefix inv; revision-date "2013-08-19"; }
+
+    description "OCP elementary functions - config management";
+
+    revision "2015-08-11" {
+      description
+        "Initial revision.";
+    }
+
+
+    rpc get-param {
+        input {
+            uses inv:node-context-ref;
+            uses ocpt:getParamInput;
+        }
+
+        output {
+            leaf result {
+                type ocpt:GetParamRes;
+            }
+            uses ocpt:getParamOutput;
+        }
+    }  // rpc get-param
+   
+
+    rpc modify-param {
+        input {
+            uses inv:node-context-ref;
+            uses ocpt:modifyParamInput;
+        }
+
+        output {
+            leaf globResult {
+                type ocpt:ModifyParamGlobRes;
+            }
+            uses ocpt:modifyParamOutput; 
+        }
+    }  // rpc modify-param
+
+}
