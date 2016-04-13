@@ -1,0 +1,64 @@
+/*
+ * Copyright (c) 2015 Foxconn Corporation and others.  All rights reserved.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ */
+ 
+ module ocp-xsd {
+    namespace "urn:opendaylight:ocp:xsd:types";
+    prefix "ocpx";
+
+    import ietf-yang-types { prefix yang; }
+
+    organization "FACA";
+    contact "FACA Web: <https://sites.google.com/site/facafoxconn/>";
+
+    revision "2015-08-11" {
+        description "OCP - XSD types model";
+    }
+
+
+    typedef xsd-unsignedShort {
+      type uint16;
+      description
+        "XSD 16 bit unsigned integer.";
+    }
+
+
+    typedef xsd-short {
+      type int16;
+      description
+        "XSD 16 bit signed integer.";
+    }
+
+    typedef xsd-unsignedInt {
+      type uint32;
+      description
+        "XSD 32 bit unsigned integer.";
+    }
+
+
+    typedef xsd-unsignedByte {
+      type uint8;
+      description
+        "XSD 8 bit unsigned integer.";
+    }
+
+    typedef xsd-dateTime {
+      type string {
+        pattern
+          '-?\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?(Z|(\+|-)\d{2}:\d{2})';
+      }
+      description
+        "XSD date and time string type.";
+    }
+
+    typedef xsd-hexBinary {
+      type binary;
+      description
+        "XSD hex binary encoded string";
+    }
+
+}
