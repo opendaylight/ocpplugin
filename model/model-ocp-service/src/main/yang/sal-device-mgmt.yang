@@ -1,0 +1,79 @@
+module sal-device-mgmt {
+
+    yang-version 1;
+    namespace "urn:opendaylight:ocp:device:mgmt";
+    prefix device-mgmt;
+
+    import ocp-xsd { prefix ocpx; revision-date "2015-08-11"; }
+    import ocp-types { prefix ocpt; }
+    import ietf-yang-types { prefix yang; }
+    import ietf-inet-types { prefix inet; }
+    import opendaylight-inventory { prefix inv; revision-date "2013-08-19"; }
+
+    description "OCP elementary functions - device management";
+
+    revision "2015-08-11" {
+      description
+        "Initial revision.";
+    }
+
+
+    rpc health-check {
+        input {
+            uses inv:node-context-ref;
+            leaf tcpLinkMonTimeout {
+                type ocpx:xsd-unsignedShort;
+            } 
+        }
+        output {
+            leaf result {
+                type ocpt:OriRes;
+            }
+        }
+    }  // rpc health-check
+
+
+    rpc set-time {
+        input {
+            uses inv:node-context-ref;
+            leaf newTime {
+                type ocpx:xsd-dateTime;
+            }
+        }
+        output {
+            leaf result {
+                type ocpt:OriRes;
+            }
+        }
+    }  // rpc set-time
+
+
+    rpc re-reset {
+        input {
+            uses inv:node-context-ref;
+        }
+        output {
+            leaf result {
+                type ocpt:OriRes;
+            }
+        }
+    }  // rpc re-reset
+
+
+    notification device-connected {
+        leaf nodeId {
+            type inv:node-id;
+        }
+        leaf reIpAddr {
+            type inet:ipv4-address;
+        }
+    }
+
+
+    notification device-disconnected {
+        leaf nodeId {
+            type inv:node-id;
+        }
+    }
+
+}
