@@ -1,0 +1,589 @@
+/*
+ * Copyright (c) 2015 Foxconn Corporation and others.  All rights reserved.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ */
+ 
+ module ocp-types {
+    namespace "urn:opendaylight:ocp:common:types";
+    prefix "ocpt";
+
+    import ocp-xsd {prefix ocpx; revision-date 2015-08-11; }
+    import ietf-yang-types { prefix yang; }
+
+    organization "FACA";
+    contact "FACA Web: <https://sites.google.com/site/facafoxconn/>";
+    
+    
+    revision "2015-08-11" {
+        description "OCP - common types model";
+    }
+
+    grouping ocpHeader {
+        reference "ocp_header struct in ORI Spec";
+            leaf msgType {
+                type OcpMsgType;
+                description "OCP message type";
+            }
+            leaf xid {
+                type uint32;
+                description "Transaction ID";
+            }
+    }
+
+    grouping getParamInput {
+        list obj {
+            key id;
+            leaf id {
+                type ObjId; 
+            }
+            list param {
+                key name;
+                leaf name {
+                    type string;
+                }
+                ordered-by user; 
+            }
+        }
+    }
+
+    grouping getParamOutput {
+        list obj {
+            key id;
+            leaf id {
+                type ObjId;
+            }
+            list param {
+                key name;
+                leaf name {
+                    type string;
+                }
+                leaf value {
+                    type string;
+                }
+            }
+        }
+    }
+
+    grouping modifyParamInput {
+        list obj {
+            key id;
+            leaf id {
+                type ObjId;
+            }
+            list param {
+                key name;
+                leaf name {
+                    type string;
+                }
+                leaf value {
+                    type string;
+                }
+            }
+        }
+    }
+
+    grouping modifyParamOutput {
+        list obj {
+            key id;
+            leaf id {
+                type ObjId;
+            }
+            list param {
+                key name;
+                leaf name {
+                    type string;
+                }
+                leaf result {
+                    type ModifyParamRes;
+                }
+            }
+        }
+    }
+
+    grouping createObjInput {
+        list obj {
+            key type;
+            leaf type {
+                type ObjType;
+            }
+            list param {
+                key name;
+                leaf name {
+                    type string;
+                }
+                leaf value {
+                    type string;
+                }
+            }
+        }
+    }
+
+    grouping createObjOutput {
+        list obj {
+            key id;
+            leaf id {
+                type ObjId;
+            }
+            list param {
+                key name;
+                leaf name {
+                    type string;
+                }
+                leaf result {
+                    type CreateObjRes;
+                }
+            }
+        }
+    }
+
+    grouping getStateInput {
+        list obj {
+            key id;
+            leaf id {
+                type ObjId;
+            }
+            list state {
+                key name; //key type
+                leaf name { //leaf type
+                    type StateAllType;
+                }
+            }
+        }
+        leaf eventDrivenReporting {
+            type boolean;
+        }
+    }
+
+    grouping getStateOutput {
+        list obj {
+            key id;
+            leaf id {
+                type ObjId;
+            }
+            list state {
+                key name; //key type
+                leaf name { //leaf type
+                    type StateType;
+                }
+                leaf value {
+                    type StateVal;
+                }
+            }
+        }
+    }
+
+    grouping modifyStateInput {
+        list obj {
+            key id;
+            leaf id {
+                type ObjId;
+            }
+            list state { //only each one state modification
+                key name; //key type
+                leaf name { //leaf type
+                    type StateType;
+                }
+                leaf value {
+                    type StateVal;
+                }
+            }
+        }
+    }
+
+    grouping modifyStateOutput {
+        list obj {
+            key id;
+            leaf id {
+                type ObjId;
+            }        
+            list state {
+                key name; //key type
+                leaf name { //leaf type
+                    type StateType;
+                }
+                leaf value {
+                    type StateVal;
+                }
+            }
+        }
+    }
+
+    grouping getFaultInput {
+        list obj {
+            key id;
+            leaf id {
+                type ObjId;
+            }
+        }
+        leaf eventDrivenReporting {
+            type boolean;
+        }
+    }
+
+    grouping getFaultOutput {
+        list obj {
+            key id;
+            leaf id {
+                type ObjId;
+            }
+            list fault-obj {
+                key faultID;
+                leaf faultID {
+                    type FaultIdType;
+                }
+                leaf severity {
+                    type FaultServType;
+                }
+                leaf timestamp{
+                    type ocpx:xsd-dateTime;
+                }
+                leaf descr {
+                    type string;
+                }
+                leaf-list affectedObj {
+                    type string;
+                }
+            }
+        }
+    }
+
+    grouping stateChangeSource {
+        list obj {
+            key id;
+            leaf id {
+                type ObjId;
+            }
+            list state {
+                key name; //key type
+                leaf name { //leaf type
+                    type StateType;
+                }
+                leaf value {
+                    type StateVal;
+                }
+            }
+        }
+    }
+
+    grouping faultIndSource {
+        list obj {
+            key id;
+            leaf id {
+                type ObjId;
+            }
+            list fault-obj {
+                key faultID;
+                leaf faultID {
+                    type FaultIdType;
+                }
+                leaf state{
+                    type IndFaultState;
+                }
+                leaf severity {
+                    type FaultServType;
+                }
+                leaf timestamp{
+                    type ocpx:xsd-dateTime;
+                }
+                leaf descr {
+                    type string;
+                }
+                leaf-list affectedObj {
+                    type string;
+                }
+            }
+        }
+    }
+
+    typedef OcpMsgType {
+        type enumeration {
+            enum "HEALTHCHECKREQ";
+            enum "HEALTHCHECKRESP";
+            enum "SETTIMEREQ";
+            enum "SETTIMERESP";
+            enum "RESETREQ";
+            enum "RESETRESP";
+            enum "GETPARAMREQ";
+            enum "GETPARAMRESP";
+            enum "MODIFYPARAMREQ";
+            enum "MODIFYPARAMRESP";
+            enum "CREATEOBJREQ";
+            enum "CREATEOBJRESP";
+            enum "DELETEOBJREQ";
+            enum "DELETEOBJRESP";
+            enum "GETSTATEREQ";
+            enum "GETSTATERESP";
+            enum "STATECHANGEIND";
+            enum "MODIFYSTATEREQ";
+            enum "MODIFYSTATERESP";
+            enum "GETFAULTREQ";
+            enum "GETFAULTRESP";
+            enum "FAULTIND";
+            enum "HELLOACK";
+            enum "HELLOIND";
+            enum "REDIRECTREQ";
+            enum "REDIRECTRESP";
+            //enum "ERR";
+
+        }
+    }
+
+    typedef ObjId {
+        type string {
+            pattern '^([a-z,A-Z,_][a-z,A-Z,0-9,_]*:[0-9][0-9]*([\/][a-z,A-Z,_][a-z,A-Z,0-9,_]*:[0-9][0-9]*)*)$|^ALL$';
+        }
+    }
+
+    typedef ObjType {
+        type string {
+            pattern '^[a-z,A-Z,_][a-z,A-Z,0-9,_]*';
+        }
+    }
+
+    typedef OriRes {
+        type enumeration {
+            enum "SUCCESS";
+            enum "FAIL_SYNTAX_ERROR";
+            enum "FAIL_UNRECOGNIZED_MESSAGE";
+            enum "FAIL_RE_BUSY";
+            enum "FAIL_MISSING_PARAMETER";
+            enum "FAIL_PARAMETER_ERROR";
+
+            enum "FAIL_INVALID_TIMEDATA";
+        }
+    }
+
+    typedef HealthCheckRes {
+        type enumeration {
+            enum "SUCCESS";
+            enum "FAIL_SYNTAX_ERROR";
+            enum "FAIL_UNRECOGNIZED_MESSAGE";
+            enum "FAIL_RE_BUSY";
+            enum "FAIL_MISSING_PARAMETER";
+            enum "FAIL_PARAMETER_ERROR";
+        }
+    }
+
+    typedef SetTimeRes {
+        type enumeration {
+            enum "SUCCESS";
+            enum "FAIL_SYNTAX_ERROR";
+            enum "FAIL_UNRECOGNIZED_MESSAGE";
+            enum "FAIL_RE_BUSY";
+            enum "FAIL_MISSING_PARAMETER";
+            enum "FAIL_PARAMETER_ERROR";
+
+            enum "FAIL_INVALID_TIMEDATA";
+        }
+    }
+
+    typedef ReResetRes {
+        type enumeration {
+            enum "SUCCESS";
+            enum "FAIL_SYNTAX_ERROR";
+            enum "FAIL_UNRECOGNIZED_MESSAGE";
+            enum "FAIL_RE_BUSY";
+            enum "FAIL_MISSING_PARAMETER";
+            enum "FAIL_PARAMETER_ERROR";
+        }
+    }
+
+    typedef GetParamRes {
+        type enumeration {
+            enum "SUCCESS";
+            enum "FAIL_SYNTAX_ERROR";
+            enum "FAIL_UNRECOGNIZED_MESSAGE";
+            enum "FAIL_RE_BUSY";
+            enum "FAIL_MISSING_PARAMETER";
+            enum "FAIL_PARAMETER_ERROR";
+
+            enum "FAIL_UNKNOWN_OBJECT";
+            enum "FAIL_UNKNOWN_PARAM";
+        }
+    }
+
+    typedef ModifyParamGlobRes {
+        type enumeration {
+            enum "SUCCESS";
+            enum "FAIL_SYNTAX_ERROR";
+            enum "FAIL_UNRECOGNIZED_MESSAGE";
+            enum "FAIL_RE_BUSY";
+            enum "FAIL_MISSING_PARAMETER";
+            enum "FAIL_PARAMETER_ERROR";
+
+            enum "FAIL_UNKNOWN_OBJECT";
+            enum "FAIL_PARAMETER_FAIL";
+            enum "FAIL_NOSUCH_RESOURCE";
+        }
+    }
+
+    typedef ModifyParamRes {
+        type enumeration {
+            enum "SUCCESS";
+            enum "FAIL_UNKNOWN_PARAM";
+            enum "FAIL_PARAM_READONLY";
+            enum "FAIL_PARAM_LOCKREQUIRED";
+            enum "FAIL_VALUE_OUTOF_RANGE";
+            enum "FAIL_VALUE_TYPE_ERROR";
+        }
+    }
+
+    typedef CreateObjRes {
+        type enumeration {
+            enum "SUCCESS";
+            enum "FAIL_UNKNOWN_PARAM";
+            enum "FAIL_PARAM_READONLY";
+            enum "FAIL_PARAM_LOCKREQUIRED";
+            enum "FAIL_VALUE_OUTOF_RANGE";
+            enum "FAIL_VALUE_TYPE_ERROR";
+        }
+    }
+
+    typedef CreateObjGlobRes {
+        type enumeration {
+            enum "SUCCESS";
+            enum "FAIL_SYNTAX_ERROR";
+            enum "FAIL_UNRECOGNIZED_MESSAGE";
+            enum "FAIL_RE_BUSY";
+            enum "FAIL_MISSING_PARAMETER";
+            enum "FAIL_PARAMETER_ERROR";
+
+            enum "FAIL_UNKNOWN_OBJTYPE";
+            enum "FAIL_STATIC_OBJTYPE";
+            enum "FAIL_UNKNOWN_OBJECT";
+            enum "FAIL_CHILD_NOTALLOWED";
+            enum "FAIL_OUTOF_RESOURCES";
+            enum "FAIL_PARAMETER_FAIL";
+            enum "FAIL_NOSUCH_RESOURCE";
+        }
+    }
+
+    typedef DeleteObjRes {
+        type enumeration {
+            enum "SUCCESS";
+            enum "FAIL_SYNTAX_ERROR";
+            enum "FAIL_UNRECOGNIZED_MESSAGE";
+            enum "FAIL_RE_BUSY";
+            enum "FAIL_MISSING_PARAMETER";
+            enum "FAIL_PARAMETER_ERROR";
+
+            enum "FAIL_UNKNOWN_OBJECT";
+            enum "FAIL_STATIC_OBJTYPE";
+            enum "FAIL_LOCKREQUIRED";
+        }
+    }
+
+    typedef StateType {
+        type enumeration {
+            enum "AST";
+            enum "FST";
+        }
+    }
+
+    typedef StateAllType {
+        type enumeration {
+            enum "AST";
+            enum "FST";
+            enum "ALL";
+        }
+    }
+
+    typedef StateVal {
+        type enumeration {
+            //AST
+            enum "LOCKED";
+            enum "UNLOCKED";
+            //FST
+            enum "PRE_OPERATIONAL";
+            enum "OPERATIONAL";
+            enum "DEGRADED";
+            enum "FAILED";
+            enum "NOT_OPERATIONAL";
+            enum "DISABLED";
+        }
+    }
+
+    typedef GetStateRes {
+        type enumeration {
+            enum "SUCCESS";
+            enum "FAIL_SYNTAX_ERROR";
+            enum "FAIL_UNRECOGNIZED_MESSAGE";
+            enum "FAIL_RE_BUSY";
+            enum "FAIL_MISSING_PARAMETER";
+            enum "FAIL_PARAMETER_ERROR";
+
+            enum "FAIL_UNKNOWN_OBJECT";
+            enum "FAIL_UNKNOWN_STATETYPE";
+            enum "FAIL_VALUE_OUTOF_RANGE";
+        }
+    }
+
+    typedef ModifyStateRes {
+        type enumeration {
+            enum "SUCCESS";
+            enum "FAIL_SYNTAX_ERROR";
+            enum "FAIL_UNRECOGNIZED_MESSAGE";
+            enum "FAIL_RE_BUSY";
+            enum "FAIL_MISSING_PARAMETER";
+            enum "FAIL_PARAMETER_ERROR";
+
+            enum "FAIL_UNKNOWN_OBJECT";
+            enum "FAIL_UNKNOWN_STATETYPE";
+            enum "FAIL_UNKNOWN_STATEVALUE";
+            enum "FAIL_STATE_READONLY";
+            enum "FAIL_RESOURCE_UNAVAILABLE";
+            enum "FAIL_RESOURCE_INUSE";
+            enum "FAIL_PARENT_CHILD_CONFLICT";
+            enum "FAIL_PRECONDITION_NOTMET";
+        }
+    }
+
+    typedef FaultIdType {
+        type enumeration {
+            enum "FAULT_EXT_SUPPLY_UNDERVOLT";
+            enum "FAULT_RE_OVERTEMP";
+            enum "FAULT_DIG_IN_OVERDRIVE";
+            enum "FAULT_RF_OUT_OVERDRIVE";
+            enum "FAULT_TX_GAIN_FAIL";
+            enum "FAULT_RX_GAIN_FAIL";
+            enum "FAULT_VSWR_OUTOF_RANGE";
+            enum "FAULT_NON_AISG_TMA_MALFCT";
+            enum "FAULT_LINK_FAIL";
+            enum "FAULT_ORI_PORT_FAIL";
+            enum "FAULT_ORI_SYNC_FAIL";
+            enum "FAULT_AISG_MALFCT";
+        }
+    }
+    
+    typedef IndFaultState {
+        type enumeration {
+            enum "ACTIVE";
+            enum "CLEARED";
+        }
+    }
+
+    typedef FaultServType {
+        type enumeration {
+            enum "FAILED";
+            enum "DEGRADED";
+            enum "WARNING";
+        }
+    }
+
+    typedef GetFaultRes {
+        type enumeration {
+            enum "SUCCESS";
+            enum "FAIL_SYNTAX_ERROR";
+            enum "FAIL_UNRECOGNIZED_MESSAGE";
+            enum "FAIL_RE_BUSY";
+            enum "FAIL_MISSING_PARAMETER";
+            enum "FAIL_PARAMETER_ERROR";
+
+            enum "FAIL_UNKNOWN_OBJECT";
+            enum "FAIL_VALUE_OUTOF_RANGE";
+        }
+    }
+}
