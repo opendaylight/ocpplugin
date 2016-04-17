@@ -1,0 +1,189 @@
+/*
+ * Copyright (c) 2015 Foxconn Corporation and others.  All rights reserved.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ */
+ 
+module ocp-protocol {
+
+    yang-version 1;
+    namespace "urn:opendaylight:ocp:protocol";
+    prefix ocpproto;
+
+    import ocp-xsd {prefix ocpx; revision-date 2015-08-11;}
+    import ocp-types {prefix ocpt; }
+    import ietf-yang-types { prefix yang; }
+    import ietf-inet-types { prefix inet; }
+    import opendaylight-inventory {prefix inv; revision-date "2013-08-19";}
+
+    organization "FACA";
+    contact "FACA Web: <https://sites.google.com/site/facafoxconn/>";
+    description "OCP Elementary Functions";
+
+    revision "2015-08-11" {
+      description
+        "Initial revision.";
+    }
+
+    rpc health-check {
+        input {
+            uses ocpt:ocpHeader;
+            leaf tcpLinkMonTimeout {
+                type ocpx:xsd-unsignedShort;
+            } 
+        }
+        output {
+            uses ocpt:ocpHeader;
+            leaf result {
+                type ocpt:OriRes;
+            }
+        }
+    }  // rpc health-check
+
+    rpc set-time {
+        input {
+            uses ocpt:ocpHeader;
+            leaf newTime {
+                type ocpx:xsd-dateTime;
+            }
+        }
+        output {
+            uses ocpt:ocpHeader;
+            leaf result {
+                type ocpt:OriRes;
+            }
+        }
+    }  // rpc set-time
+
+    rpc re-reset {
+        input {
+            uses ocpt:ocpHeader;
+        }
+        output {
+            uses ocpt:ocpHeader;
+            leaf result {
+                type ocpt:OriRes;
+            }
+        }
+    }  // rpc re-reset
+    
+    rpc get-param {
+        input {
+            uses ocpt:ocpHeader;
+            uses ocpt:getParamInput;
+        }
+
+        output {
+            uses ocpt:ocpHeader;
+            leaf result {
+                type ocpt:GetParamRes;
+            }
+            uses ocpt:getParamOutput;
+        }
+    }  // rpc get-param
+   
+    rpc modify-param {
+        input {
+            uses ocpt:ocpHeader;
+            uses ocpt:modifyParamInput;
+        }
+
+        output {
+            uses ocpt:ocpHeader;
+            leaf globResult {
+                type ocpt:ModifyParamGlobRes;
+            }
+            uses ocpt:modifyParamOutput;
+        }
+    }  // rpc modify-param
+
+    rpc create-obj {
+        input {
+            uses ocpt:ocpHeader;
+            uses ocpt:createObjInput;
+        }
+        
+        output {
+            uses ocpt:ocpHeader;
+            leaf globResult {
+                type ocpt:CreateObjGlobRes;
+            }
+            uses ocpt:createObjOutput;
+        }
+    }  // rpc create-obj
+
+    rpc delete-obj {
+        input {
+            uses ocpt:ocpHeader;
+            leaf obj-id {
+                type ocpt:ObjId;
+            }
+        }
+
+        output {
+            uses ocpt:ocpHeader;
+            leaf result {
+                type ocpt:DeleteObjRes;
+            }
+        }
+    }  // rpc delete-obj
+
+
+    rpc get-state {
+        input {
+            uses ocpt:ocpHeader;
+            uses ocpt:getStateInput;
+        }
+        output {
+            uses ocpt:ocpHeader;
+            leaf result {
+                type ocpt:GetStateRes;
+            }
+            uses ocpt:getStateOutput;
+        }
+    }  // rpc get-state
+
+    rpc modify-state {
+        input {
+            uses ocpt:ocpHeader;
+            uses ocpt:modifyStateInput;                   
+        }
+        output {
+            uses ocpt:ocpHeader;
+            leaf result {
+                type ocpt:ModifyStateRes;
+            }
+            uses ocpt:modifyStateOutput;
+        }
+    }  // rpc modify-state
+
+    rpc get-fault {
+        input {
+            uses ocpt:ocpHeader;
+            uses ocpt:getFaultInput;
+        }
+        output {
+            uses ocpt:ocpHeader;
+            leaf result {
+                type ocpt:GetFaultRes;
+            }
+            uses ocpt:getFaultOutput;
+        }
+    }  // rpc get-fault
+
+    notification state-change {
+
+        uses ocpt:ocpHeader;
+        uses ocpt:stateChangeSource;
+
+    }  // notification state-change
+
+    notification fault-ind {
+
+        uses ocpt:ocpHeader;
+        uses ocpt:faultIndSource;
+
+    }  // notification fault-ind
+}

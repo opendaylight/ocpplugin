@@ -1,0 +1,50 @@
+module sal-object-lifecycle {
+
+    yang-version 1;
+    namespace "urn:opendaylight:ocp:object:lifecycle";
+    prefix object-lifecycle;
+
+    import ocp-types { prefix ocpt; }
+    import ietf-yang-types { prefix yang; }
+    import ietf-inet-types { prefix inet; }
+    import opendaylight-inventory { prefix inv; revision-date "2013-08-19"; }
+
+    description "OCP elementary functions - object lifecycle";
+
+    revision "2015-08-11" {
+      description
+        "Initial revision.";
+    }
+
+
+    rpc create-obj {
+        input {
+            uses inv:node-context-ref;
+            uses ocpt:createObjInput;
+        }
+
+        output {
+            leaf globResult {
+                type ocpt:CreateObjGlobRes;
+            }
+            uses ocpt:createObjOutput;
+        }
+    } // rpc create-obj
+
+
+    rpc delete-obj {
+        input {
+            uses inv:node-context-ref;
+            leaf obj-id {
+                type ocpt:ObjId;
+            }
+        }
+
+        output {
+            leaf result {
+                type ocpt:DeleteObjRes;
+            }
+        }
+    } // rpc delete-obj 
+
+}

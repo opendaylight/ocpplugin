@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~ Copyright (c) 2015 Foxconn Corporation and others.  All rights reserved.
+  ~
+  ~ This program and the accompanying materials are made available under the
+  ~ terms of the Eclipse Public License v1.0 which accompanies this distribution,
+  ~ and is available at http://www.eclipse.org/legal/epl-v10.html
+  -->
+
+<features name="ocpplugin-${project.version}" xmlns="http://karaf.apache.org/xmlns/features/v1.2.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://karaf.apache.org/xmlns/features/v1.2.0 http://karaf.apache.org/xmlns/features/v1.2.0">
+    <repository>mvn:org.opendaylight.controller/features-mdsal/${mdsal.version}/xml/features</repository>
+    <repository>mvn:org.opendaylight.netconf/features-restconf/${restconf.version}/xml/features</repository>
+    <repository>mvn:org.opendaylight.ocpjava/features-ocpjava/${ocpjava.version}/xml/features</repository>
+    <repository>mvn:org.opendaylight.yangtools/features-yangtools/${yangtools.version}/xml/features</repository>
+    <repository>mvn:org.opendaylight.mdsal.model/features-mdsal-model/${mdsal.model.version}/xml/features</repository>
+
+    <feature name='odl-ocpplugin-all' description="OpenDaylight :: OCP Plugin :: All" version='${project.version}'>
+        <feature version="${project.version}">odl-ocpplugin-southbound</feature>
+        <feature version="${project.version}">odl-ocpplugin-app-ocp-service</feature>
+    </feature>
+
+    <feature name='odl-ocpplugin-southbound' description="OpenDaylight :: OCP Plugin :: SouthBound" version='${project.version}'>
+        <feature version="${mdsal.version}">odl-mdsal-broker</feature>
+        <feature version="${ocpjava.version}">odl-ocpjava-protocol</feature>
+        <bundle>mvn:org.opendaylight.ocpplugin/ocpplugin-impl/${project.version}</bundle>
+        <bundle>mvn:org.opendaylight.ocpplugin/ocpplugin-api/${project.version}</bundle>
+        <bundle>mvn:org.opendaylight.ocpplugin.model/model-ocp-service/${project.version}</bundle>
+        <configfile finalname="etc/opendaylight/karaf/62-ocpplugin.xml">mvn:org.opendaylight.ocpplugin/ocpplugin-controller-config/${project.version}/xml</configfile>
+    </feature>
+
+    <!-- APPLICATIONS -->
+    <feature name='odl-ocpplugin-app-ocp-service' description="OpenDaylight :: OCP Plugin :: Application - ocp-service" version='${project.version}'>
+        <feature version="${project.version}">odl-ocpplugin-southbound</feature>
+        <bundle>mvn:org.opendaylight.ocpplugin.applications/ocp-service/${project.version}</bundle>
+    </feature>
+</features>
