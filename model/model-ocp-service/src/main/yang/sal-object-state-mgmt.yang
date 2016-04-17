@@ -1,0 +1,53 @@
+module sal-object-state-mgmt {
+
+    yang-version 1;
+    namespace "urn:opendaylight:ocp:object:state:mgmt";
+    prefix object-state-mgmt;
+
+    import ocp-types { prefix ocpt; }
+    import ietf-yang-types { prefix yang; }
+    import ietf-inet-types { prefix inet; }
+    import opendaylight-inventory { prefix inv; revision-date "2013-08-19"; }
+
+    description "OCP elementary functions - object state management";
+
+    revision "2015-08-11" {
+      description
+        "Initial revision.";
+    }
+
+
+    rpc get-state {
+        input {
+            uses inv:node-context-ref;
+            uses ocpt:getStateInput;  
+        }
+        output {
+            leaf result {
+                type ocpt:GetStateRes;
+            }
+            uses ocpt:getStateOutput;
+        }
+    } // rpc get-state
+
+
+    rpc modify-state {
+        input {
+            uses inv:node-context-ref;
+            uses ocpt:modifyStateInput;                   
+        }
+        output {
+            leaf result {
+                type ocpt:ModifyStateRes;
+            }
+            uses ocpt:modifyStateOutput; 
+        }
+    } // rpc modify-state
+
+
+    notification state-change {
+        uses inv:node-context-ref;
+        uses ocpt:stateChangeSource;
+    }
+
+}

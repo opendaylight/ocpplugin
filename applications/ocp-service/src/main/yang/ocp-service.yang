@@ -1,0 +1,241 @@
+module ocp-service {
+
+    yang-version 1;
+    namespace "urn:opendaylight:params:xml:ns:yang:ocp:applications:ocp-service";
+    prefix "ocp-service";
+
+    import ocp-types { prefix ocpt; }
+    import ietf-inet-types { prefix inet; }
+    import config { prefix config; revision-date 2013-04-05; }
+    import opendaylight-md-sal-binding { prefix md-sal-binding; revision-date 2013-10-28;}
+    import opendaylight-inventory { prefix inv; revision-date "2013-08-19";}
+    import ocp-xsd { prefix ocpx; revision-date "2015-08-11"; }
+
+    organization "FACA";
+    contact "FACA Web: <https://sites.google.com/site/facafoxconn/>";
+    description "OCP Northbound API";    
+
+    revision "2015-08-11" {
+      description
+        "Initial revision.";
+    }
+
+    identity ocp-service {
+        base config:module-type;
+        config:java-name-prefix ocp-service;
+    }
+
+    augment "/config:modules/config:module/config:configuration" {
+        case ocp-service {
+            when "/config:modules/config:module/config:type = 'ocp-service'";
+            container rpc-registry {
+               uses config:service-ref {
+                    refine type {
+                       mandatory true;
+                       config:required-identity md-sal-binding:binding-rpc-registry;
+                    }
+               }
+            }
+            container data-broker {
+                uses config:service-ref {
+                    refine type {
+                        mandatory false;
+                        config:required-identity md-sal-binding:binding-async-data-broker;
+                    }
+                }
+            }
+            container notification-service {
+                uses config:service-ref {
+                    refine type {
+                        mandatory true;
+                        config:required-identity md-sal-binding:binding-notification-service;
+                    }
+                }
+            }
+        }
+    }
+    
+    rpc health-check-nb {
+        input {
+            leaf nodeId {
+                type inv:node-id;
+                mandatory true;
+            }
+            leaf tcpLinkMonTimeout {
+                type ocpx:xsd-unsignedShort{
+                    range "30..max";
+                }
+                mandatory true;                    
+            } 
+        }
+        output {
+            leaf result {
+                type ocpt:OriRes;
+            }
+        }
+    }  // rpc health-check
+
+
+    rpc set-time-nb {
+        input {
+            leaf nodeId {
+                type inv:node-id;
+                mandatory true;
+            }
+            leaf newTime {
+                type ocpx:xsd-dateTime;
+                mandatory true;
+            }
+        }
+        output {
+            leaf result {
+                type ocpt:OriRes;
+            }
+        }
+    }  // rpc set-time
+
+
+    rpc re-reset-nb {
+        input {
+            leaf nodeId {
+                type inv:node-id;
+                mandatory true;
+            }
+        }
+        output {
+            leaf result {
+                type ocpt:OriRes;
+            }
+        }
+    }  // rpc re-reset
+
+
+    rpc get-param-nb {
+        input {
+            leaf nodeId {
+                type inv:node-id;
+                mandatory true;
+            }
+            uses ocpt:getParamInput;
+        }
+
+        output {
+            leaf result {
+                type ocpt:GetParamRes;
+            }
+            uses ocpt:getParamOutput;
+        }
+    }  // rpc get-param
+   
+
+    rpc modify-param-nb {
+        input {
+            leaf nodeId {
+                type inv:node-id;
+                mandatory true;
+            }
+            uses ocpt:modifyParamInput;
+        }
+
+        output {
+            leaf globResult {
+                type ocpt:ModifyParamGlobRes;
+            }
+            uses ocpt:modifyParamOutput; 
+        }
+    }  // rpc modify-param
+
+    rpc get-state-nb {
+        input {
+            leaf nodeId {
+                type inv:node-id;
+                mandatory true;
+            }
+            uses ocpt:getStateInput;
+        }
+        output {
+            leaf result {
+                type ocpt:GetStateRes;
+            }
+            uses ocpt:getStateOutput;
+        }
+    } // rpc get-state
+
+    rpc modify-state-nb {
+         input {
+            leaf nodeId {
+                type inv:node-id;
+                mandatory true;
+            }
+            uses ocpt:modifyStateInput;
+        }
+        output {
+            leaf result {
+                type ocpt:ModifyStateRes;
+            }
+            uses ocpt:modifyStateOutput; 
+        }
+    } // rpc modify-state
+
+    rpc get-fault-nb {
+        input {
+            leaf nodeId {
+                type inv:node-id;
+                mandatory true;
+            }
+            uses ocpt:getFaultInput;
+        }
+        output {
+            leaf result {
+                type ocpt:GetFaultRes;
+            }
+            uses ocpt:getFaultOutput; 
+        }
+    } // rpc get-fault
+    
+    rpc create-obj-nb {
+        input {
+            leaf nodeId {
+                type inv:node-id;
+                mandatory true;
+            }
+            uses ocpt:createObjInput;
+        }
+        
+        output {
+            leaf globResult {
+                type ocpt:CreateObjGlobRes;
+            }
+            uses ocpt:createObjOutput;
+        }
+    }
+
+    rpc delete-obj-nb {
+        input {
+            leaf nodeId {
+                type inv:node-id;
+                mandatory true;
+            }       
+            leaf obj-id {
+                type ocpt:ObjId;
+                mandatory true;
+            }
+        }
+
+        output {
+            leaf result {
+                type ocpt:DeleteObjRes;
+            }
+        }
+    } 
+
+    notification alignment-completed {
+        leaf nodeId {
+            type inv:node-id;
+        }
+        leaf reIpAddr {
+            type inet:ipv4-address;
+        }
+    }
+   
+}
