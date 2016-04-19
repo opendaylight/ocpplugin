@@ -12,13 +12,14 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>aalto-xml-patch</module>
         <module>artifacts</module>
+        <module>aalto-xml-patch</module>
         <module>features</module>
         <module>ocpjava-config</module>
         <module>ocp-protocol-api</module>
         <module>ocp-protocol-impl</module>
         <module>ocp-protocol-spi</module>
+        <module>parent</module>
         <module>util</module>
     </modules>
 </project>
