@@ -47,7 +47,7 @@
             <type>xml</type>
         </dependency>
         <dependency>
-            <groupId>org.opendaylight.ocpjava</groupId>
+            <groupId>org.opendaylight.ocpplugin.ocpjava</groupId>
             <artifactId>features-ocpjava</artifactId>
             <version>${ocpjava.version}</version>
             <classifier>features</classifier>

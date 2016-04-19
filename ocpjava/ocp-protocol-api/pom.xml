@@ -7,7 +7,7 @@
         <version>0.9.0-SNAPSHOT</version>
         <relativePath/>
     </parent>
-    <groupId>org.opendaylight.ocpjava</groupId>
+    <groupId>org.opendaylight.ocpplugin.ocpjava</groupId>
     <artifactId>ocp-protocol-api</artifactId>
     <version>0.1.0-SNAPSHOT</version>
     <packaging>bundle</packaging>

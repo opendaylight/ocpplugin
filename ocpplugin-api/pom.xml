@@ -76,11 +76,11 @@
             <artifactId>sal-binding-api</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.opendaylight.ocpjava</groupId>
+            <groupId>org.opendaylight.ocpplugin.ocpjava</groupId>
             <artifactId>ocp-protocol-api</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.opendaylight.ocpjava</groupId>
+            <groupId>org.opendaylight.ocpplugin.ocpjava</groupId>
             <artifactId>ocp-protocol-spi</artifactId>
         </dependency>
         <dependency>

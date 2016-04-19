@@ -90,7 +90,7 @@
                 <type>pom</type>
             </dependency>
             <dependency>
-                <groupId>org.opendaylight.ocpjava</groupId>
+                <groupId>org.opendaylight.ocpplugin.ocpjava</groupId>
                 <artifactId>ocpjava-artifacts</artifactId>
                 <version>${ocpjava.version}</version>
                 <scope>import</scope>

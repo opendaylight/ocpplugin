@@ -14,7 +14,8 @@
     <version>1.7.0-SNAPSHOT</version>
     <relativePath/>
   </parent>
-  <groupId>org.opendaylight.ocpjava</groupId>
+
+  <groupId>org.opendaylight.ocpplugin.ocpjava</groupId>
   <artifactId>aalto-xml-patch</artifactId>
   <version>0.1.0-SNAPSHOT</version>
   <packaging>jar</packaging>

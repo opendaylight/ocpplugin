@@ -17,7 +17,7 @@
     <relativePath/>
   </parent>
 
-    <groupId>org.opendaylight.ocpjava</groupId>
+    <groupId>org.opendaylight.ocpplugin.ocpjava</groupId>
     <artifactId>ocpjava-artifacts</artifactId>
     <version>0.1.0-SNAPSHOT</version>
     <packaging>pom</packaging>

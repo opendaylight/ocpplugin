@@ -8,7 +8,7 @@
         <relativePath/>
     </parent>
 
-    <groupId>org.opendaylight.ocpjava</groupId>
+    <groupId>org.opendaylight.ocpplugin.ocpjava</groupId>
     <artifactId>ocpjava-parent</artifactId>
     <version>0.1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
@@ -49,7 +49,7 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-              <groupId>org.opendaylight.ocpjava</groupId>
+              <groupId>org.opendaylight.ocpplugin.ocpjava</groupId>
               <artifactId>ocpjava-artifacts</artifactId>
               <version>${project.version}</version>
               <type>pom</type>
