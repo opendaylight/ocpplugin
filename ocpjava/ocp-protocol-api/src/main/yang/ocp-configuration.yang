@@ -10,11 +10,12 @@
     namespace "urn:opendaylight:ocp:config";
     prefix "ocp-config";
 
-    organization "FACA";
-    contact "FACA Web: <https://sites.google.com/site/facafoxconn/>";
+    organization "Foxconn";
+    contact "marko.ch.lai@foxconn.com";
+    description "Library configuration classes";
 
     revision "2015-08-11" {
-        description "Library configuration classes";
+        description "Initial revision";
     }
 
     typedef path-type {

@@ -10,11 +10,12 @@
     namespace "urn:opendaylight:ocp:system";
     prefix "ofs";
 
-    organization "FACA";
-    contact "FACA Web: <https://sites.google.com/site/facafoxconn/>";
+    organization "Foxconn";
+    contact "marko.ch.lai@foxconn.com";
+    description "Model of system messages used in OCP Protocol Library";
 
     revision "2015-08-11" {
-        description "Model of system messages used in OCP Protocol Library";
+        description "Initial revision";
     }
 
     notification disconnect-event {

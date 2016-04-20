@@ -12,11 +12,12 @@
 
     import ietf-yang-types { prefix yang; }
 
-    organization "FACA";
-    contact "FACA Web: <https://sites.google.com/site/facafoxconn/>";
+    organization "Foxconn";
+    contact "marko.ch.lai@foxconn.com";
+    description "XSD type required by OCP protocol";
 
     revision "2015-08-11" {
-        description "OCP - XSD types model";
+        description "Initial revision";
     }
 
 
