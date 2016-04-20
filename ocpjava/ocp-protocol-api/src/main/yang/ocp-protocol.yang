@@ -18,13 +18,13 @@ module ocp-protocol {
     import ietf-inet-types { prefix inet; }
     import opendaylight-inventory {prefix inv; revision-date "2013-08-19";}
 
-    organization "FACA";
-    contact "FACA Web: <https://sites.google.com/site/facafoxconn/>";
+    organization "Foxconn";
+    contact "marko.ch.lai@foxconn.com";
     description "OCP Elementary Functions";
 
     revision "2015-08-11" {
       description
-        "Initial revision.";
+        "Initial revision";
     }
 
     rpc health-check {

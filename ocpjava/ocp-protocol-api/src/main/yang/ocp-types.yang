@@ -13,12 +13,13 @@
     import ocp-xsd {prefix ocpx; revision-date 2015-08-11; }
     import ietf-yang-types { prefix yang; }
 
-    organization "FACA";
-    contact "FACA Web: <https://sites.google.com/site/facafoxconn/>";
-    
+    organization "Foxconn";
+    contact "marko.ch.lai@foxconn.com";
+    description "OCP - common types model";
     
     revision "2015-08-11" {
-        description "OCP - common types model";
+      description
+        "Initial revision";
     }
 
     grouping ocpHeader {

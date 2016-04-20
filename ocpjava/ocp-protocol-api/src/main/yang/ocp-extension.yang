@@ -14,11 +14,13 @@
     import ietf-inet-types { prefix inet; }
     import ocp-types {prefix ocpt;}
 
-    organization "FACA";
-    contact "FACA Web: <https://sites.google.com/site/facafoxconn/>";
+    organization "Foxconn";
+    contact "marko.ch.lai@foxconn.com";
+    description "OCP extension: initialization";   
     
     revision "2015-08-11" {
-        description "OCP extension - protocol objects model";
+      description
+        "Initial revision";
     }
 
     grouping helloInd {
