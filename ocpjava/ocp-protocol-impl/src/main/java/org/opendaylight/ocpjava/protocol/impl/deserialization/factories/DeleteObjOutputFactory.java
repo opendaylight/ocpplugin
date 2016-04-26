@@ -8,13 +8,10 @@
 
 package org.opendaylight.ocpjava.protocol.impl.deserialization.factories;
 
-import io.netty.buffer.ByteBuf;
-
 import java.util.List;
 import java.util.Iterator;
 
 import org.opendaylight.ocpjava.protocol.api.extensibility.OCPDeserializer;
-import org.opendaylight.ocpjava.protocol.api.util.EncodeConstants;
 
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.DeleteObjOutput;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.DeleteObjOutputBuilder;
@@ -22,7 +19,6 @@ import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.OcpMsgType;
 
 import org.opendaylight.ocpjava.protocol.impl.core.XmlElementStart;
-import org.opendaylight.ocpjava.protocol.impl.core.XmlElementEnd;
 import org.opendaylight.ocpjava.protocol.impl.core.XmlCharacters;
 
 import org.slf4j.Logger;
@@ -64,19 +60,21 @@ public class DeleteObjOutputFactory implements OCPDeserializer<DeleteObjOutput> 
             LOGGER.trace("DeleteObjOutputFactory - itr = " + tok);
             try {
                 if(tok instanceof XmlElementStart) {
-                	//msgType
+                    //msgType
                     if (((XmlElementStart)tok).name().equals("body")){
-                        itr.next(); //XmlCharacters of body
-                    	Object t_tok = itr.next(); // XmlElementStart of msgType
-                        if (t_tok instanceof XmlElementStart)
-                    	    builder.setMsgType(OcpMsgType.valueOf(((XmlElementStart)t_tok).name().toUpperCase()));
+                        //XmlCharacters of body
+                        itr.next();
+                        //XmlElementStart of msgType
+                        Object typetok = itr.next();
+                        if (typetok instanceof XmlElementStart)
+                    	    builder.setMsgType(OcpMsgType.valueOf(((XmlElementStart)typetok).name().toUpperCase()));
                         LOGGER.debug("DeleteObjOutputFactory - getMsgType = " + builder.getMsgType());
                     }                	
-                	//msgUID
+                    //msgUID
                     else if (((XmlElementStart)tok).name().equals("msgUID")){
-                        Object t_tok = itr.next();
-                        int uid_tok = Integer.parseInt(((XmlCharacters)t_tok).data().toString());
-                        builder.setXid((long)uid_tok);
+                        Object uidtok = itr.next();
+                        int uid = Integer.parseInt(((XmlCharacters)uidtok).data().toString());
+                        builder.setXid((long)uid);
                         LOGGER.debug("DeleteObjOutputFactory - getXid = " + builder.getXid());
                     }
                     //result

@@ -6,7 +6,6 @@
  * terms of the Eclipse Public License v1.0 which accompanies this distribution,
  * and is available at http://www.eclipse.org/legal/epl-v10.html
  */
-
 package org.opendaylight.ocpjava.protocol.impl.core.connection;
 
 import com.google.common.base.Preconditions;
@@ -16,7 +15,7 @@ import java.net.InetSocketAddress;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import org.opendaylight.ocpjava.protocol.api.connection.OutboundQueueHandler;
-///import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev130731.BarrierInput;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -60,7 +59,6 @@ final class OutboundQueueManager<T extends OutboundQueueHandler> extends Channel
     private final ConnectionAdapterImpl parent;
     private final InetSocketAddress address;
     private final int maxNonBarrierMessages;
-    ///private final long maxBarrierNanos;
     private final T handler;
 
     // Accessed concurrently
@@ -68,9 +66,6 @@ final class OutboundQueueManager<T extends OutboundQueueHandler> extends Channel
 
     // Updated from netty only
     private boolean alreadyReading;
-    private boolean barrierTimerEnabled;
-    private long lastBarrierNanos = System.nanoTime();
-    private int nonBarrierMessages;
     private boolean shuttingDown;
 
     // Passed to executor to request triggering of flush
@@ -298,7 +293,6 @@ final class OutboundQueueManager<T extends OutboundQueueHandler> extends Channel
             scheduleFlush();
         }
     }
-
 
     /**
      * Write a message into the underlying channel.

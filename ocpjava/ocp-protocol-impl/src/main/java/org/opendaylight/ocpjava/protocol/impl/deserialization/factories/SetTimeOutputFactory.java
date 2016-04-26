@@ -8,14 +8,10 @@
 
 package org.opendaylight.ocpjava.protocol.impl.deserialization.factories;
 
-import io.netty.buffer.ByteBuf;
-//import io.netty.handler.codec.xml.*;
-
 import java.util.Iterator;
 import java.util.List;
 
 import org.opendaylight.ocpjava.protocol.api.extensibility.OCPDeserializer;
-import org.opendaylight.ocpjava.protocol.api.util.EncodeConstants;
 
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.SetTimeOutput;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.SetTimeOutputBuilder;
@@ -23,7 +19,6 @@ import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.OcpMsgType;
 
 import org.opendaylight.ocpjava.protocol.impl.core.XmlElementStart;
-import org.opendaylight.ocpjava.protocol.impl.core.XmlElementEnd;
 import org.opendaylight.ocpjava.protocol.impl.core.XmlCharacters;
 
 import org.slf4j.Logger;
@@ -47,9 +42,7 @@ import org.slf4j.LoggerFactory;
         </setTimeResp>
     </body>
 </msg>
-
 */
-
 
 public class SetTimeOutputFactory implements OCPDeserializer<SetTimeOutput> {
 
@@ -67,17 +60,19 @@ public class SetTimeOutputFactory implements OCPDeserializer<SetTimeOutput> {
                 if(tok instanceof XmlElementStart) {
                 	//msgType
                     if (((XmlElementStart)tok).name().equals("body")){
-                        itr.next(); //XmlCharacters of body
-                    	Object t_tok = itr.next(); // XmlElementStart of msgType
-                        if (t_tok instanceof XmlElementStart)
-                    	    builder.setMsgType(OcpMsgType.valueOf(((XmlElementStart)t_tok).name().toUpperCase()));
+                        //XmlCharacters of body
+                        itr.next();
+                        //XmlElementStart of msgType
+                    	Object type = itr.next();
+                        if (type instanceof XmlElementStart)
+                    	    builder.setMsgType(OcpMsgType.valueOf(((XmlElementStart)type).name().toUpperCase()));
                         LOGGER.debug("SetTimeOutputFactory - getMsgType = " + builder.getMsgType());
                     }
                 	//msgUID
                     if (((XmlElementStart)tok).name().equals("msgUID")){
-                        Object t_tok = itr.next();
-                        int uid_tok = Integer.parseInt(((XmlCharacters)t_tok).data().toString());
-                        builder.setXid((long)uid_tok);
+                        Object uidtok = itr.next();
+                        int uid = Integer.parseInt(((XmlCharacters)uidtok).data().toString());
+                        builder.setXid((long)uid);
                         LOGGER.debug("SetTimeOutputFactory - getXid = " + builder.getXid());
                     }
                     //result

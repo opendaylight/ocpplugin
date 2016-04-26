@@ -8,10 +8,8 @@
 
 package org.opendaylight.ocpjava.protocol.impl.deserialization.factories;
 
-import io.netty.buffer.ByteBuf;
-
 import org.opendaylight.ocpjava.protocol.api.extensibility.OCPDeserializer;
-import org.opendaylight.ocpjava.protocol.api.util.EncodeConstants;
+
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.ModifyParamOutput;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.ModifyParamOutputBuilder;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.ModifyParamRes;
@@ -72,8 +70,8 @@ public class ModifyParamOutputFactory implements OCPDeserializer<ModifyParamOutp
         ObjBuilder objbuilder = new ObjBuilder();       
         ParamBuilder parambuilder = new ParamBuilder();
 
-        List<Param> llist_param = new ArrayList();
-        List<Obj> llist_obj = new ArrayList();
+        List<Param> paramlist = new ArrayList();
+        List<Obj> objlist = new ArrayList();
 
         Iterator itr = rawMessage.iterator();
         while(itr.hasNext()) {
@@ -83,31 +81,33 @@ public class ModifyParamOutputFactory implements OCPDeserializer<ModifyParamOutp
                 if(tok instanceof XmlElementStart) {
                     //msgType
                     if (((XmlElementStart)tok).name().equals("body")){
-                        itr.next(); //XmlCharacters of body
-                    	Object t_tok = itr.next(); // XmlElementStart of msgType
-                        if (t_tok instanceof XmlElementStart)
-                    	    builder.setMsgType(OcpMsgType.valueOf(((XmlElementStart)t_tok).name().toUpperCase()));
+                        //XmlCharacters of body
+                        itr.next();
+                        //XmlElementStart of msgType
+                    	Object type = itr.next();
+                        if (type instanceof XmlElementStart)
+                    	    builder.setMsgType(OcpMsgType.valueOf(((XmlElementStart)type).name().toUpperCase()));
                         LOGGER.debug("ModifyParamOutputFactory - getMsgType = " + builder.getMsgType());
                     }
                     //msgUID
                     else if (((XmlElementStart)tok).name().equals("msgUID")){
-                    	Object t_tok = itr.next();   
-                    	StringBuffer buf = new StringBuffer();
-                    	while(t_tok instanceof XmlCharacters) {
-                    	    buf.append(((XmlCharacters)t_tok).data().toString());
-                    	    t_tok = itr.next();
+                    	Object uidtok = itr.next();   
+                    	StringBuilder buf = new StringBuilder();
+                    	while(uidtok instanceof XmlCharacters) {
+                    	    buf.append(((XmlCharacters)uidtok).data().toString());
+                    	    uidtok = itr.next();
                     	}
-                        int uid_tok = Integer.parseInt(buf.toString());
-                        builder.setXid((long)uid_tok);
+                        int uid = Integer.parseInt(buf.toString());
+                        builder.setXid((long)uid);
                         LOGGER.debug("ModifyParamOutputFactory - getXid = " + builder.getXid());
                     }
                     //globResult
                     else if (((XmlElementStart)tok).name().equals("globResult")){
-                    	Object t_tok = itr.next();   
-                    	StringBuffer buf = new StringBuffer();
-                    	while(t_tok instanceof XmlCharacters) {
-                    	    buf.append(((XmlCharacters)t_tok).data().toString());
-                    	    t_tok = itr.next();
+                    	Object reltok = itr.next();   
+                    	StringBuilder buf = new StringBuilder();
+                    	while(reltok instanceof XmlCharacters) {
+                    	    buf.append(((XmlCharacters)reltok).data().toString());
+                    	    reltok = itr.next();
                     	}
                         builder.setGlobResult(ModifyParamGlobRes.valueOf(buf.toString().replace("_", "")));
                         LOGGER.debug("ModifyParamOutputFactory - getGlobResult = " + builder.getGlobResult());
@@ -129,23 +129,23 @@ public class ModifyParamOutputFactory implements OCPDeserializer<ModifyParamOutp
                                 parambuilder.setName(((XmlElementStart)tok).attributes().get(0).value());
                                 LOGGER.debug("ModifyParamOutputFactory - getName = " + parambuilder.getName());
 
-                                Object r_tok = itr.next();
-                                while(!(r_tok instanceof XmlElementStart))
-                                    r_tok = itr.next();
+                                Object nexttok = itr.next();
+                                while(!(nexttok instanceof XmlElementStart))
+                                    nexttok = itr.next();
                                 
-                                 //param result
-                                if(((XmlElementStart)r_tok).name().equals("result")) {
+                                //param result
+                                if(((XmlElementStart)nexttok).name().equals("result")) {
 
-                                    Object rr_tok = itr.next();   
-                                    StringBuffer buf = new StringBuffer();
-                                    while(rr_tok instanceof XmlCharacters) {
-                                        buf.append(((XmlCharacters)rr_tok).data().toString());
-                                        rr_tok = itr.next();
+                                    Object ptok = itr.next();   
+                                    StringBuilder buf = new StringBuilder();
+                                    while(ptok instanceof XmlCharacters) {
+                                        buf.append(((XmlCharacters)ptok).data().toString());
+                                        ptok = itr.next();
                                     }
                                     parambuilder.setResult(ModifyParamRes.valueOf(buf.toString().replace("_", "")));
                                     LOGGER.debug("ModifyParamOutputFactory - getResult = " + parambuilder.getResult());
                             	}                       	
-                                llist_param.add(parambuilder.build());
+                                paramlist.add(parambuilder.build());
                                 parambuilder = new ParamBuilder();
 
                                 //jump to the next token until the token is param XmlElementStart or obj XmlElementEnd
@@ -168,10 +168,10 @@ public class ModifyParamOutputFactory implements OCPDeserializer<ModifyParamOutp
                                 }
                             }
                         }
-                        objbuilder.setParam(llist_param);                    
-                        llist_param = new ArrayList();
+                        objbuilder.setParam(paramlist);                    
+                        paramlist = new ArrayList();
                         LOGGER.trace("ModifyParamOutputFactory - objbuilder.build() = " + objbuilder.build());                        
-                        llist_obj.add(objbuilder.build());
+                        objlist.add(objbuilder.build());
                     }
                 } 
             }
@@ -179,7 +179,7 @@ public class ModifyParamOutputFactory implements OCPDeserializer<ModifyParamOutp
                 LOGGER.error("Error " + tok + " " + t.toString());
             }
         }
-        builder.setObj(llist_obj);
+        builder.setObj(objlist);
         LOGGER.debug("ModifyParamOutputFactory - Builder: " + builder.build());
         return builder.build();
     }

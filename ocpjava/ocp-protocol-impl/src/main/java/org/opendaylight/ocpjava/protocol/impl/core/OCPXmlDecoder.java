@@ -9,7 +9,6 @@
 package org.opendaylight.ocpjava.protocol.impl.core;
 
 import org.opendaylight.ocpjava.protocol.impl.core.connection.ConnectionFacade;
-//import org.opendaylight.ocpjava.util.ByteBufUtils;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.OcpMsgType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,9 +36,10 @@ public class OCPXmlDecoder extends ByteToMessageDecoder {
     private static final Logger LOGGER = LoggerFactory.getLogger(OCPXmlDecoder.class);
     private ConnectionFacade connectionFacade;
     private boolean firstTlsPass = false;
+    private int UNKNOWN = 99;
+    private int MSGLENGTH = 6;
 
     private static final AsyncXMLInputFactory XML_INPUT_FACTORY = new InputFactoryImpl();
-    private static final XmlDocumentEnd XML_DOCUMENT_END = XmlDocumentEnd.INSTANCE;
     private AsyncXMLStreamReader streamReader = XML_INPUT_FACTORY.createAsyncXMLStreamReader();
     private AsyncInputFeeder streamFeeder = streamReader.getInputFeeder();
 
@@ -105,10 +105,12 @@ public class OCPXmlDecoder extends ByteToMessageDecoder {
 	                boolean isOcpMsgType = EnumSet.allOf(OcpMsgType.class).toString().contains(elementStart.name().toUpperCase());
 	                if(!isOcpMsgType){
 	                    LOGGER.warn("OCPXmlDecoder - unknown OcpMsgType format");
-	                    msgType = 99; //unknown Message
+                            //unknown Message
+                            msgType = UNKNOWN;
 	                }
-	                else
+                        else{
                             msgType = OcpMsgType.valueOf(elementStart.name().toUpperCase()).getIntValue();
+                        }
                         bodyElmFound = false;
                         LOGGER.trace("Message start: " + elementStart.name());
                     }
@@ -133,12 +135,13 @@ public class OCPXmlDecoder extends ByteToMessageDecoder {
                         LOGGER.trace("valueS length: " + valueS.length());
                         LOGGER.trace("valueS indexOf: " + valueS.indexOf("</msg>"));
 
-                        int end_idx = valueS.indexOf("</msg>") + 6; // </msg> length is 6
-                        LOGGER.trace("idx: " + end_idx);
+                        // </msg> length is 6
+                        int endidx = valueS.indexOf("</msg>") + MSGLENGTH;
+                        LOGGER.trace("idx: " + endidx);
                         
                         //handle remain XML messages
-                        if(valueS.length() - end_idx > 0) {
-                            valueS = valueS.substring(end_idx);
+                        if(valueS.length() - endidx > 0) {
+                            valueS = valueS.substring(endidx);
                             LOGGER.trace("valueS.length() : " + valueS.length());
                             byte[] bytesData = valueS.getBytes();
                             streamFeeder.feedInput(bytesData, 0, bytesData.length);

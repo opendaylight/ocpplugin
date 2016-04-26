@@ -9,26 +9,14 @@
 package org.opendaylight.ocpjava.protocol.impl.serialization.factories;
 
 import io.netty.buffer.ByteBuf;
-//import org.opendaylight.ocpjava.util.ByteBufUtils;
 import io.netty.buffer.ByteBufUtil;
 
 import org.opendaylight.ocpjava.protocol.api.extensibility.OCPSerializer;
-import org.opendaylight.ocpjava.protocol.api.util.EncodeConstants;
 
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.ReResetInput;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-//Encoder test
-import javax.xml.stream.XMLOutputFactory;
-import org.codehaus.stax2.XMLOutputFactory2;
-import org.codehaus.stax2.XMLStreamWriter2;
-
-import javax.xml.stream.XMLStreamConstants;
-import javax.xml.stream.XMLStreamException;
-
-
 
 /**
  * Translates HealthCheckRequest messages
@@ -50,14 +38,12 @@ import javax.xml.stream.XMLStreamException;
 
 public class ReResetInputFactory implements OCPSerializer<ReResetInput> {
 
-    /** Code type of HealthCheckRequest message */
-    private static final String MESSAGE_TYPE = "resetReq";
 	private static final Logger LOGGER = LoggerFactory.getLogger(ReResetInputFactory.class);
 
     @Override
     public void serialize(ReResetInput message, ByteBuf outBuffer) {
         LOGGER.debug("ReResetInputFactory - message = " + message.toString());    	
-        StringBuffer seq = new StringBuffer("");
+        StringBuilder seq = new StringBuilder("");
         //Generate from DTO to XML string
         seq.append("<msg xmlns=");
         seq.append("\"http://uri.etsi.org/ori/002-2/v4.1.1\">");
@@ -72,9 +58,7 @@ public class ReResetInputFactory implements OCPSerializer<ReResetInput> {
 
         LOGGER.debug("ReResetInputFactory - composed xml-string = " + seq);
 
-        //CharSequence seq2 = seq;
         //write Xml string to ByteBuf by ByteBufUtil of netty-buffer
         ByteBufUtil.writeUtf8(outBuffer, seq);
-
     }
 }

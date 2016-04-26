@@ -8,10 +8,7 @@
 
 package org.opendaylight.ocpjava.protocol.impl.deserialization.factories;
 
-import io.netty.buffer.ByteBuf;
-
 import org.opendaylight.ocpjava.protocol.api.extensibility.OCPDeserializer;
-import org.opendaylight.ocpjava.protocol.api.util.EncodeConstants;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.CreateObjOutput;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.CreateObjOutputBuilder;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.CreateObjRes;
@@ -62,40 +59,40 @@ import org.slf4j.LoggerFactory;
         </createObjResp>
     </body>
 </msg>
-
 */
 
 public class CreateObjOutputFactory implements OCPDeserializer<CreateObjOutput> {
-
     private static final Logger LOGGER = LoggerFactory.getLogger(CreateObjOutputFactory.class);
+    private Iterator itr;
+
     @Override
     public CreateObjOutput deserialize(List<Object> rawMessage) {
         CreateObjOutputBuilder builder = new CreateObjOutputBuilder();
         ObjBuilder objbuilder = new ObjBuilder();       
-        ParamBuilder parambuilder = new ParamBuilder();
+        List<Obj> objs = new ArrayList();
 
-        List<Param> llist_param = new ArrayList();
-        List<Obj> llist_obj = new ArrayList();
-
-        Iterator itr = rawMessage.iterator();
+        itr = rawMessage.iterator();
         while(itr.hasNext()) {
             Object tok = itr.next();
             LOGGER.trace("CreateObjOutputFactory - itr = " + tok);
             try {
                 if(tok instanceof XmlElementStart) {
-                	//msgType
+                    //msgType
                     if (((XmlElementStart)tok).name().equals("body")){
-                        itr.next(); //XmlCharacters of body
-                    	Object t_tok = itr.next(); // XmlElementStart of msgType
-                        if (t_tok instanceof XmlElementStart)
-                    	    builder.setMsgType(OcpMsgType.valueOf(((XmlElementStart)t_tok).name().toUpperCase()));
-                        LOGGER.debug("CreateObjOutputFactory - getMsgType = " + builder.getMsgType());
+                        //XmlCharacters of body
+                        itr.next();
+                        //XmlElementStart of msgType
+                        Object type = itr.next();
+                        if (type instanceof XmlElementStart){
+                    	    builder.setMsgType(OcpMsgType.valueOf(((XmlElementStart)type).name().toUpperCase()));
+                        }
+                    	LOGGER.debug("CreateObjOutputFactory - getMsgType = " + builder.getMsgType());
                     }
                 	//msgUID
                     else if (((XmlElementStart)tok).name().equals("msgUID")){
-                        Object t_tok = itr.next();
-                        int uid_tok = Integer.parseInt(((XmlCharacters)t_tok).data().toString());
-                        builder.setXid((long)uid_tok);
+                        Object obj = itr.next();
+                        int uid = Integer.parseInt(((XmlCharacters)obj).data().toString());
+                        builder.setXid((long)uid);
                         LOGGER.debug("CreateObjOutputFactory - getXid = " + builder.getXid());
                     }
                     //globResult
@@ -107,61 +104,13 @@ public class CreateObjOutputFactory implements OCPDeserializer<CreateObjOutput> 
                     //obj
                     else if (((XmlElementStart)tok).name().equals("obj")) {
                     	//set Obj ID
-                    	if(((XmlElementStart)tok).attributes().size() >= 1)
+                    	if(((XmlElementStart)tok).attributes().size() >= 1){
                     	    objbuilder.setId(new ObjId(((XmlElementStart)tok).attributes().get(0).value()));
-
-                    	//find the next param of XmlElementStart 
-                        Object p_tok = itr.next();
-                        while(!(p_tok instanceof XmlElementStart)) {
-                            if(p_tok instanceof XmlElementEnd){
-                                //if obj of XmlElementEnd found, it means there is no param in this object
-                                if(((XmlElementEnd)p_tok).name().equals("obj"))
-                                    break;
-                            }
-                            p_tok = itr.next();
-                        }
-                    	
-                    	if (p_tok instanceof XmlElementStart) {
-	                    	while(!(((XmlElementStart)p_tok).name().equals("obj"))){
-	                    		if(((XmlElementStart)p_tok).name().equals("param")) {
-	                                parambuilder.setName(((XmlElementStart)p_tok).attributes().get(0).value());
-	                               
-	                                Object r_tok = itr.next();
-	                                while(!(r_tok instanceof XmlElementStart))
-	                                    r_tok = itr.next();
-
-	                                if(((XmlElementStart)r_tok).name().equals("result")) {
-	                                	Object rr_tok = itr.next();
-	                                	parambuilder.setResult(CreateObjRes.valueOf(((XmlCharacters)rr_tok).data().toString().replace("_", "")));
-	                                }
-	                                LOGGER.trace("CreateObjOutputFactory - parambuilder.build() " + parambuilder.build());
-	                                llist_param.add(parambuilder.build());
-	                                parambuilder = new ParamBuilder();
-	                                
-	                                //jump to the next token until the token is param XmlElementStart or obj XmlElementEnd
-	                                p_tok = itr.next();
-	                                while((p_tok instanceof XmlElementStart)||(p_tok instanceof XmlElementEnd)||(p_tok instanceof XmlCharacters)) {
-	                                    if (p_tok instanceof XmlElementStart) {
-	                                            if(((XmlElementStart)p_tok).name().equals("param"))
-	                                                    break;
-	                                    }
-	                                    else if (p_tok instanceof XmlElementEnd) {
-	                                            if(((XmlElementEnd)p_tok).name().equals("obj"))
-	                                                    break;
-	                                    }
-	                                    p_tok = itr.next();
-	                                }
-	                                
-	                                if (p_tok instanceof XmlElementEnd) {
-	                                	if(((XmlElementEnd)p_tok).name().equals("obj"))
-	                                		break;
-	                                }
-	                    	    }
-	                    	}
-	                        objbuilder.setParam(llist_param);
-                    	}                  
+                    	}
+                    	objbuilder.setParam(getListParam());
+              
                         LOGGER.trace("CreateObjOutputFactory - objbuilder.build() " + objbuilder.build());
-                        llist_obj.add(objbuilder.build());
+                        objs.add(objbuilder.build());
                     }
                 } 
             }
@@ -169,8 +118,107 @@ public class CreateObjOutputFactory implements OCPDeserializer<CreateObjOutput> 
                 LOGGER.error("Error " + tok + " " + t.toString());
             }
         }
-        builder.setObj(llist_obj);
+        builder.setObj(objs);
         LOGGER.debug("CreateObjOutputFactory - Builder: " + builder.build());
         return builder.build();
+    }
+
+
+    public List<Param> getListParam(){
+        
+        ParamBuilder parambuilder = new ParamBuilder();
+        List<Param> plist = new ArrayList();
+
+        //find the next param of XmlElementStart
+        Object tok = findNextParamObj();
+
+        if (tok instanceof XmlElementStart) {
+            while(!(((XmlElementStart)tok).name().equals("obj"))){
+                if(((XmlElementStart)tok).name().equals("param")) {
+                    parambuilder.setName(((XmlElementStart)tok).attributes().get(0).value());
+                    
+                    Object result = findNextResultObj();
+                    
+                    if(((XmlElementStart)result).name().equals("result")) {
+                        
+                        tok = itr.next();
+                        String rel = "";
+                        while(tok instanceof XmlCharacters){
+                            rel = rel.concat(((XmlCharacters)tok).data().toString().replace("_", ""));
+                            LOGGER.debug("CreateObjOutputFactory - result = {}", ((XmlCharacters)tok).data().toString().replace("_", ""));
+                            tok = itr.next();
+                        }
+                        parambuilder.setResult(CreateObjRes.valueOf(rel));
+                    }
+                    else {
+                        tok = itr.next();
+                    }
+                    
+                    LOGGER.debug("CreateObjOutputFactory - parambuilder.build() " + parambuilder.build());
+                    plist.add(parambuilder.build());
+                    parambuilder = new ParamBuilder();
+                    
+                    tok = skipRemainObj(tok);
+                    
+                    if (tok instanceof XmlElementEnd) {
+                        if(((XmlElementEnd)tok).name().equals("obj")){
+                            break;
+                        }
+                    }
+                }
+            }
+        }                  
+        return plist;
+    }
+
+    //find the next param of XmlElementStart
+    public Object findNextParamObj(){
+        Object tok = itr.next();  
+        while(!(tok instanceof XmlElementStart)) {
+            if(tok instanceof XmlElementEnd){
+                //if obj of XmlElementEnd found, it means there is no param in this object 
+                if(((XmlElementEnd)tok).name().equals("obj")){
+                    break;
+                }      
+            }
+            tok = itr.next();
+        }
+        return tok;
+    }
+
+    //find the next result of XmlElementStart
+    public Object findNextResultObj(){
+        Object tok = itr.next();
+        while(!(tok instanceof XmlElementStart)){
+            tok = itr.next();
+        }
+        return tok;
+    }
+    
+    //get the result value
+    public String getResult(){
+        Object tok = itr.next();
+        String rel = "";
+        while(tok instanceof XmlCharacters){
+            rel = rel.concat(((XmlCharacters)tok).data().toString().replace("_", ""));
+            LOGGER.debug("CreateObjOutputFactory - result = {}", ((XmlCharacters)tok).data().toString().replace("_", ""));
+            tok = itr.next();
+        }
+        return rel;
+    }
+
+    public Object skipRemainObj(Object tok){
+        while((tok instanceof XmlElementStart)||(tok instanceof XmlElementEnd)||(tok instanceof XmlCharacters)) {
+            if (tok instanceof XmlElementStart) {
+                    if(((XmlElementStart)tok).name().equals("param"))
+                            break;
+            }
+            else if (tok instanceof XmlElementEnd) {
+                    if(((XmlElementEnd)tok).name().equals("obj"))
+                            break;
+            }
+            tok = itr.next();
+        }
+        return tok;
     }
 }

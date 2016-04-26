@@ -12,8 +12,6 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufUtil;
 
 import org.opendaylight.ocpjava.protocol.api.extensibility.OCPSerializer;
-import org.opendaylight.ocpjava.protocol.api.util.EncodeConstants;
-//import org.opendaylight.ocpjava.util.ByteBufUtils;
 
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.extension.rev150811.HelloInput;
 
@@ -49,7 +47,7 @@ public class HelloInputFactory implements OCPSerializer<HelloInput>{
     @Override
     public void serialize(HelloInput message, ByteBuf outBuffer) {
         LOGGER.debug("HelloInputFactory - message = " + message.toString());
-        StringBuffer seq = new StringBuffer("");
+        StringBuilder seq = new StringBuilder("");
         //Generate from DTO to XML string
         seq.append("<msg xmlns=");
         seq.append("\"http://uri.etsi.org/ori/002-2/v4.1.1\">");

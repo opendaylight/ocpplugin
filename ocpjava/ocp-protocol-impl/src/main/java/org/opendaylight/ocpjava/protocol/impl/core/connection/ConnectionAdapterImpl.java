@@ -28,8 +28,6 @@ import java.util.concurrent.TimeUnit;
 import org.opendaylight.ocpjava.protocol.api.connection.ConnectionReadyListener;
 import org.opendaylight.ocpjava.protocol.api.connection.OutboundQueueHandler;
 import org.opendaylight.ocpjava.protocol.api.connection.OutboundQueueHandlerRegistration;
-//import org.opendaylight.ocpjava.protocol.impl.core.OCPVersionDetector;
-import org.opendaylight.ocpjava.protocol.impl.core.PipelineHandlers;
 import org.opendaylight.ocpjava.protocol.impl.core.ChannelInitializerFactory;
 
 import org.opendaylight.ocpjava.statistics.CounterEventTypes;
@@ -57,7 +55,6 @@ import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.GetF
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.GetFaultOutput;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.StateChange;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.FaultInd;
-import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.GetFaultOutput;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.OcpProtocolListener;
 
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.extension.rev150811.HelloInput;
@@ -125,7 +122,6 @@ public class ConnectionAdapterImpl implements ConnectionFacade {
     private OutboundQueueManager<?> outputManager;
     private boolean disconnectOccured = false;
     private final OcpStatisticsCounters statisticsCounters;
-    //private OCPVersionDetector versionDetector;
     private final InetSocketAddress address;
 
     /**
@@ -424,7 +420,6 @@ public class ConnectionAdapterImpl implements ConnectionFacade {
 
     @Override
     public void fireConnectionReadyNotification() {
-
         new Thread(new Runnable() {
             @Override
             public void run() {

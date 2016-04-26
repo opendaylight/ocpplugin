@@ -8,20 +8,14 @@
 
 package org.opendaylight.ocpjava.protocol.impl.deserialization.factories;
 
-import io.netty.buffer.ByteBuf;
-
 import org.opendaylight.ocpjava.protocol.api.extensibility.OCPDeserializer;
-import org.opendaylight.ocpjava.protocol.api.util.EncodeConstants;
 
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.extension.rev150811.HelloMessage;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.extension.rev150811.HelloMessageBuilder;
-
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.extension.rev150811.HelloInd;
-
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.OcpMsgType;
 
 import org.opendaylight.ocpjava.protocol.impl.core.XmlElementStart;
-import org.opendaylight.ocpjava.protocol.impl.core.XmlElementEnd;
 import org.opendaylight.ocpjava.protocol.impl.core.XmlCharacters;
 
 import java.util.List;
@@ -75,35 +69,37 @@ public class HelloMessageFactory implements OCPDeserializer<HelloInd> {
                 if(tok instanceof XmlElementStart) {
                 	//msgType
                     if (((XmlElementStart)tok).name().contains("body")){
-                        itr.next(); //XmlCharacters of body
-                    	Object t_tok = itr.next(); // XmlElementStart of msgType
-                        if (t_tok instanceof XmlElementStart)
-                    	    builder.setMsgType(OcpMsgType.valueOf(((XmlElementStart)t_tok).name().toUpperCase()));
+                        //XmlCharacters of body
+                        itr.next();
+                        //XmlElementStart of msgType
+                    	Object type = itr.next();
+                        if (type instanceof XmlElementStart)
+                    	    builder.setMsgType(OcpMsgType.valueOf(((XmlElementStart)type).name().toUpperCase()));
                         LOGGER.debug("HelloMessageFactory - getMsgType = " + builder.getMsgType());
                     }
                     //msgUID
                     else if (((XmlElementStart)tok).name().equals("msgUID")){
-                        Object t_tok = itr.next();
-                        int uid_tok = Integer.parseInt(((XmlCharacters)t_tok).data().toString());
-                        builder.setXid((long)uid_tok);
+                        Object uidtok = itr.next();
+                        int uid = Integer.parseInt(((XmlCharacters)uidtok).data().toString());
+                        builder.setXid((long)uid);
                         LOGGER.debug("HelloMessageFactory - setXid " + builder.getXid());
                     }
                     //version
                     else if (((XmlElementStart)tok).name().equals("version")){
-                        String rel_ver = (((XmlCharacters)itr.next()).data()).toString();
-                        builder.setVersion(rel_ver);
+                        String ver = (((XmlCharacters)itr.next()).data()).toString();
+                        builder.setVersion(ver);
                         LOGGER.debug("HelloMessageFactory - setVersion " + builder.getVersion());
                     }
                     //versionId
                     else if (((XmlElementStart)tok).name().equals("vendorId")){
-                        String rel_verId = (((XmlCharacters)itr.next()).data()).toString();
-                        builder.setVendorId(rel_verId);
+                        String verId = (((XmlCharacters)itr.next()).data()).toString();
+                        builder.setVendorId(verId);
                         LOGGER.debug("HelloMessageFactory - setVendorId " + builder.getVendorId());
                     }
                     //serialNumber
                     else if (((XmlElementStart)tok).name().equals("serialNumber")){
-                        String rel_serN = (((XmlCharacters)itr.next()).data()).toString();
-                        builder.setSerialNumber(rel_serN);
+                        String serNum = (((XmlCharacters)itr.next()).data()).toString();
+                        builder.setSerialNumber(serNum);
                         LOGGER.debug("HelloMessageFactory - setSerialNumber " + builder.getSerialNumber());
                     }
                 } 

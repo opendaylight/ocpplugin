@@ -12,26 +12,14 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufUtil;
 
 import org.opendaylight.ocpjava.protocol.api.extensibility.OCPSerializer;
-//import org.opendaylight.ocpjava.util.ByteBufUtils;
-import org.opendaylight.ocpjava.protocol.api.util.EncodeConstants;
 
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.ModifyStateInput;
 
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.modifystateinput.Obj;
-import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.modifystateinput.ObjBuilder;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.modifystateinput.obj.State;
-import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.modifystateinput.obj.StateBuilder;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-//Encoder test
-import javax.xml.stream.XMLOutputFactory;
-import org.codehaus.stax2.XMLOutputFactory2;
-import org.codehaus.stax2.XMLStreamWriter2;
-
-
-import javax.xml.stream.XMLStreamConstants;
 
 /**
  * Translates GetParamRequest messages
@@ -64,7 +52,7 @@ public class ModifyStateInputFactory implements OCPSerializer<ModifyStateInput> 
     @Override
     public void serialize(ModifyStateInput message, ByteBuf outBuffer) {
         LOGGER.debug("ModifyStateInputFactory - message = " + message.toString());
-        StringBuffer seq = new StringBuffer("");
+        StringBuilder seq = new StringBuilder("");
         //Generate from DTO to XML string
         seq.append("<msg xmlns=");
         seq.append("\"http://uri.etsi.org/ori/002-2/v4.1.1\">");
@@ -85,13 +73,15 @@ public class ModifyStateInputFactory implements OCPSerializer<ModifyStateInput> 
                     	seq.append("\">");
 
                     	// To fix YANG ENUM translation to Java code, it will remove the underline character 
-                        if(currState.getValue().toString().equals("PREOPERATIONAL"))
+                        if(currState.getValue().toString().equals("PREOPERATIONAL")){
                             seq.append("PRE_OPERATIONAL");
-                        else if(currState.getValue().toString().equals("NOTOPERATIONAL"))
+                        }
+                        else if(currState.getValue().toString().equals("NOTOPERATIONAL")){
                             seq.append("NOT_OPERATIONAL");
-                        else
+                        }
+                        else{
                             seq.append(currState.getValue());
-
+                        }
                     	seq.append("</state>");
                         }
                     seq.append("</obj>");
@@ -101,8 +91,6 @@ public class ModifyStateInputFactory implements OCPSerializer<ModifyStateInput> 
         seq.append("</msg>");
 
         LOGGER.debug("ModifyStateInputFactory - composed xml-string = " + seq);
-        
         ByteBufUtil.writeUtf8(outBuffer, seq);
     }
-
 }

@@ -9,20 +9,14 @@
 package org.opendaylight.ocpjava.protocol.impl.serialization.factories;
 
 import io.netty.buffer.ByteBuf;
-//import org.opendaylight.ocpjava.util.ByteBufUtils;
 import io.netty.buffer.ByteBufUtil;
 
 import org.opendaylight.ocpjava.protocol.api.extensibility.OCPSerializer;
-import org.opendaylight.ocpjava.protocol.api.util.EncodeConstants;
 
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.SetTimeInput;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.xml.stream.XMLStreamConstants;
-import javax.xml.stream.XMLStreamException;
-
 
 /**
  * Translates HealthCheckRequest messages
@@ -42,21 +36,17 @@ import javax.xml.stream.XMLStreamException;
         </setTimeReq>
     </body>
 </msg>
-
 */
 
 
 public class SetTimeInputFactory implements OCPSerializer<SetTimeInput> {
 
-    /** Code type of SetTimeRequest message */
-    private static final String MESSAGE_TYPE = "setTimeReq";
     private static final Logger LOGGER = LoggerFactory.getLogger(SetTimeInputFactory.class);
-
 
     @Override
     public void serialize(SetTimeInput message, ByteBuf outBuffer) {
         LOGGER.debug("SetTimeInputFactory - message = " + message.toString());
-        StringBuffer seq = new StringBuffer("");
+        StringBuilder seq = new StringBuilder("");
         //Generate from DTO to XML string
         seq.append("<msg xmlns=");
         seq.append("\"http://uri.etsi.org/ori/002-2/v4.1.1\">");
@@ -75,7 +65,6 @@ public class SetTimeInputFactory implements OCPSerializer<SetTimeInput> {
 
         LOGGER.debug("SetTimeInputFactory - composed xml-string = " + seq);
         
-        //CharSequence seq2 = seq;
         //write Xml string to ByteBuf by ByteBufUtil of netty-buffer
         ByteBufUtil.writeUtf8(outBuffer, seq);
 
