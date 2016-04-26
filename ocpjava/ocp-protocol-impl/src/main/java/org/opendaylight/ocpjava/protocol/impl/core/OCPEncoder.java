@@ -20,8 +20,6 @@ import org.opendaylight.ocpjava.statistics.OcpStatisticsCounters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.OcpHeader;
-
 /**
  * Transforms OCP Protocol messages to POJOs
  * @author Marko Lai <marko.ch.lai@foxconn.com>

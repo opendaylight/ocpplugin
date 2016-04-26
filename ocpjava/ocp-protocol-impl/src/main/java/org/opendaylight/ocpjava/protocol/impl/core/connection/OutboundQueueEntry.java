@@ -12,7 +12,6 @@ package org.opendaylight.ocpjava.protocol.impl.core.connection;
 import com.google.common.base.Preconditions;
 import com.google.common.util.concurrent.FutureCallback;
 import org.opendaylight.ocpjava.protocol.api.connection.OutboundQueueException;
-///import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev130731.BarrierInput;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

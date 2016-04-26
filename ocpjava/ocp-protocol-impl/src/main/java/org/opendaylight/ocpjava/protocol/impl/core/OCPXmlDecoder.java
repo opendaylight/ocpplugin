@@ -36,8 +36,8 @@ public class OCPXmlDecoder extends ByteToMessageDecoder {
     private static final Logger LOGGER = LoggerFactory.getLogger(OCPXmlDecoder.class);
     private ConnectionFacade connectionFacade;
     private boolean firstTlsPass = false;
-    private int UNKNOWN = 99;
-    private int MSGLENGTH = 6;
+    private int unknownMsg = 99;
+    private int MsgLength = 6;
 
     private static final AsyncXMLInputFactory XML_INPUT_FACTORY = new InputFactoryImpl();
     private AsyncXMLStreamReader streamReader = XML_INPUT_FACTORY.createAsyncXMLStreamReader();
@@ -106,7 +106,7 @@ public class OCPXmlDecoder extends ByteToMessageDecoder {
 	                if(!isOcpMsgType){
 	                    LOGGER.warn("OCPXmlDecoder - unknown OcpMsgType format");
                             //unknown Message
-                            msgType = UNKNOWN;
+                            msgType = unknownMsg;
 	                }
                         else{
                             msgType = OcpMsgType.valueOf(elementStart.name().toUpperCase()).getIntValue();
@@ -136,7 +136,7 @@ public class OCPXmlDecoder extends ByteToMessageDecoder {
                         LOGGER.trace("valueS indexOf: " + valueS.indexOf("</msg>"));
 
                         // </msg> length is 6
-                        int endidx = valueS.indexOf("</msg>") + MSGLENGTH;
+                        int endidx = valueS.indexOf("</msg>") + MsgLength;
                         LOGGER.trace("idx: " + endidx);
                         
                         //handle remain XML messages

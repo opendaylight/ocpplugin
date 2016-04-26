@@ -19,7 +19,6 @@ import org.opendaylight.ocpjava.protocol.impl.core.XmlElementStart;
 import org.opendaylight.ocpjava.protocol.impl.core.XmlCharacters;
 
 import java.util.List;
-import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.slf4j.Logger;
@@ -73,8 +72,9 @@ public class HelloMessageFactory implements OCPDeserializer<HelloInd> {
                         itr.next();
                         //XmlElementStart of msgType
                     	Object type = itr.next();
-                        if (type instanceof XmlElementStart)
+                        if (type instanceof XmlElementStart){
                     	    builder.setMsgType(OcpMsgType.valueOf(((XmlElementStart)type).name().toUpperCase()));
+                    	}
                         LOGGER.debug("HelloMessageFactory - getMsgType = " + builder.getMsgType());
                     }
                     //msgUID

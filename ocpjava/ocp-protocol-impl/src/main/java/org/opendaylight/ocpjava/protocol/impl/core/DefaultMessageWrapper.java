@@ -8,9 +8,7 @@
 
 package org.opendaylight.ocpjava.protocol.impl.core;
 
-
 import java.util.List;
-import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.OcpMsgType;
 
 /**
  * Wraps received messages

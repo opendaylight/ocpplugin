@@ -16,7 +16,6 @@ import org.opendaylight.ocpjava.protocol.api.extensibility.DeserializerRegistry;
 import org.opendaylight.ocpjava.protocol.api.extensibility.DeserializerRegistryInjector;
 import org.opendaylight.ocpjava.protocol.api.extensibility.OCPGeneralDeserializer;
 import org.opendaylight.ocpjava.protocol.api.keys.MessageCodeKey;
-import org.opendaylight.ocpjava.protocol.api.util.EncodeConstants;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

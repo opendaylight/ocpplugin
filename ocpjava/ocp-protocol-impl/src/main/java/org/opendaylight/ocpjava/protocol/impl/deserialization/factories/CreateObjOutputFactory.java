@@ -131,7 +131,6 @@ public class CreateObjOutputFactory implements OCPDeserializer<CreateObjOutput> 
 
         //find the next param of XmlElementStart
         Object tok = findNextParamObj();
-
         if (tok instanceof XmlElementStart) {
             while(!(((XmlElementStart)tok).name().equals("obj"))){
                 if(((XmlElementStart)tok).name().equals("param")) {
@@ -140,7 +139,6 @@ public class CreateObjOutputFactory implements OCPDeserializer<CreateObjOutput> 
                     Object result = findNextResultObj();
                     
                     if(((XmlElementStart)result).name().equals("result")) {
-                        
                         tok = itr.next();
                         String rel = "";
                         while(tok instanceof XmlCharacters){
@@ -160,14 +158,12 @@ public class CreateObjOutputFactory implements OCPDeserializer<CreateObjOutput> 
                     
                     tok = skipRemainObj(tok);
                     
-                    if (tok instanceof XmlElementEnd) {
-                        if(((XmlElementEnd)tok).name().equals("obj")){
-                            break;
-                        }
+                    if ((tok instanceof XmlElementEnd) && ((XmlElementEnd)tok).name().equals("obj")) {
+                        break;
                     }
                 }
             }
-        }                  
+        }                   
         return plist;
     }
 
@@ -175,11 +171,9 @@ public class CreateObjOutputFactory implements OCPDeserializer<CreateObjOutput> 
     public Object findNextParamObj(){
         Object tok = itr.next();  
         while(!(tok instanceof XmlElementStart)) {
-            if(tok instanceof XmlElementEnd){
-                //if obj of XmlElementEnd found, it means there is no param in this object 
-                if(((XmlElementEnd)tok).name().equals("obj")){
-                    break;
-                }      
+            //if obj of XmlElementEnd found, it means there is no param in this object 
+            if((tok instanceof XmlElementEnd) && ((XmlElementEnd)tok).name().equals("obj")){
+                break;
             }
             tok = itr.next();
         }
@@ -209,13 +203,11 @@ public class CreateObjOutputFactory implements OCPDeserializer<CreateObjOutput> 
 
     public Object skipRemainObj(Object tok){
         while((tok instanceof XmlElementStart)||(tok instanceof XmlElementEnd)||(tok instanceof XmlCharacters)) {
-            if (tok instanceof XmlElementStart) {
-                    if(((XmlElementStart)tok).name().equals("param"))
-                            break;
+            if ((tok instanceof XmlElementStart) && ((XmlElementStart)tok).name().equals("param")){
+                break;
             }
-            else if (tok instanceof XmlElementEnd) {
-                    if(((XmlElementEnd)tok).name().equals("obj"))
-                            break;
+            else if ((tok instanceof XmlElementEnd) && ((XmlElementEnd)tok).name().equals("obj")) {
+                break;
             }
             tok = itr.next();
         }

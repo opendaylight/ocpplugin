@@ -11,22 +11,9 @@ package org.opendaylight.ocpjava.protocol.impl.deserialization;
 import java.util.Map;
 
 import org.opendaylight.ocpjava.protocol.api.util.EncodeConstants;
-import org.opendaylight.ocpjava.protocol.impl.deserialization.factories.FaultIndFactory;
-import org.opendaylight.ocpjava.protocol.impl.deserialization.factories.GetFaultOutputFactory;
-import org.opendaylight.ocpjava.protocol.impl.deserialization.factories.GetParamOutputFactory;
-import org.opendaylight.ocpjava.protocol.impl.deserialization.factories.GetStateOutputFactory;
-import org.opendaylight.ocpjava.protocol.impl.deserialization.factories.HealthCheckOutputFactory;
-import org.opendaylight.ocpjava.protocol.impl.deserialization.factories.HelloMessageFactory;
-import org.opendaylight.ocpjava.protocol.impl.deserialization.factories.ModifyParamOutputFactory;
-import org.opendaylight.ocpjava.protocol.impl.deserialization.factories.CreateObjOutputFactory;
-import org.opendaylight.ocpjava.protocol.impl.deserialization.factories.DeleteObjOutputFactory;
-import org.opendaylight.ocpjava.protocol.impl.deserialization.factories.ModifyStateOutputFactory;
-import org.opendaylight.ocpjava.protocol.impl.deserialization.factories.ReResetOutputFactory;
-import org.opendaylight.ocpjava.protocol.impl.deserialization.factories.SetTimeOutputFactory;
-import org.opendaylight.ocpjava.protocol.impl.deserialization.factories.StateChangeFactory;
 import org.opendaylight.ocpjava.protocol.impl.util.TypeToClassInitHelper;
 import org.opendaylight.ocpjava.protocol.impl.util.TypeToClassKey;
-///import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev130731.BarrierOutput;
+
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.extension.rev150811.HelloMessage;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.extension.rev150811.ReDirectOutput;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.FaultInd;
@@ -74,6 +61,5 @@ public final class TypeToClassMapInitializer {
         helper.registerTypeToClass( 20, GetFaultOutput.class);
         helper.registerTypeToClass( 21, FaultInd.class);
         helper.registerTypeToClass( 23, HelloMessage.class);
-        helper.registerTypeToClass( 25, ReDirectOutput.class);
     }
 }

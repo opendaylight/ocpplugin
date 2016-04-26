@@ -9,7 +9,6 @@
 package org.opendaylight.ocpjava.protocol.impl.serialization;
 
 import org.opendaylight.ocpjava.protocol.api.extensibility.SerializerRegistry;
-import org.opendaylight.ocpjava.protocol.api.util.EncodeConstants;
 
 import org.opendaylight.ocpjava.protocol.impl.serialization.factories.HealthCheckInputFactory;
 import org.opendaylight.ocpjava.protocol.impl.serialization.factories.SetTimeInputFactory;
@@ -36,7 +35,6 @@ import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.GetF
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.ModifyParamInput;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.ModifyStateInput;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.extension.rev150811.HelloInput;
-import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.extension.rev150811.ReDirectInput;
 
 /**
  * @author Marko Lai <marko.ch.lai@foxconn.com>

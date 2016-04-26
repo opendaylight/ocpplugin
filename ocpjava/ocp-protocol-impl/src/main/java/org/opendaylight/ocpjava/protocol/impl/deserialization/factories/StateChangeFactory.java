@@ -77,8 +77,9 @@ public class StateChangeFactory implements OCPDeserializer<StateChange> {
                         itr.next();
                         //XmlElementStart of msgType
                     	Object type = itr.next(); 
-                        if (type instanceof XmlElementStart)
+                        if (type instanceof XmlElementStart){
                     	    builder.setMsgType(OcpMsgType.valueOf(((XmlElementStart)type).name().toUpperCase()));
+                    	}
                         LOGGER.debug("StateChangeFactory - getMsgType = " + builder.getMsgType());
                     }                	
                 	//msgUID
@@ -116,9 +117,8 @@ public class StateChangeFactory implements OCPDeserializer<StateChange> {
                                 objtok = itr.next();
                                 objtok = itr.next();
                             	LOGGER.trace("CreateObjOutputFactory - objtok 3 " + objtok);
-                                if (objtok instanceof XmlElementEnd) {
-                                	if(((XmlElementEnd)objtok).name().equals("obj"))
-                                		break;
+                                if ((objtok instanceof XmlElementEnd) &&((XmlElementEnd)objtok).name().equals("obj")){
+                                    break;
                                 }
                             }
                         }

@@ -63,8 +63,9 @@ public class HealthCheckOutputFactory implements OCPDeserializer<HealthCheckOutp
                         itr.next();
                         //XmlElementStart of msgType
                     	Object type = itr.next(); 
-                        if (type instanceof XmlElementStart)
+                        if (type instanceof XmlElementStart){
                     	    builder.setMsgType(OcpMsgType.valueOf(((XmlElementStart)type).name().toUpperCase()));
+                    	}
                         LOGGER.debug("HealthCheckOutputFactory - getMsgType = " + builder.getMsgType());
                     }
                 	//msgUID

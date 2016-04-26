@@ -202,10 +202,8 @@ public final class OcpStatisticsCounters implements OcpStatisticsHandler {
      * @param counterEventKey key to identify counter
      */
     public void incrementCounter(CounterEventTypes counterEventKey) {
-        if(runCounting){
-            if (isCounterEnabled(counterEventKey)){
-                countersMap.get(counterEventKey).incrementCounter();
-            }
+        if((runCounting) && isCounterEnabled(counterEventKey)){
+            countersMap.get(counterEventKey).incrementCounter();
         }
     }
 

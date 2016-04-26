@@ -10,14 +10,11 @@
 package org.opendaylight.ocpjava.protocol.impl.deserialization;
 
 import com.google.common.collect.ImmutableMap;
-import io.netty.buffer.ByteBuf;
 import java.util.HashMap;
 import java.util.Map;
 import org.opendaylight.ocpjava.protocol.api.extensibility.DeserializerRegistry;
 import org.opendaylight.ocpjava.protocol.api.extensibility.OCPDeserializer;
 import org.opendaylight.ocpjava.protocol.api.keys.MessageCodeKey;
-import org.opendaylight.ocpjava.protocol.api.util.EncodeConstants;
-import org.opendaylight.ocpjava.protocol.impl.deserialization.factories.HelloMessageFactory;
 import org.opendaylight.ocpjava.protocol.impl.util.TypeToClassKey;
 import org.opendaylight.yangtools.yang.binding.DataObject;
 

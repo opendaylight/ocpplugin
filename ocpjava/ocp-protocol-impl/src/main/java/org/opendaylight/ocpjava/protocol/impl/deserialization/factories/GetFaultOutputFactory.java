@@ -90,10 +90,13 @@ public class GetFaultOutputFactory implements OCPDeserializer<GetFaultOutput> {
                 if(tok instanceof XmlElementStart) {
                 	//msgType
                     if (((XmlElementStart)tok).name().equals("body")){
-                        itr.next(); //XmlCharacters of body
-                    	Object t_tok = itr.next(); // XmlElementStart of msgType
-                        if (t_tok instanceof XmlElementStart)
+                        //XmlCharacters of body
+                        itr.next();
+                        //XmlElementStart of msgType
+                        Object t_tok = itr.next();
+                        if (t_tok instanceof XmlElementStart){
                     	    builder.setMsgType(OcpMsgType.valueOf(((XmlElementStart)t_tok).name().toUpperCase()));
+                    	}
                         LOGGER.trace("GetFaultOutputFactory - getMsgType = " + builder.getMsgType());
                     }  
                 	//msgUID
@@ -118,10 +121,9 @@ public class GetFaultOutputFactory implements OCPDeserializer<GetFaultOutput> {
                          //find the token is XmlElementEnd:obj or XmlElementStart:fault obj.
                     	Object faulttok = itr.next();
                         while(!(faulttok instanceof XmlElementStart)){
-                            if(faulttok instanceof XmlElementEnd)
-                            	if(((XmlElementEnd)faulttok).name().equals("obj")) {
-                            	    break;
-                            	}
+                            if((faulttok instanceof XmlElementEnd) && ((XmlElementEnd)faulttok).name().equals("obj")){
+                                break;
+                            }
                             faulttok = itr.next();
                         }
 
@@ -129,14 +131,12 @@ public class GetFaultOutputFactory implements OCPDeserializer<GetFaultOutput> {
                 	    	
                             while( !(((XmlElementStart)faulttok).name().equals("obj")) ) {
                             	if (((XmlElementStart)faulttok).name().equals("fault")) {
-                            		
                             	    //find the token is XmlElementEnd:fault(No fault case) or XmlElementStart:faultID, ...faultItem.
                             	    faulttok = itr.next();
                                     while(!(faulttok instanceof XmlElementStart)){
-                                        if(faulttok instanceof XmlElementEnd)
-                                            if(((XmlElementEnd)faulttok).name().equals("fault")) {
-                                        	break;
-                                            }
+                                        if((faulttok instanceof XmlElementEnd) && ((XmlElementEnd)faulttok).name().equals("fault")){
+                                            break;
+                                        }
                                         faulttok = itr.next();
                                     }
 
@@ -144,7 +144,6 @@ public class GetFaultOutputFactory implements OCPDeserializer<GetFaultOutput> {
         	                            List affecttok = new ArrayList<String>();
         	                            while( !(((XmlElementStart)faulttok).name().equals("fault")) ) {
         	                            	if(((XmlElementStart)faulttok).name().equals("faultID")) {
-
                                   		        //get character(content)  
         	                            	    faulttok = itr.next();   
         	                            	    StringBuilder buf = new StringBuilder();
@@ -155,7 +154,6 @@ public class GetFaultOutputFactory implements OCPDeserializer<GetFaultOutput> {
         	                                	faultobjbuilder.setFaultID(FaultIdType.valueOf(buf.toString().replace("_", "")));
         	                                }
         	                            	else if(((XmlElementStart)faulttok).name().equals("severity")) {
-
                                   		        //get character(content)  
         	                            	    faulttok = itr.next();   
         	                            	    StringBuilder buf = new StringBuilder();
@@ -166,7 +164,6 @@ public class GetFaultOutputFactory implements OCPDeserializer<GetFaultOutput> {
         	                                	faultobjbuilder.setSeverity(FaultServType.valueOf(buf.toString()));
         	                                }
         	                            	else if(((XmlElementStart)faulttok).name().equals("timestamp")) {
-
                                   		        //get character(content)  
         	                            	    faulttok = itr.next();   
         	                            	    StringBuilder buf = new StringBuilder();
@@ -177,7 +174,6 @@ public class GetFaultOutputFactory implements OCPDeserializer<GetFaultOutput> {
         	                                	faultobjbuilder.setTimestamp(new XsdDateTime(buf.toString()));
         	                                }
         	                            	else if(((XmlElementStart)faulttok).name().equals("descr")) {
-        	                            	    
                                   		        //get character(content)  
         	                            	    faulttok = itr.next();   
         	                            	    StringBuilder buf = new StringBuilder();
@@ -188,7 +184,6 @@ public class GetFaultOutputFactory implements OCPDeserializer<GetFaultOutput> {
         	                                	faultobjbuilder.setDescr(buf.toString());
         	                            	}
         	                            	else if(((XmlElementStart)faulttok).name().equals("affectedObj")) {
-        	                            		
                                   		        //get character(content)  
         	                            	    faulttok = itr.next();   
         	                            	    StringBuilder buf = new StringBuilder();
@@ -211,10 +206,9 @@ public class GetFaultOutputFactory implements OCPDeserializer<GetFaultOutput> {
         	                            	faulttok = itr.next();
         	                                while(!(faulttok instanceof XmlElementStart)){
         	                                    //find the token is XmlElementEnd:fault(end of fault case)
-        	                                	if(faulttok instanceof XmlElementEnd)
-                                                    if(((XmlElementEnd)faulttok).name().equals("fault")) {
-                                                        break;
-                                                    }
+        	                                	if((faulttok instanceof XmlElementEnd) && ((XmlElementEnd)faulttok).name().equals("fault")){
+                                                    break;
+                                                }
         	                                	faulttok = itr.next();
         	                                }
 
@@ -222,7 +216,6 @@ public class GetFaultOutputFactory implements OCPDeserializer<GetFaultOutput> {
                                             if (faulttok instanceof XmlElementEnd) {
         	                                    LOGGER.trace("GetFaultOutputFactory - found XmlElementEnd: {}", faulttok);
         	                                    if(((XmlElementEnd)faulttok).name().equals("fault")) {
-                                                    
         	                                    	//find the next token is XmlElementStart:faultObj or XmlElementEnd:obj
         	                                        faulttok = itr.next();
         	                                        while(faulttok instanceof XmlCharacters) {
@@ -233,18 +226,15 @@ public class GetFaultOutputFactory implements OCPDeserializer<GetFaultOutput> {
         	                                }
         	                            }
                             	    }
-                            	    else if (faulttok instanceof XmlElementEnd){
-                                    	if(((XmlElementEnd)faulttok).name().equals("fault")) {
-                                	    	LOGGER.info("GetFaultOutputFactory - No Fault happened");
-                                	    	faulttok = itr.next();
-                                            while(!(faulttok instanceof XmlElementStart)){
-                                                if(faulttok instanceof XmlElementEnd)
-                                                	if(((XmlElementEnd)faulttok).name().equals("obj")) {
-                                                	    break;
-                                                	}
-                                                faulttok = itr.next();
+                            	    else if ((faulttok instanceof XmlElementEnd) && ((XmlElementEnd)faulttok).name().equals("fault")){
+                                        LOGGER.info("GetFaultOutputFactory - No Fault happened");
+                                	    faulttok = itr.next();
+                                        while(!(faulttok instanceof XmlElementStart)){
+                                            if((faulttok instanceof XmlElementEnd) && ((XmlElementEnd)faulttok).name().equals("obj")){
+                                                break;
                                             }
-                                    	}
+                                            faulttok = itr.next();
+                                        }
                             	    }
                                     
     	                            LOGGER.trace("GetFaultOutputFactory - faultobjbuilder = " + faultobjbuilder.build());
@@ -260,15 +250,14 @@ public class GetFaultOutputFactory implements OCPDeserializer<GetFaultOutput> {
                                 }
                             	
                             	//jump into next round of this while loop, make sure it instance of XmlElementStart
-                                while(!(faulttok instanceof XmlElementStart))
+                                while(!(faulttok instanceof XmlElementStart)){
                                     faulttok = itr.next();
                                 }
-                	    }
-                	    else if (faulttok instanceof XmlElementEnd){
-                            if(((XmlElementEnd)faulttok).name().equals("obj")) {
-                    	        LOGGER.info("GetFaultOutputFactory - No fault obj return");
                             }
-                	}
+                	    }
+                	    else if ((faulttok instanceof XmlElementEnd) && ((XmlElementEnd)faulttok).name().equals("obj")){
+                    	    LOGGER.info("GetFaultOutputFactory - No fault obj return");
+                        }
                         objbuilder.setFaultObj(faultobj);  
                         
                         LOGGER.trace("GetFaultOutputFactory - objbuilder getFaultObj = " + objbuilder.build());

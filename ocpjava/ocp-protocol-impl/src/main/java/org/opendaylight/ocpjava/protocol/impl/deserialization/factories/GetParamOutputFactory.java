@@ -84,8 +84,9 @@ public class GetParamOutputFactory implements OCPDeserializer<GetParamOutput> {
                         itr.next();
                         //XmlElementStart of msgType
                     	Object type = itr.next(); 
-                        if (type instanceof XmlElementStart)
+                        if (type instanceof XmlElementStart){
                     	    builder.setMsgType(OcpMsgType.valueOf(((XmlElementStart)type).name().toUpperCase()));
+                    	}
                         LOGGER.debug("GetParamOutputFactory - getMsgType = " + builder.getMsgType());
                     }  
                     //msgUID
@@ -104,19 +105,22 @@ public class GetParamOutputFactory implements OCPDeserializer<GetParamOutput> {
                     //obj
                     else if (((XmlElementStart)tok).name().equals("obj")) {
                         //set Obj ID
-                    	if(((XmlElementStart)tok).attributes().size() >= 1)
+                    	if(((XmlElementStart)tok).attributes().size() >= 1){
                             objbuilder.setId(new ObjId(((XmlElementStart)tok).attributes().get(0).value()));
+                        }
                         LOGGER.debug("GetParamOutputFactory - objbuilder getId = " + objbuilder.getId());
 
                         Object objtok = itr.next();
-                        while(!(objtok instanceof XmlElementStart))
+                        while(!(objtok instanceof XmlElementStart)){
                             objtok = itr.next();
+                        }
 
                         while( !(((XmlElementStart)objtok).name().equals("obj")) ) {
                             if(((XmlElementStart)objtok).name().equals("param")) {
                                 //set param Name 
-                            	if (((XmlElementStart)objtok).attributes().size() >= 1)
+                            	if (((XmlElementStart)objtok).attributes().size() >= 1){
                                     parambuilder.setName(((XmlElementStart)objtok).attributes().get(0).value());
+                                }
                                 LOGGER.debug("GetParamOutputFactory - parambuilder getName = " + parambuilder.getName());
                                 
                                 //get param character(content)
@@ -136,20 +140,17 @@ public class GetParamOutputFactory implements OCPDeserializer<GetParamOutput> {
                             //jump to the next token until the token is param XmlElementStart or obj XmlElementEnd
                             objtok = itr.next();
                             while((objtok instanceof XmlElementStart)||(objtok instanceof XmlElementEnd)||(objtok instanceof XmlCharacters)) {
-                                if (objtok instanceof XmlElementStart) {
-                                        if(((XmlElementStart)objtok).name().equals("param"))
-                                                break;
+                                if ((objtok instanceof XmlElementStart) && ((XmlElementStart)objtok).name().equals("param")) {
+                                    break;
                                 }
-                                else if (objtok instanceof XmlElementEnd) {
-                                        if(((XmlElementEnd)objtok).name().equals("obj"))
-                                                break;
+                                else if ((objtok instanceof XmlElementEnd) && ((XmlElementEnd)objtok).name().equals("obj")) {
+                                    break;
                                 }
                                 objtok = itr.next();
                             }
 
-                            if (objtok instanceof XmlElementEnd) {
-                            	if(((XmlElementEnd)objtok).name().equals("obj"))
-                            		break;
+                            if ((objtok instanceof XmlElementEnd) && ((XmlElementEnd)objtok).name().equals("obj")) {
+                                break;
                             }
                         }
                         objbuilder.setParam(paramlist);                    

@@ -101,7 +101,8 @@ public class TcpHandler implements ServerFacade {
                     .childHandler(channelInitializer)
                     .option(ChannelOption.SO_BACKLOG, 128)
                     .option(ChannelOption.SO_REUSEADDR, true)
-                    .childOption(ChannelOption.SO_KEEPALIVE, false) //Marko modify to "false" for OCP health-check
+                     //modify to "false" for OCP health-check
+                    .childOption(ChannelOption.SO_KEEPALIVE, false) 
                     .childOption(ChannelOption.TCP_NODELAY , true)
                     .childOption(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT)
                     .childOption(ChannelOption.WRITE_BUFFER_HIGH_WATER_MARK, DEFAULT_WRITE_HIGH_WATERMARK * 1024)

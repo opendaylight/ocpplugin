@@ -10,18 +10,9 @@
 package org.opendaylight.ocpjava.protocol.impl.util;
 
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.UnpooledByteBufAllocator;
-
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 
 import java.util.List;
-///import org.junit.Assert;
 import org.opendaylight.ocpjava.protocol.api.extensibility.OCPDeserializer;
-import org.opendaylight.ocpjava.protocol.api.util.EncodeConstants;
-//import org.opendaylight.ocpjava.util.ByteBufUtils;
-import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.OcpHeader;
-import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.OcpMsgType;
 import org.opendaylight.yangtools.yang.binding.DataObject;
 
 /**

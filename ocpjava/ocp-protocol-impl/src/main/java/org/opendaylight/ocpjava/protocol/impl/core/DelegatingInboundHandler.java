@@ -19,12 +19,7 @@ import org.opendaylight.yangtools.yang.binding.DataObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.extension.rev150811.HelloMessage;
-import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.extension.rev150811.HelloMessageBuilder;
-import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.OcpMsgType;
-
 import com.google.common.base.Preconditions;
-import org.opendaylight.yangtools.yang.binding.Notification;
 
 /**
  * Holds reference to {@link ConnectionAdapterImpl} and passes messages for further processing.

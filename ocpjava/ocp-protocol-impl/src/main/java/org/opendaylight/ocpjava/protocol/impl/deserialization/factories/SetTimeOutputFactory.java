@@ -64,8 +64,9 @@ public class SetTimeOutputFactory implements OCPDeserializer<SetTimeOutput> {
                         itr.next();
                         //XmlElementStart of msgType
                     	Object type = itr.next();
-                        if (type instanceof XmlElementStart)
+                        if (type instanceof XmlElementStart){
                     	    builder.setMsgType(OcpMsgType.valueOf(((XmlElementStart)type).name().toUpperCase()));
+                    	}
                         LOGGER.debug("SetTimeOutputFactory - getMsgType = " + builder.getMsgType());
                     }
                 	//msgUID

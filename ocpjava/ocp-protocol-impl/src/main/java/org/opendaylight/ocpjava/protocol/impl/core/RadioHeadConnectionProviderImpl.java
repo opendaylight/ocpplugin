@@ -37,7 +37,6 @@ import com.google.common.util.concurrent.SettableFuture;
  * @author michal.polkorab
  * @author Marko Lai <marko.ch.lai@foxconn.com>
  */
-
 public class RadioHeadConnectionProviderImpl implements RadioHeadConnectionProvider, ConnectionInitializer {
 
     private static final Logger LOGGER = LoggerFactory

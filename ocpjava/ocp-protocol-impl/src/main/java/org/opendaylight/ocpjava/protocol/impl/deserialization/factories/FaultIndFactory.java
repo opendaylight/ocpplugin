@@ -72,8 +72,8 @@ public class FaultIndFactory implements OCPDeserializer<FaultInd> {
         ObjBuilder objbuilder = new ObjBuilder();       
         FaultObjBuilder faultobjbuilder = new FaultObjBuilder();
 
-        List<FaultObj> llist_faultobj = new ArrayList();
-        List<Obj> llist_obj = new ArrayList();
+        List<FaultObj> faultobj = new ArrayList();
+        List<Obj> obj = new ArrayList();
      
         Iterator itr = rawMessage.iterator();
         while(itr.hasNext()) {
@@ -86,16 +86,17 @@ public class FaultIndFactory implements OCPDeserializer<FaultInd> {
                         //XmlCharacters of body
                         itr.next(); 
                         //XmlElementStart of msgType
-                    	Object t_tok = itr.next(); 
-                        if (t_tok instanceof XmlElementStart)
-                    	    builder.setMsgType(OcpMsgType.valueOf(((XmlElementStart)t_tok).name().toUpperCase()));
+                    	Object type = itr.next(); 
+                        if (type instanceof XmlElementStart){
+                    	    builder.setMsgType(OcpMsgType.valueOf(((XmlElementStart)type).name().toUpperCase()));
+                    	}
                         LOGGER.debug("FaultIndFactory - getMsgType = " + builder.getMsgType());
                     }
                 	//msgUID
                     else if (((XmlElementStart)tok).name().equals("msgUID")){
-                        Object t_tok = itr.next();
-                        int uid_tok = Integer.parseInt(((XmlCharacters)t_tok).data().toString());
-                        builder.setXid((long)uid_tok);
+                        Object uidtok = itr.next();
+                        int uid = Integer.parseInt(((XmlCharacters)uidtok).data().toString());
+                        builder.setXid((long)uid);
                         LOGGER.debug("FaultIndFactory - getXid " + builder.getXid());
                     }
                     //obj
@@ -106,103 +107,102 @@ public class FaultIndFactory implements OCPDeserializer<FaultInd> {
 
                         //Character
                         tok = itr.next(); 
-                        while(!(tok instanceof XmlElementStart))
+                        while(!(tok instanceof XmlElementStart)){
                         	tok = itr.next();
+                        }
                         //fault
                         if (((XmlElementStart)tok).name().equals("fault")) {
                             //Character
                             itr.next();
                             //faultID elementStart
-                            Object faulttok = itr.next();
+                            Object faultTok = itr.next();
                             List afftok = new ArrayList<String>();
-                            while( !(((XmlElementStart)faulttok).name().equals("fault")) ) {
-                                if(((XmlElementStart)faulttok).name().equals("faultID")) {
+                            while( !(((XmlElementStart)faultTok).name().equals("fault")) ) {
+                                if(((XmlElementStart)faultTok).name().equals("faultID")) {
                             	    //get Character
-                            	    faulttok = itr.next();
-                                    if(faulttok instanceof XmlCharacters) {
-                                    	faultobjbuilder.setFaultID(FaultIdType.valueOf(((XmlCharacters)faulttok).data().toString().replace("_", "")));
+                                    faultTok = itr.next();
+                                    if(faultTok instanceof XmlCharacters) {
+                                    	faultobjbuilder.setFaultID(FaultIdType.valueOf(((XmlCharacters)faultTok).data().toString().replace("_", "")));
                                         LOGGER.debug("FaultIndFactory - faultobjbuilder getFaultID: " + faultobjbuilder.getFaultID());
                             	    }
                                 }
-                            	else if(((XmlElementStart)faulttok).name().equals("state")) {
+                            	else if(((XmlElementStart)faultTok).name().equals("state")) {
                       		    //get state character(content)  
-                            	    faulttok = itr.next();   
+                            	    faultTok = itr.next();   
                                     StringBuilder buf = new StringBuilder();
-                                    while(faulttok instanceof XmlCharacters) {
-                                        buf.append(((XmlCharacters)faulttok).data().toString());
-                                        faulttok = itr.next();
+                                    while(faultTok instanceof XmlCharacters) {
+                                        buf.append(((XmlCharacters)faultTok).data().toString());
+                                        faultTok = itr.next();
                                     }
                                     faultobjbuilder.setState(IndFaultState.valueOf(buf.toString()));
                                 }
-                            	else if(((XmlElementStart)faulttok).name().equals("severity")) {
+                            	else if(((XmlElementStart)faultTok).name().equals("severity")) {
                       	            //get severity character(content)  
-                            	    faulttok = itr.next();   
+                            	    faultTok = itr.next();   
                                     StringBuilder buf = new StringBuilder();
-                                    while(faulttok instanceof XmlCharacters) {
-                                        buf.append(((XmlCharacters)faulttok).data().toString());
-                                        faulttok = itr.next();
+                                    while(faultTok instanceof XmlCharacters) {
+                                        buf.append(((XmlCharacters)faultTok).data().toString());
+                                        faultTok = itr.next();
                                     }
                                     faultobjbuilder.setSeverity(FaultServType.valueOf(buf.toString()));
                                 }
-                            	else if(((XmlElementStart)faulttok).name().equals("timestamp")) {
+                            	else if(((XmlElementStart)faultTok).name().equals("timestamp")) {
                       		    //get timestamp character(content)  
-                            	    faulttok = itr.next();   
+                            	    faultTok = itr.next();   
                                     StringBuilder buf = new StringBuilder();
-                                    while(faulttok instanceof XmlCharacters) {
-                                        buf.append(((XmlCharacters)faulttok).data().toString());
-                                        faulttok = itr.next();
+                                    while(faultTok instanceof XmlCharacters) {
+                                        buf.append(((XmlCharacters)faultTok).data().toString());
+                                        faultTok = itr.next();
                                     }
                                     faultobjbuilder.setTimestamp(new XsdDateTime(buf.toString()));
                                 }
-                            	else if(((XmlElementStart)faulttok).name().equals("descr")) {
+                            	else if(((XmlElementStart)faultTok).name().equals("descr")) {
                                     //get descr character(content)  
-                            	    faulttok = itr.next();   
+                            	    faultTok = itr.next();   
                                     StringBuilder buf = new StringBuilder();
-                                    while(faulttok instanceof XmlCharacters) {
-                                        buf.append(((XmlCharacters)faulttok).data().toString());
-                                        faulttok = itr.next();
+                                    while(faultTok instanceof XmlCharacters) {
+                                        buf.append(((XmlCharacters)faultTok).data().toString());
+                                        faultTok = itr.next();
                                     }
                                     faultobjbuilder.setDescr(buf.toString());
                                 }
-                            	else if(((XmlElementStart)faulttok).name().equals("affectedObj")) {
+                            	else if(((XmlElementStart)faultTok).name().equals("affectedObj")) {
                                     //get descr character(content)  
-                            	    faulttok = itr.next();   
+                            	    faultTok = itr.next();   
                                     StringBuilder buf = new StringBuilder();
-                                    while(faulttok instanceof XmlCharacters) {
-                                        buf.append(((XmlCharacters)faulttok).data().toString());
-                                        faulttok = itr.next();
+                                    while(faultTok instanceof XmlCharacters) {
+                                        buf.append(((XmlCharacters)faultTok).data().toString());
+                                        faultTok = itr.next();
                                     }
                                     afftok.add(buf.toString());
                                     faultobjbuilder.setAffectedObj(afftok);
                                 }
                             	else {
                                     //ignore non-fault parameter, jump to next fault/non-fault parameter
-                            	    faulttok = itr.next();   
-                                    while(faulttok instanceof XmlCharacters) {
-                                        faulttok = itr.next();
+                            	    faultTok = itr.next();   
+                                    while(faultTok instanceof XmlCharacters) {
+                                        faultTok = itr.next();
                                     }
                                 }
                             	
-                            	faulttok = itr.next(); 
-                                while(!(faulttok instanceof XmlElementStart)) {
-                                    if (faulttok instanceof XmlElementEnd) {
-                                        if(((XmlElementEnd)faulttok).name().equals("fault"))
-                                            break;
+                                faultTok = itr.next(); 
+                                while(!(faultTok instanceof XmlElementStart)) {
+                                    if ((faultTok instanceof XmlElementEnd) && ((XmlElementEnd)faultTok).name().equals("fault")) {
+                                        break;
                                     }
-                                    faulttok = itr.next();
+                                    faultTok = itr.next();
                                 }
 
-                                if (faulttok instanceof XmlElementEnd) {
-                                    if(((XmlElementEnd)faulttok).name().equals("fault"))
-                                        break;
+                                if ((faultTok instanceof XmlElementEnd) && ((XmlElementEnd)faultTok).name().equals("fault")) {
+                                    break;
                                 }
                             }
                             faultobjbuilder.setAffectedObj(afftok);
                             LOGGER.trace("FaultIndFactory - faultobjbuilder: " + faultobjbuilder.build());
-                            llist_faultobj.add(faultobjbuilder.build());
+                            faultobj.add(faultobjbuilder.build());
                         }
-                        objbuilder.setFaultObj(llist_faultobj);                    
-                        llist_obj.add(objbuilder.build());
+                        objbuilder.setFaultObj(faultobj);                    
+                        obj.add(objbuilder.build());
                         LOGGER.trace("FaultIndFactory - objbuilder: " + objbuilder.build());
                     } 
                 }
@@ -211,7 +211,7 @@ public class FaultIndFactory implements OCPDeserializer<FaultInd> {
                 LOGGER.error("Error " + tok + " " + t.toString());
             }
         }
-        builder.setObj(llist_obj);
+        builder.setObj(obj);
         LOGGER.debug("FaultIndFactory - Builder: " + builder.build());
         return builder.build();
     }

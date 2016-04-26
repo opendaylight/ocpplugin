@@ -85,8 +85,9 @@ public class ModifyParamOutputFactory implements OCPDeserializer<ModifyParamOutp
                         itr.next();
                         //XmlElementStart of msgType
                     	Object type = itr.next();
-                        if (type instanceof XmlElementStart)
+                        if (type instanceof XmlElementStart){
                     	    builder.setMsgType(OcpMsgType.valueOf(((XmlElementStart)type).name().toUpperCase()));
+                    	}
                         LOGGER.debug("ModifyParamOutputFactory - getMsgType = " + builder.getMsgType());
                     }
                     //msgUID
@@ -121,7 +122,6 @@ public class ModifyParamOutputFactory implements OCPDeserializer<ModifyParamOutp
                         tok = itr.next();                                                	
                         while(!(tok instanceof XmlElementStart)) {
                     	    tok = itr.next();
-                            //LOGGER.trace("ModifyParamOutputFactory - test (tok instanceof XmlElementStart) = " + (tok instanceof XmlElementStart));
                         }                        
                         while(!(((XmlElementStart)tok).name().equals("obj"))){
                         	if(((XmlElementStart)tok).name().equals("param")) {
@@ -130,12 +130,12 @@ public class ModifyParamOutputFactory implements OCPDeserializer<ModifyParamOutp
                                 LOGGER.debug("ModifyParamOutputFactory - getName = " + parambuilder.getName());
 
                                 Object nexttok = itr.next();
-                                while(!(nexttok instanceof XmlElementStart))
+                                while(!(nexttok instanceof XmlElementStart)){
                                     nexttok = itr.next();
+                                }
                                 
                                 //param result
                                 if(((XmlElementStart)nexttok).name().equals("result")) {
-
                                     Object ptok = itr.next();   
                                     StringBuilder buf = new StringBuilder();
                                     while(ptok instanceof XmlCharacters) {
@@ -151,20 +151,17 @@ public class ModifyParamOutputFactory implements OCPDeserializer<ModifyParamOutp
                                 //jump to the next token until the token is param XmlElementStart or obj XmlElementEnd
                                 tok = itr.next();
                                 while((tok instanceof XmlElementStart)||(tok instanceof XmlElementEnd)||(tok instanceof XmlCharacters)) {
-                                    if (tok instanceof XmlElementStart) {
-                                        if(((XmlElementStart)tok).name().equals("param"))
-                                            break;
+                                    if ((tok instanceof XmlElementStart) &&((XmlElementStart)tok).name().equals("param")) {
+                                        break;
                                     }
-                                    else if (tok instanceof XmlElementEnd) {
-                                        if(((XmlElementEnd)tok).name().equals("obj"))
-                                            break;
+                                    else if ((tok instanceof XmlElementEnd) &&((XmlElementEnd)tok).name().equals("obj")){
+                                        break;
                                     }
                                     tok = itr.next();
                                 }
 
-                                if (tok instanceof XmlElementEnd) {
-                                    if(((XmlElementEnd)tok).name().equals("obj"))
-                                        break;
+                                if ((tok instanceof XmlElementEnd) && ((XmlElementEnd)tok).name().equals("obj")) {
+                                    break;
                                 }
                             }
                         }
