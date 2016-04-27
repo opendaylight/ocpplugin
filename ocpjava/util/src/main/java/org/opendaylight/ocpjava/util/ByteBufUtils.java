@@ -9,18 +9,10 @@
 
 package org.opendaylight.ocpjava.util;
 
-import com.google.common.base.Preconditions;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
-import com.google.common.primitives.UnsignedBytes;
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.UnpooledByteBufAllocator;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import org.opendaylight.ocpjava.protocol.api.util.EncodeConstants;
-
-import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.OcpHeader;
 
 /** Class for common operations on ByteBuf
  * @author Marko Lai <marko.ch.lai@foxconn.com>

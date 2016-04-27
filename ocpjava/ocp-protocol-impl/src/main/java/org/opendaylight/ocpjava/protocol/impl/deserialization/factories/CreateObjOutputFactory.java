@@ -115,7 +115,7 @@ public class CreateObjOutputFactory implements OCPDeserializer<CreateObjOutput> 
                 } 
             }
             catch( Exception t ) {
-                LOGGER.error("Error " + tok + " " + t.toString());
+                LOGGER.error("Error {} ", tok, t);
             }
         }
         builder.setObj(objs);
@@ -201,7 +201,8 @@ public class CreateObjOutputFactory implements OCPDeserializer<CreateObjOutput> 
         return rel;
     }
 
-    public Object skipRemainObj(Object tok){
+    public Object skipRemainObj(Object skipTok){
+        Object tok = skipTok;
         while((tok instanceof XmlElementStart)||(tok instanceof XmlElementEnd)||(tok instanceof XmlCharacters)) {
             if ((tok instanceof XmlElementStart) && ((XmlElementStart)tok).name().equals("param")){
                 break;

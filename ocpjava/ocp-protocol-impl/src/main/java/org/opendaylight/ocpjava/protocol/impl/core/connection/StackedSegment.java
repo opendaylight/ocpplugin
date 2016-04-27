@@ -13,11 +13,9 @@ import com.google.common.base.FinalizableReferenceQueue;
 import com.google.common.base.FinalizableSoftReference;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Preconditions;
-import com.google.common.base.Verify;
 import java.lang.ref.Reference;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import org.opendaylight.ocpjava.protocol.api.connection.OutboundQueueException;
-import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.FaultInd;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

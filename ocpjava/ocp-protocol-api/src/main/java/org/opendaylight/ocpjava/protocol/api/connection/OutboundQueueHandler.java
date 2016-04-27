@@ -10,7 +10,6 @@
 package org.opendaylight.ocpjava.protocol.api.connection;
 
 import com.google.common.annotations.Beta;
-import javax.annotation.Nonnull;
 
 /**
  * Handler of the outbound queue. The queue has a maximum depth assigned when the

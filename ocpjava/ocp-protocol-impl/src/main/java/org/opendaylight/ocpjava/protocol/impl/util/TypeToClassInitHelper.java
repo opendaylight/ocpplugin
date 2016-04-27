@@ -10,7 +10,6 @@ package org.opendaylight.ocpjava.protocol.impl.util;
 
 import java.util.Map;
 
-import org.opendaylight.ocpjava.protocol.impl.deserialization.DeserializationFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

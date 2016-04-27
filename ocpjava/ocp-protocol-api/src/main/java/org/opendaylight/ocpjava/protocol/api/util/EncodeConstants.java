@@ -15,7 +15,8 @@ package org.opendaylight.ocpjava.protocol.api.util;
 public abstract class EncodeConstants {
 
     /** OCP v4.1.1 Version wire protocol number */
-	public static final short OCP_VERSION_ID = 1; //given hash value
+    //given hash value
+    public static final short OCP_VERSION_ID = 1;
     /** Length of mac address */
     public static final byte MAC_ADDRESS_LENGTH = 6;
     /** Number of groups in ipv4 address */

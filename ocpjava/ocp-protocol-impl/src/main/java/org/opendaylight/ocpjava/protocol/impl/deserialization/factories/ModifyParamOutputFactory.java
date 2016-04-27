@@ -115,8 +115,9 @@ public class ModifyParamOutputFactory implements OCPDeserializer<ModifyParamOutp
                     }
                     //obj
                     else if (((XmlElementStart)tok).name().equals("obj")) {
-                        if(((XmlElementStart)tok).attributes().size() >= 1)
+                        if(((XmlElementStart)tok).attributes().size() >= 1){
                     	    objbuilder.setId(new ObjId(((XmlElementStart)tok).attributes().get(0).value()));
+                    	}
                         LOGGER.debug("ModifyParamOutputFactory - getId = " + objbuilder.getId());
 
                         tok = itr.next();                                                	

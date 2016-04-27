@@ -9,8 +9,6 @@
 
 package org.opendaylight.ocpjava.protocol.impl.util;
 
-import io.netty.buffer.ByteBuf;
-
 import java.util.List;
 import org.opendaylight.ocpjava.protocol.api.extensibility.OCPDeserializer;
 import org.opendaylight.yangtools.yang.binding.DataObject;

@@ -8,10 +8,7 @@
 
 package org.opendaylight.ocpjava.protocol.api.extensibility;
 
-import io.netty.buffer.ByteBuf;
-
 import org.opendaylight.yangtools.yang.binding.DataObject;
-
 import java.util.List;
 
 /**

@@ -84,15 +84,16 @@ public class ModifyStateOutputFactory implements OCPDeserializer<ModifyStateOutp
                         itr.next(); 
                         //XmlElementStart of msgType
                     	Object type = itr.next(); 
-                        if (type instanceof XmlElementStart)
+                        if (type instanceof XmlElementStart){
                     	    builder.setMsgType(OcpMsgType.valueOf(((XmlElementStart)type).name().toUpperCase()));
+                    	}
                         LOGGER.debug("ModifyStateOutputFactory - getMsgType = " + builder.getMsgType());
                     }
                 	//msgUID
                     if (((XmlElementStart)tok).name().equals("msgUID")){
 
                         Object uidtok = itr.next();   
-                    	StringBuffer buf = new StringBuffer();
+                        StringBuilder buf = new StringBuilder();
                     	while(uidtok instanceof XmlCharacters) {
                     		buf.append(((XmlCharacters)uidtok).data().toString());
                     		uidtok = itr.next();
@@ -105,7 +106,7 @@ public class ModifyStateOutputFactory implements OCPDeserializer<ModifyStateOutp
                     if (((XmlElementStart)tok).name().equals("result")){
                      
                     	Object reltok = itr.next();   
-                    	StringBuffer buf = new StringBuffer();
+                    	StringBuilder buf = new StringBuilder();
                     	while(reltok instanceof XmlCharacters) {
                     		buf.append(((XmlCharacters)reltok).data().toString());
                     		reltok = itr.next();
@@ -121,8 +122,9 @@ public class ModifyStateOutputFactory implements OCPDeserializer<ModifyStateOutp
                         LOGGER.debug("ModifyStateOutputFactory - objbuilder getId = " + objbuilder.getId());
 
                         Object objtok = itr.next();
-                        while(!(objtok instanceof XmlElementStart))
-                            objtok = itr.next(); 
+                        while(!(objtok instanceof XmlElementStart)){
+                            objtok = itr.next();
+                        }
 
                         while( !(((XmlElementStart)objtok).name().equals("obj")) ) {
                             if(((XmlElementStart)objtok).name().equals("state")) {
@@ -133,7 +135,7 @@ public class ModifyStateOutputFactory implements OCPDeserializer<ModifyStateOutp
 
                                 //set state Value
                             	Object statetok = itr.next();   
-                            	StringBuffer buf = new StringBuffer();
+                            	StringBuilder buf = new StringBuilder();
                             	while(statetok instanceof XmlCharacters) {
                             		buf.append(((XmlCharacters)statetok).data().toString());
                             		statetok = itr.next();
@@ -145,9 +147,8 @@ public class ModifyStateOutputFactory implements OCPDeserializer<ModifyStateOutp
                                 
                                 tok = itr.next();
                                 tok = itr.next();
-                                if (tok instanceof XmlElementEnd) {
-                                	if(((XmlElementEnd)tok).name().equals("obj"))
-                                		break;
+                                if ((tok instanceof XmlElementEnd) && ((XmlElementEnd)tok).name().equals("obj")) {
+                               	    break;
                                 }
                             }
                         }

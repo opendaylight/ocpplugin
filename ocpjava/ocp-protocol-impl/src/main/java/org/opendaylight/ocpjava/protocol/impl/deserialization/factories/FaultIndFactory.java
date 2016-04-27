@@ -66,6 +66,8 @@ import org.slf4j.LoggerFactory;
 public class FaultIndFactory implements OCPDeserializer<FaultInd> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FaultIndFactory.class);	
+    private String faultTag = "fault";
+    
     @Override
     public FaultInd deserialize(List<Object> rawMessage) {
         FaultIndBuilder builder = new FaultIndBuilder();
@@ -111,13 +113,13 @@ public class FaultIndFactory implements OCPDeserializer<FaultInd> {
                         	tok = itr.next();
                         }
                         //fault
-                        if (((XmlElementStart)tok).name().equals("fault")) {
+                        if (((XmlElementStart)tok).name().equals(faultTag)) {
                             //Character
                             itr.next();
                             //faultID elementStart
                             Object faultTok = itr.next();
                             List afftok = new ArrayList<String>();
-                            while( !(((XmlElementStart)faultTok).name().equals("fault")) ) {
+                            while( !(((XmlElementStart)faultTok).name().equals(faultTag)) ) {
                                 if(((XmlElementStart)faultTok).name().equals("faultID")) {
                             	    //get Character
                                     faultTok = itr.next();
@@ -187,13 +189,13 @@ public class FaultIndFactory implements OCPDeserializer<FaultInd> {
                             	
                                 faultTok = itr.next(); 
                                 while(!(faultTok instanceof XmlElementStart)) {
-                                    if ((faultTok instanceof XmlElementEnd) && ((XmlElementEnd)faultTok).name().equals("fault")) {
+                                    if ((faultTok instanceof XmlElementEnd) && ((XmlElementEnd)faultTok).name().equals(faultTag)) {
                                         break;
                                     }
                                     faultTok = itr.next();
                                 }
 
-                                if ((faultTok instanceof XmlElementEnd) && ((XmlElementEnd)faultTok).name().equals("fault")) {
+                                if ((faultTok instanceof XmlElementEnd) && ((XmlElementEnd)faultTok).name().equals(faultTag)) {
                                     break;
                                 }
                             }
