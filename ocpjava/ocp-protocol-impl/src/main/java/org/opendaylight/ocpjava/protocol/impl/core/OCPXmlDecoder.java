@@ -37,7 +37,7 @@ public class OCPXmlDecoder extends ByteToMessageDecoder {
     private ConnectionFacade connectionFacade;
     private boolean firstTlsPass = false;
     private int unknownMsg = 99;
-    private int MsgLength = 6;
+    private int msgLength = 6;
 
     private static final AsyncXMLInputFactory XML_INPUT_FACTORY = new InputFactoryImpl();
     private AsyncXMLStreamReader streamReader = XML_INPUT_FACTORY.createAsyncXMLStreamReader();
@@ -47,6 +47,9 @@ public class OCPXmlDecoder extends ByteToMessageDecoder {
     private boolean bodyElmFound;
     private int msgType;
 
+    private int charCnt = 0;
+    private String charCombine = "";
+    
     public OCPXmlDecoder(ConnectionFacade connectionFacade, boolean tlsPresent) {
         LOGGER.trace("Creating OCPXmlDecoder");
         if (tlsPresent) {
@@ -58,6 +61,11 @@ public class OCPXmlDecoder extends ByteToMessageDecoder {
 
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
+        if (firstTlsPass) {
+            connectionFacade.fireConnectionReadyNotification();
+            firstTlsPass = false;
+        }
+        
         byte[] buffer = new byte[in.readableBytes()];
         in.readBytes(buffer);
         
@@ -117,6 +125,15 @@ public class OCPXmlDecoder extends ByteToMessageDecoder {
                     xmlElms.add(elementStart);
                     break;
                 case XMLStreamConstants.END_ELEMENT:
+
+                    if(charCnt >= 1){
+                        LOGGER.info("charCnt: {}, charCombine: {}", charCnt, charCombine.replace("\n", "").replace(" ", ""));
+                        XmlCharacters elementChars = new XmlCharacters(charCombine.replace("\n", "").replace(" ", ""));
+                        xmlElms.add(elementChars);
+                    }
+                    charCnt = 0;
+                    charCombine = "";
+                    
                     XmlElementEnd elementEnd = new XmlElementEnd(streamReader.getLocalName(),
                             streamReader.getName().getNamespaceURI(), streamReader.getPrefix());
                     for (int x = 0; x < streamReader.getNamespaceCount(); x++) {
@@ -136,7 +153,7 @@ public class OCPXmlDecoder extends ByteToMessageDecoder {
                         LOGGER.trace("valueS indexOf: " + valueS.indexOf("</msg>"));
 
                         // </msg> length is 6
-                        int endidx = valueS.indexOf("</msg>") + MsgLength;
+                        int endidx = valueS.indexOf("</msg>") + msgLength;
                         LOGGER.trace("idx: " + endidx);
                         
                         //handle remain XML messages
@@ -152,8 +169,8 @@ public class OCPXmlDecoder extends ByteToMessageDecoder {
                     xmlElms.add(new XmlProcessingInstruction(streamReader.getPIData(), streamReader.getPITarget()));
                     break;
                 case XMLStreamConstants.CHARACTERS:
-                    XmlCharacters elementChars = new XmlCharacters(streamReader.getText());
-                    xmlElms.add(elementChars);
+                    charCnt += 1;
+                    charCombine = charCombine.concat(String.valueOf(streamReader.getText()));
                     break;
                 case XMLStreamConstants.COMMENT:
                     xmlElms.add(new XmlComment(streamReader.getText()));
@@ -169,6 +186,8 @@ public class OCPXmlDecoder extends ByteToMessageDecoder {
                     break;
                 case XMLStreamConstants.CDATA:
                     xmlElms.add(new XmlCdata(streamReader.getText()));
+                    break;
+                default:
                     break;
             }
         }

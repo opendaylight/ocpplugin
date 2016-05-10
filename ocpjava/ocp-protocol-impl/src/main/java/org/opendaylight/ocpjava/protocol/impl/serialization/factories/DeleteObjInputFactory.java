@@ -36,7 +36,6 @@ import org.slf4j.LoggerFactory;
         </deleteObjReq>
     </body>
 </msg>
-
 */
 
 public class DeleteObjInputFactory implements OCPSerializer<DeleteObjInput> {

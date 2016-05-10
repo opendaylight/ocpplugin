@@ -62,15 +62,13 @@ public class DeleteObjOutputFactory implements OCPDeserializer<DeleteObjOutput> 
                 if(tok instanceof XmlElementStart) {
                     //msgType
                     if (((XmlElementStart)tok).name().equals("body")){
-                        //XmlCharacters of body
-                        itr.next();
-                        //XmlElementStart of msgType
-                        Object typetok = itr.next();
-                        if (typetok instanceof XmlElementStart){
-                    	    builder.setMsgType(OcpMsgType.valueOf(((XmlElementStart)typetok).name().toUpperCase()));
+                        Object type = itr.next();
+                        while(!(type instanceof XmlElementStart)){
+                            type = itr.next();
                         }
+                        builder.setMsgType(OcpMsgType.valueOf(((XmlElementStart)type).name().toUpperCase()));
                         LOGGER.debug("DeleteObjOutputFactory - getMsgType = " + builder.getMsgType());
-                    }                	
+                    }
                     //msgUID
                     else if (((XmlElementStart)tok).name().equals("msgUID")){
                         Object uidtok = itr.next();
