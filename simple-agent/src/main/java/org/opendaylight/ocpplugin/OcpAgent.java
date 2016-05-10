@@ -58,16 +58,25 @@ public class OcpAgent
             Thread.sleep(500);
             sendHello();
          
-            String msg = "";
+            String buf = "";
             while (true) {
                 int count = is.available();
                 if (count > 0) {
                     byte[] bs = new byte[count];
                     dis.read(bs);
-                    msg += new String(bs);
-                    if (msg.contains("</msg>")) {
+                    buf += new String(bs);
+                    int index = buf.indexOf("</msg>");
+                    while (index != -1) {
+                        String msg = buf.substring(0, index + 6);
                         parseDocument(msg);
-                        msg = "";
+                        if (index + 6 == buf.length()) {
+                            buf = "";
+                            break;
+                        }
+                        else {
+                            buf = buf.substring(index + 6, buf.length());
+                            index = buf.indexOf("</msg>");
+                        }
                     }
                 }
             }
@@ -127,6 +136,8 @@ public class OcpAgent
 
                 else if (reader.getLocalName().equals(MSG_HELLO_ACK)) {
                     System.out.println("\n\nhello ack received (result = " + result + ")");
+                    if (!result.equals("SUCCESS"))
+                        System.exit(1);  
                 }
                 else if (reader.getLocalName().equals(MSG_SET_TIME_REQ)) {
                     sendSetTimeResp();
@@ -146,18 +157,18 @@ public class OcpAgent
     }
 
     private void sendHello() {
-        String msg = "<msg xmlns=\"http://uri.etsi.org/ori/002-2/v4.1.1\">\n" +
-                     "<header>\n" +
-                     "<msgType>IND</msgType>\n" +
-                     "<msgUID>0</msgUID>\n" +
-                     "</header>\n" + 
-                     "<body>\n" +
+        String msg = "<msg xmlns=\"http://uri.etsi.org/ori/002-2/v4.1.1\">" +
+                     "<header>" +
+                     "<msgType>IND</msgType>" +
+                     "<msgUID>0</msgUID>" +
+                     "</header>" + 
+                     "<body>" +
                      "<helloInd>\n" +
-                     "<version>4.1.1</version>\n" +
-                     "<vendorId>" + vendorId + "</vendorId>\n" +
-                     "<serialNumber>" + serialNumber + "</serialNumber>\n" +
-                     "</helloInd>\n" +
-                     "</body>\n" +
+                     "<version>4.1.1</version>" +
+                     "<vendorId>" + vendorId + "</vendorId>" +
+                     "<serialNumber>" + serialNumber + "</serialNumber>" +
+                     "</helloInd>" +
+                     "</body>" +
                      "</msg>";
         try {
             out.writeBytes(msg);
