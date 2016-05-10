@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fa57193c_da30c858",
+        "filename": "ocpjava/ocp-protocol-impl/src/main/java/org/opendaylight/ocpjava/protocol/impl/core/connection/ResponseExpectedRpcListener.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5842
+      },
+      "writtenOn": "2016-05-10T04:42:41Z",
+      "side": 0,
+      "message": "Java source file should not have \"x\" attribute",
+      "revId": "908167014a1773f585233888d4febd327b4c2949",
+      "serverId": "7fc14799-209e-464c-9743-7a06c2c21a81",
+      "unresolved": false
+    }
+  ]
+}

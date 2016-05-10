@@ -1,0 +1,107 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fa57193c_7a3ffc25",
+        "filename": "ocpjava/ocp-protocol-impl/src/main/java/org/opendaylight/ocpjava/protocol/impl/core/OCPXmlDecoder.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 5842
+      },
+      "writtenOn": "2016-05-10T04:42:41Z",
+      "side": 1,
+      "message": "Do not use the info log level for printing debug messages",
+      "range": {
+        "startLine": 130,
+        "startChar": 24,
+        "endLine": 130,
+        "endChar": 35
+      },
+      "revId": "6e4cbdb52c3e17465afcd20087943d93163a3cd4",
+      "serverId": "7fc14799-209e-464c-9743-7a06c2c21a81",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fa57193c_5a3cb82f",
+        "filename": "ocpjava/ocp-protocol-impl/src/main/java/org/opendaylight/ocpjava/protocol/impl/core/OCPXmlDecoder.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 5842
+      },
+      "writtenOn": "2016-05-10T04:42:41Z",
+      "side": 1,
+      "message": "It is not a good idea to eliminate all line feed and space characters without taking into account where those line feed and space characters are found. You\u0027ll likely eliminate, for example, space characters that are part of the data enclosed within a start element and its corresponding end element.",
+      "range": {
+        "startLine": 131,
+        "startChar": 71,
+        "endLine": 131,
+        "endChar": 117
+      },
+      "revId": "6e4cbdb52c3e17465afcd20087943d93163a3cd4",
+      "serverId": "7fc14799-209e-464c-9743-7a06c2c21a81",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fa57193c_ba4994d2",
+        "filename": "ocpjava/ocp-protocol-impl/src/main/java/org/opendaylight/ocpjava/protocol/impl/core/OCPXmlDecoder.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 5842
+      },
+      "writtenOn": "2016-05-10T04:42:41Z",
+      "side": 1,
+      "message": "Are you sure the charCnt variable correctly reflects the actual length of the charCombine string?",
+      "range": {
+        "startLine": 172,
+        "startChar": 20,
+        "endLine": 172,
+        "endChar": 32
+      },
+      "revId": "6e4cbdb52c3e17465afcd20087943d93163a3cd4",
+      "serverId": "7fc14799-209e-464c-9743-7a06c2c21a81",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fa57193c_3a362453",
+        "filename": "ocpjava/ocp-protocol-impl/src/main/java/org/opendaylight/ocpjava/protocol/impl/core/connection/SimpleRpcListener.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5842
+      },
+      "writtenOn": "2016-05-10T04:42:41Z",
+      "side": 1,
+      "message": "Java source file should not have \"x\" attribute",
+      "revId": "6e4cbdb52c3e17465afcd20087943d93163a3cd4",
+      "serverId": "7fc14799-209e-464c-9743-7a06c2c21a81",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fa57193c_1a3b603b",
+        "filename": "ocpjava/ocp-protocol-impl/src/main/java/org/opendaylight/ocpjava/protocol/impl/core/connection/StackedOutboundQueue.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5842
+      },
+      "writtenOn": "2016-05-10T04:42:41Z",
+      "side": 1,
+      "message": "Java source file should not have \"x\" attribute",
+      "revId": "6e4cbdb52c3e17465afcd20087943d93163a3cd4",
+      "serverId": "7fc14799-209e-464c-9743-7a06c2c21a81",
+      "unresolved": false
+    }
+  ]
+}
