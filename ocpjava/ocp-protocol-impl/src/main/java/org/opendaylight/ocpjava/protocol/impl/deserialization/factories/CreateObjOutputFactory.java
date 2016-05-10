@@ -79,16 +79,14 @@ public class CreateObjOutputFactory implements OCPDeserializer<CreateObjOutput> 
                 if(tok instanceof XmlElementStart) {
                     //msgType
                     if (((XmlElementStart)tok).name().equals("body")){
-                        //XmlCharacters of body
-                        itr.next();
-                        //XmlElementStart of msgType
                         Object type = itr.next();
-                        if (type instanceof XmlElementStart){
-                    	    builder.setMsgType(OcpMsgType.valueOf(((XmlElementStart)type).name().toUpperCase()));
+                        while(!(type instanceof XmlElementStart)){
+                            type = itr.next();
                         }
-                    	LOGGER.debug("CreateObjOutputFactory - getMsgType = " + builder.getMsgType());
+                        builder.setMsgType(OcpMsgType.valueOf(((XmlElementStart)type).name().toUpperCase()));
+                        LOGGER.debug("CreateObjOutputFactory - getMsgType = " + builder.getMsgType());
                     }
-                	//msgUID
+                    //msgUID
                     else if (((XmlElementStart)tok).name().equals("msgUID")){
                         Object obj = itr.next();
                         int uid = Integer.parseInt(((XmlCharacters)obj).data().toString());

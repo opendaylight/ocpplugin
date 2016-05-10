@@ -66,15 +66,13 @@ public class HelloMessageFactory implements OCPDeserializer<HelloInd> {
             LOGGER.trace("HelloMessageFactory - itr = " + tok);
             try {
                 if(tok instanceof XmlElementStart) {
-                	//msgType
-                    if (((XmlElementStart)tok).name().contains("body")){
-                        //XmlCharacters of body
-                        itr.next();
-                        //XmlElementStart of msgType
-                    	Object type = itr.next();
-                        if (type instanceof XmlElementStart){
-                    	    builder.setMsgType(OcpMsgType.valueOf(((XmlElementStart)type).name().toUpperCase()));
-                    	}
+                    //msgType
+                    if (((XmlElementStart)tok).name().equals("body")){
+                        Object type = itr.next();
+                        while(!(type instanceof XmlElementStart)){
+                            type = itr.next();
+                        }
+                        builder.setMsgType(OcpMsgType.valueOf(((XmlElementStart)type).name().toUpperCase()));
                         LOGGER.debug("HelloMessageFactory - getMsgType = " + builder.getMsgType());
                     }
                     //msgUID

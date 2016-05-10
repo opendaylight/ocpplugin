@@ -77,17 +77,15 @@ public class GetStateOutputFactory implements OCPDeserializer<GetStateOutput> {
             LOGGER.trace("GetStateOutputFactory - itr = " + tok);
             try {
                 if(tok instanceof XmlElementStart) {
-                	//msgType
+                    //msgType
                     if (((XmlElementStart)tok).name().equals("body")){
-                        //XmlCharacters of body
-                        itr.next();
-                        //XmlElementStart of msgType
                         Object type = itr.next();
-                        if (type instanceof XmlElementStart){
-                    	    builder.setMsgType(OcpMsgType.valueOf(((XmlElementStart)type).name().toUpperCase()));
-                    	}
-                        LOGGER.trace("GetStateOutputFactory - getMsgType = " + builder.getMsgType());
-                    }  
+                        while(!(type instanceof XmlElementStart)){
+                            type = itr.next();
+                        }
+                        builder.setMsgType(OcpMsgType.valueOf(((XmlElementStart)type).name().toUpperCase()));
+                        LOGGER.debug("GetStateOutputFactory - getMsgType = " + builder.getMsgType());
+                    }
                     //msgUID
                     else if (((XmlElementStart)tok).name().equals("msgUID")){
                         Object uidtok = itr.next();

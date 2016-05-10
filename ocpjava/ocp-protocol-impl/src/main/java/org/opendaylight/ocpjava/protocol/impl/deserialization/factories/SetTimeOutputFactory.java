@@ -58,18 +58,16 @@ public class SetTimeOutputFactory implements OCPDeserializer<SetTimeOutput> {
             LOGGER.trace("SetTimeOutputFactory - itr = " + tok);
             try {
                 if(tok instanceof XmlElementStart) {
-                	//msgType
+                    //msgType
                     if (((XmlElementStart)tok).name().equals("body")){
-                        //XmlCharacters of body
-                        itr.next();
-                        //XmlElementStart of msgType
-                    	Object type = itr.next();
-                        if (type instanceof XmlElementStart){
-                    	    builder.setMsgType(OcpMsgType.valueOf(((XmlElementStart)type).name().toUpperCase()));
-                    	}
+                        Object type = itr.next();
+                        while(!(type instanceof XmlElementStart)){
+                            type = itr.next();
+                        }
+                        builder.setMsgType(OcpMsgType.valueOf(((XmlElementStart)type).name().toUpperCase()));
                         LOGGER.debug("SetTimeOutputFactory - getMsgType = " + builder.getMsgType());
                     }
-                	//msgUID
+                    //msgUID
                     if (((XmlElementStart)tok).name().equals("msgUID")){
                         Object uidtok = itr.next();
                         int uid = Integer.parseInt(((XmlCharacters)uidtok).data().toString());
