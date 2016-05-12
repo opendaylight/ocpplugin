@@ -205,7 +205,7 @@ public class OcpAgent
                      "<msgUID>" + uid + "</msgUID>" +
                      "</header>" +
                      "<body>" +
-                     "<healthCheckResp>" +
+                     "<healthCheckResp>\n" +
                      "<result>SUCCESS</result>" +
                      "</healthCheckResp>" +
                      "</body>" +

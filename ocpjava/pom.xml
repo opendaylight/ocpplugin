@@ -13,7 +13,6 @@
 
     <modules>
         <module>artifacts</module>
-        <module>aalto-xml-patch</module>
         <module>features</module>
         <module>ocpjava-config</module>
         <module>ocp-protocol-api</module>
