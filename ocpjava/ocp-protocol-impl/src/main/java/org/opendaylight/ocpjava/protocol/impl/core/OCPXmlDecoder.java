@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2015 Foxconn Corporation and others.  All rights reserved.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ */
+
 package org.opendaylight.ocpjava.protocol.impl.core;
 
 import org.opendaylight.ocpjava.protocol.impl.core.connection.ConnectionFacade;
@@ -49,6 +57,7 @@ public class OCPXmlDecoder extends ByteToMessageDecoder {
         int index = buf.indexOf("</msg>");
         while (index != -1) {
             String msg = buf.substring(0, index + 6);
+            LOGGER.debug("Message = {}", msg);
             parseDocument(msg);
             if (index + 6 == buf.length()) {
                 buf = "";
@@ -107,7 +116,8 @@ public class OCPXmlDecoder extends ByteToMessageDecoder {
                     boolean isOcpMsgType = EnumSet.allOf(OcpMsgType.class).toString().contains(elementStart.name().toUpperCase());
 	            if (!isOcpMsgType) {
 	                LOGGER.warn("OCPXmlDecoder - unknown OcpMsgType format");
-	                msgType = 99; //unknown Message
+                        //unknown Message
+	                msgType = 99; 
 	            }
 	            else {
                         msgType = OcpMsgType.valueOf(elementStart.name().toUpperCase()).getIntValue();
@@ -142,8 +152,7 @@ public class OCPXmlDecoder extends ByteToMessageDecoder {
                 break;
 
             default:
+                break;
         }
-
     }
-
 }

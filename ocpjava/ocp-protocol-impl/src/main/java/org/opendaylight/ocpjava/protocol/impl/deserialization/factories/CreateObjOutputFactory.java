@@ -25,6 +25,8 @@ import org.opendaylight.ocpjava.protocol.impl.core.XmlElementStart;
 import org.opendaylight.ocpjava.protocol.impl.core.XmlElementEnd;
 import org.opendaylight.ocpjava.protocol.impl.core.XmlCharacters;
 
+import org.opendaylight.ocpjava.protocol.impl.deserialization.factories.utils.MessageHelper;
+
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -63,7 +65,6 @@ import org.slf4j.LoggerFactory;
 
 public class CreateObjOutputFactory implements OCPDeserializer<CreateObjOutput> {
     private static final Logger LOGGER = LoggerFactory.getLogger(CreateObjOutputFactory.class);
-    private Iterator itr;
 
     @Override
     public CreateObjOutput deserialize(List<Object> rawMessage) {
@@ -71,7 +72,7 @@ public class CreateObjOutputFactory implements OCPDeserializer<CreateObjOutput> 
         ObjBuilder objbuilder = new ObjBuilder();       
         List<Obj> objs = new ArrayList();
 
-        itr = rawMessage.iterator();
+        Iterator itr = rawMessage.iterator();
         while(itr.hasNext()) {
             Object tok = itr.next();
             LOGGER.trace("CreateObjOutputFactory - itr = " + tok);
@@ -79,27 +80,19 @@ public class CreateObjOutputFactory implements OCPDeserializer<CreateObjOutput> 
                 if(tok instanceof XmlElementStart) {
                     //msgType
                     if (((XmlElementStart)tok).name().equals("body")){
-                        //XmlCharacters of body
-                        itr.next();
-                        //XmlElementStart of msgType
-                        Object type = itr.next();
-                        if (type instanceof XmlElementStart){
-                    	    builder.setMsgType(OcpMsgType.valueOf(((XmlElementStart)type).name().toUpperCase()));
-                        }
-                    	LOGGER.debug("CreateObjOutputFactory - getMsgType = " + builder.getMsgType());
+                        String type = MessageHelper.getMsgType(itr);
+                        builder.setMsgType(OcpMsgType.valueOf(type));
                     }
                 	//msgUID
                     else if (((XmlElementStart)tok).name().equals("msgUID")){
-                        Object obj = itr.next();
-                        int uid = Integer.parseInt(((XmlCharacters)obj).data().toString());
+                        String uidStr = MessageHelper.getMsgUID(itr);
+                        int uid = Integer.parseInt(uidStr);
                         builder.setXid((long)uid);
-                        LOGGER.debug("CreateObjOutputFactory - getXid = " + builder.getXid());
                     }
                     //globResult
                     else if (((XmlElementStart)tok).name().equals("globResult")){
-                        String rel = (((XmlCharacters)itr.next()).data()).toString().replace("_", "");
-                        LOGGER.debug("CreateObjOutputFactory - globResult = " + rel);
-                        builder.setGlobResult(CreateObjGlobRes.valueOf(rel));
+                        String gloRel = MessageHelper.getResult(itr);
+                        builder.setGlobResult(CreateObjGlobRes.valueOf(gloRel));
                     }
                     //obj
                     else if (((XmlElementStart)tok).name().equals("obj")) {
@@ -107,7 +100,7 @@ public class CreateObjOutputFactory implements OCPDeserializer<CreateObjOutput> 
                     	if(((XmlElementStart)tok).attributes().size() >= 1){
                     	    objbuilder.setId(new ObjId(((XmlElementStart)tok).attributes().get(0).value()));
                     	}
-                    	objbuilder.setParam(getListParam());
+                    	objbuilder.setParam(getListParam(itr));
               
                         LOGGER.trace("CreateObjOutputFactory - objbuilder.build() " + objbuilder.build());
                         objs.add(objbuilder.build());
@@ -124,19 +117,19 @@ public class CreateObjOutputFactory implements OCPDeserializer<CreateObjOutput> 
     }
 
 
-    public List<Param> getListParam(){
+    public List<Param> getListParam(Iterator itr){
         
         ParamBuilder parambuilder = new ParamBuilder();
         List<Param> plist = new ArrayList();
 
         //find the next param of XmlElementStart
-        Object tok = findNextParamObj();
+        Object tok = findNextParamObj(itr);
         if (tok instanceof XmlElementStart) {
             while(!(((XmlElementStart)tok).name().equals("obj"))){
                 if(((XmlElementStart)tok).name().equals("param")) {
                     parambuilder.setName(((XmlElementStart)tok).attributes().get(0).value());
                     
-                    Object result = findNextResultObj();
+                    Object result = findNextResultObj(itr);
                     
                     if(((XmlElementStart)result).name().equals("result")) {
                         tok = itr.next();
@@ -156,7 +149,15 @@ public class CreateObjOutputFactory implements OCPDeserializer<CreateObjOutput> 
                     plist.add(parambuilder.build());
                     parambuilder = new ParamBuilder();
                     
-                    tok = skipRemainObj(tok);
+                    while((tok instanceof XmlElementStart)||(tok instanceof XmlElementEnd)||(tok instanceof XmlCharacters)) {
+                        if ((tok instanceof XmlElementStart) && ((XmlElementStart)tok).name().equals("param")){
+                            break;
+                        }
+                        else if ((tok instanceof XmlElementEnd) && ((XmlElementEnd)tok).name().equals("obj")) {
+                            break;
+                        }
+                        tok = itr.next();
+                    }
                     
                     if ((tok instanceof XmlElementEnd) && ((XmlElementEnd)tok).name().equals("obj")) {
                         break;
@@ -168,7 +169,7 @@ public class CreateObjOutputFactory implements OCPDeserializer<CreateObjOutput> 
     }
 
     //find the next param of XmlElementStart
-    public Object findNextParamObj(){
+    public Object findNextParamObj(Iterator itr){
         Object tok = itr.next();  
         while(!(tok instanceof XmlElementStart)) {
             //if obj of XmlElementEnd found, it means there is no param in this object 
@@ -181,35 +182,9 @@ public class CreateObjOutputFactory implements OCPDeserializer<CreateObjOutput> 
     }
 
     //find the next result of XmlElementStart
-    public Object findNextResultObj(){
+    public Object findNextResultObj(Iterator itr){
         Object tok = itr.next();
         while(!(tok instanceof XmlElementStart)){
-            tok = itr.next();
-        }
-        return tok;
-    }
-    
-    //get the result value
-    public String getResult(){
-        Object tok = itr.next();
-        String rel = "";
-        while(tok instanceof XmlCharacters){
-            rel = rel.concat(((XmlCharacters)tok).data().toString().replace("_", ""));
-            LOGGER.debug("CreateObjOutputFactory - result = {}", ((XmlCharacters)tok).data().toString().replace("_", ""));
-            tok = itr.next();
-        }
-        return rel;
-    }
-
-    public Object skipRemainObj(Object skipTok){
-        Object tok = skipTok;
-        while((tok instanceof XmlElementStart)||(tok instanceof XmlElementEnd)||(tok instanceof XmlCharacters)) {
-            if ((tok instanceof XmlElementStart) && ((XmlElementStart)tok).name().equals("param")){
-                break;
-            }
-            else if ((tok instanceof XmlElementEnd) && ((XmlElementEnd)tok).name().equals("obj")) {
-                break;
-            }
             tok = itr.next();
         }
         return tok;

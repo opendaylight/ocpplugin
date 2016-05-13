@@ -48,18 +48,18 @@ public class HealthCheckInputFactory implements OCPSerializer<HealthCheckInput> 
         StringBuilder seq = new StringBuilder("");
         //Generate from DTO to XML string
         seq.append("<msg xmlns=");
-        seq.append("\"http://uri.etsi.org/ori/002-2/v4.1.1\">\r\n");
-            seq.append("    <header>\r\n");
-                seq.append("        <msgType>REQ</msgType>\r\n");
-                seq.append("        <msgUID>"); seq.append(message.getXid().toString()); seq.append("</msgUID>\r\n");
-            seq.append("    </header>\r\n");       
-            seq.append("    <body>\r\n");
-                seq.append("        <healthCheckReq>\r\n");
-                    seq.append("            <tcpLinkMonTimeout>"); 
+        seq.append("\"http://uri.etsi.org/ori/002-2/v4.1.1\">");
+            seq.append("<header>");
+                seq.append("<msgType>REQ</msgType>");
+                seq.append("<msgUID>"); seq.append(message.getXid().toString()); seq.append("</msgUID>");
+            seq.append("</header>");       
+            seq.append("<body>");
+                seq.append("<healthCheckReq>");
+                    seq.append("<tcpLinkMonTimeout>"); 
                     seq.append(message.getTcpLinkMonTimeout().getValue().toString()); 
-                    seq.append("</tcpLinkMonTimeout>\r\n");
-                seq.append("        </healthCheckReq>\r\n");
-            seq.append("    </body>\r\n");
+                    seq.append("</tcpLinkMonTimeout>");
+                seq.append("</healthCheckReq>");
+            seq.append("</body>");
             seq.append("</msg>");
 
         LOGGER.debug("HealthCheckInputFactory - composed xml-string = " + seq);    

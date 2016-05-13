@@ -21,6 +21,8 @@ import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.
 import org.opendaylight.ocpjava.protocol.impl.core.XmlElementStart;
 import org.opendaylight.ocpjava.protocol.impl.core.XmlCharacters;
 
+import org.opendaylight.ocpjava.protocol.impl.deserialization.factories.utils.MessageHelper;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -58,31 +60,23 @@ public class SetTimeOutputFactory implements OCPDeserializer<SetTimeOutput> {
             LOGGER.trace("SetTimeOutputFactory - itr = " + tok);
             try {
                 if(tok instanceof XmlElementStart) {
-                	//msgType
+                    //msgType
                     if (((XmlElementStart)tok).name().equals("body")){
-                        //XmlCharacters of body
-                        itr.next();
-                        //XmlElementStart of msgType
-                    	Object type = itr.next();
-                        if (type instanceof XmlElementStart){
-                    	    builder.setMsgType(OcpMsgType.valueOf(((XmlElementStart)type).name().toUpperCase()));
-                    	}
-                        LOGGER.debug("SetTimeOutputFactory - getMsgType = " + builder.getMsgType());
+                        String type = MessageHelper.getMsgType(itr);
+                        builder.setMsgType(OcpMsgType.valueOf(type));
                     }
-                	//msgUID
+                    //msgUID
                     if (((XmlElementStart)tok).name().equals("msgUID")){
-                        Object uidtok = itr.next();
-                        int uid = Integer.parseInt(((XmlCharacters)uidtok).data().toString());
+                        String uidStr = MessageHelper.getMsgUID(itr);
+                        int uid = Integer.parseInt(uidStr);
                         builder.setXid((long)uid);
-                        LOGGER.debug("SetTimeOutputFactory - getXid = " + builder.getXid());
                     }
                     //result
                     if (((XmlElementStart)tok).name().equals("result")){
-                        String rel = (((XmlCharacters)itr.next()).data()).replace("_", "").toString();
+                        String rel = MessageHelper.getResult(itr);
                         builder.setResult(OriRes.valueOf(rel));
-                        LOGGER.debug("SetTimeOutputFactory - getResult = " + builder.getResult());
                     }
-                } 
+                }
             }
             catch( Exception t ) {
                  LOGGER.error("Error " + tok + " " + t.toString());

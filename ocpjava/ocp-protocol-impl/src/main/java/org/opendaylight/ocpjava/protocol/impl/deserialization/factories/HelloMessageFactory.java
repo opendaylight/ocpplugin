@@ -18,6 +18,8 @@ import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.
 import org.opendaylight.ocpjava.protocol.impl.core.XmlElementStart;
 import org.opendaylight.ocpjava.protocol.impl.core.XmlCharacters;
 
+import org.opendaylight.ocpjava.protocol.impl.deserialization.factories.utils.MessageHelper;
+
 import java.util.List;
 import java.util.Iterator;
 
@@ -66,41 +68,31 @@ public class HelloMessageFactory implements OCPDeserializer<HelloInd> {
             LOGGER.trace("HelloMessageFactory - itr = " + tok);
             try {
                 if(tok instanceof XmlElementStart) {
-                	//msgType
-                    if (((XmlElementStart)tok).name().contains("body")){
-                        //XmlCharacters of body
-                        itr.next();
-                        //XmlElementStart of msgType
-                    	Object type = itr.next();
-                        if (type instanceof XmlElementStart){
-                    	    builder.setMsgType(OcpMsgType.valueOf(((XmlElementStart)type).name().toUpperCase()));
-                    	}
-                        LOGGER.debug("HelloMessageFactory - getMsgType = " + builder.getMsgType());
+                    //msgType
+                    if (((XmlElementStart)tok).name().equals("body")){
+                        String type = MessageHelper.getMsgType(itr);
+                        builder.setMsgType(OcpMsgType.valueOf(type));
                     }
                     //msgUID
                     else if (((XmlElementStart)tok).name().equals("msgUID")){
-                        Object uidtok = itr.next();
-                        int uid = Integer.parseInt(((XmlCharacters)uidtok).data().toString());
+                        String uidStr = MessageHelper.getMsgUID(itr);
+                        int uid = Integer.parseInt(uidStr);
                         builder.setXid((long)uid);
-                        LOGGER.debug("HelloMessageFactory - setXid " + builder.getXid());
                     }
                     //version
                     else if (((XmlElementStart)tok).name().equals("version")){
-                        String ver = (((XmlCharacters)itr.next()).data()).toString();
+                        String ver = MessageHelper.getCharVal(itr);
                         builder.setVersion(ver);
-                        LOGGER.debug("HelloMessageFactory - setVersion " + builder.getVersion());
                     }
                     //versionId
                     else if (((XmlElementStart)tok).name().equals("vendorId")){
-                        String verId = (((XmlCharacters)itr.next()).data()).toString();
+                        String verId = MessageHelper.getCharVal(itr);
                         builder.setVendorId(verId);
-                        LOGGER.debug("HelloMessageFactory - setVendorId " + builder.getVendorId());
                     }
                     //serialNumber
                     else if (((XmlElementStart)tok).name().equals("serialNumber")){
-                        String serNum = (((XmlCharacters)itr.next()).data()).toString();
+                        String serNum = MessageHelper.getCharVal(itr);
                         builder.setSerialNumber(serNum);
-                        LOGGER.debug("HelloMessageFactory - setSerialNumber " + builder.getSerialNumber());
                     }
                 } 
             }

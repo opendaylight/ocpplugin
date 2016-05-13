@@ -21,6 +21,8 @@ import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.
 import org.opendaylight.ocpjava.protocol.impl.core.XmlElementStart;
 import org.opendaylight.ocpjava.protocol.impl.core.XmlCharacters;
 
+import org.opendaylight.ocpjava.protocol.impl.deserialization.factories.utils.MessageHelper;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -57,33 +59,23 @@ public class HealthCheckOutputFactory implements OCPDeserializer<HealthCheckOutp
             LOGGER.trace("HealthCheckOutputFactory - itr = " + tok);
             try {
                 if(tok instanceof XmlElementStart) {
-                	//msgType
+                    //msgType
                     if (((XmlElementStart)tok).name().equals("body")){
-                        //XmlCharacters of body
-                        itr.next();
-                        //XmlElementStart of msgType
-                    	Object type = itr.next(); 
-                        if (type instanceof XmlElementStart){
-                    	    builder.setMsgType(OcpMsgType.valueOf(((XmlElementStart)type).name().toUpperCase()));
-                    	}
-                        LOGGER.debug("HealthCheckOutputFactory - getMsgType = " + builder.getMsgType());
+                        String type = MessageHelper.getMsgType(itr);
+                        builder.setMsgType(OcpMsgType.valueOf(type));
                     }
-                	//msgUID
+                    //msgUID
                     else if (((XmlElementStart)tok).name().equals("msgUID")){
                         //XmlCharacters of msgUID
-                        Object uidtok = itr.next();
-                        if (uidtok instanceof XmlCharacters) {
-                        int uid = Integer.parseInt(((XmlCharacters)uidtok).data().toString());
+                        String uidStr = MessageHelper.getMsgUID(itr);
+                        int uid = Integer.parseInt(uidStr);
                         builder.setXid((long)uid);
-                    }
-                        LOGGER.debug("HealthCheckOutputFactory - getXid = " + builder.getXid());
                     }
                     //result
                     else if (((XmlElementStart)tok).name().equals("result")){
                         //XmlCharacters of result
-                        String rel = (((XmlCharacters)itr.next()).data()).replace("_", "").toString(); 
+                        String rel = MessageHelper.getResult(itr);
                         builder.setResult(OriRes.valueOf(rel));
-                        LOGGER.debug("HealthCheckOutputFactory - getResult = " + builder.getResult());
                     }
                 } 
             }

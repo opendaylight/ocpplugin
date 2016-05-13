@@ -27,6 +27,8 @@ import org.opendaylight.ocpjava.protocol.impl.core.XmlElementStart;
 import org.opendaylight.ocpjava.protocol.impl.core.XmlElementEnd;
 import org.opendaylight.ocpjava.protocol.impl.core.XmlCharacters;
 
+import org.opendaylight.ocpjava.protocol.impl.deserialization.factories.utils.MessageHelper;
+
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -65,44 +67,35 @@ public class GetStateOutputFactory implements OCPDeserializer<GetStateOutput> {
     @Override
     public GetStateOutput deserialize(List<Object> rawMessage) {
         GetStateOutputBuilder builder = new GetStateOutputBuilder();
-        ObjBuilder objbuilder = new ObjBuilder();       
-        StateBuilder statebuilder = new StateBuilder();
-
-        List<State> statelist = new ArrayList();
         List<Obj> objlist = new ArrayList();
-
         Iterator itr = rawMessage.iterator();
+        
         while(itr.hasNext()) {
             Object tok = itr.next();
             LOGGER.trace("GetStateOutputFactory - itr = " + tok);
             try {
                 if(tok instanceof XmlElementStart) {
-                	//msgType
+                    //msgType
                     if (((XmlElementStart)tok).name().equals("body")){
-                        //XmlCharacters of body
-                        itr.next();
-                        //XmlElementStart of msgType
-                        Object type = itr.next();
-                        if (type instanceof XmlElementStart){
-                    	    builder.setMsgType(OcpMsgType.valueOf(((XmlElementStart)type).name().toUpperCase()));
-                    	}
-                        LOGGER.trace("GetStateOutputFactory - getMsgType = " + builder.getMsgType());
-                    }  
+                        String type = MessageHelper.getMsgType(itr);
+                        builder.setMsgType(OcpMsgType.valueOf(type));
+                    }
                     //msgUID
                     else if (((XmlElementStart)tok).name().equals("msgUID")){
-                        Object uidtok = itr.next();
-                        int uid = Integer.parseInt(((XmlCharacters)uidtok).data().toString());
+                        String uidStr = MessageHelper.getMsgUID(itr);
+                        int uid = Integer.parseInt(uidStr);
                         builder.setXid((long)uid);
-                        LOGGER.trace("GetStateOutputFactory - getXid = " + builder.getXid());
                     }
                     //result
                     else if (((XmlElementStart)tok).name().equals("result")){
-                        String rel = ((XmlCharacters)itr.next()).data().replace("_", "").toString();
+                        String rel = MessageHelper.getResult(itr);
                         builder.setResult(GetStateRes.valueOf(rel));
-                        LOGGER.trace("GetStateOutputFactory - getResult = " + builder.getResult());
                     }
                     //obj
                     else if (((XmlElementStart)tok).name().equals("obj")) {
+
+                        ObjBuilder objbuilder = new ObjBuilder();       
+
                         //set Obj ID
                         objbuilder.setId(new ObjId(((XmlElementStart)tok).attributes().get(0).value()));
                         LOGGER.trace("GetStateOutputFactory - getId = " + objbuilder.getId());
@@ -111,38 +104,47 @@ public class GetStateOutputFactory implements OCPDeserializer<GetStateOutput> {
                         while(!(objtok instanceof XmlElementStart)){
                             objtok = itr.next();
                         }
-                        while( !(((XmlElementStart)objtok).name().equals("obj")) ) {
+                        
+                        StateBuilder statebuilder = new StateBuilder();
+                        List<State> statelist = new ArrayList();
+
+                        while(objtok instanceof XmlElementStart){
                             if(((XmlElementStart)objtok).name().equals("state")) {
                                 //set state Name                       
                                 String tmp = ((XmlElementStart)objtok).attributes().get(0).value();                                
                                 statebuilder.setName(StateType.valueOf(tmp));
                                 LOGGER.trace("GetStateOutputFactory - getName = " + statebuilder.getName());
 
-                            	//set state Value
-                                Object statetok = itr.next();   
-                                StringBuilder buf = new StringBuilder();
-                            	while(statetok instanceof XmlCharacters) {
-                            	    buf.append(((XmlCharacters)statetok).data().toString());
-                            	    statetok = itr.next();
-                            	}
-                            	statebuilder.setValue(StateVal.valueOf(buf.toString().replace("_", "")));
+                                //set state Value
+                                String bufStr = MessageHelper.getCharVal(itr);
+                                statebuilder.setValue(StateVal.valueOf(bufStr));
                                 
                                 LOGGER.trace("GetStateOutputFactory - getValue = " + statebuilder.getValue());
                                 statelist.add(statebuilder.build());
-                                statebuilder = new StateBuilder();
-                            }
-                            itr.next();
-                            objtok = itr.next();
-                            if (objtok instanceof XmlElementEnd) {
-                                LOGGER.trace("GetStateOutputFactory - found XmlElementEnd: {}", objtok);
-                            	if(((XmlElementEnd)objtok).name().equals("obj")) {
-                            	    objtok = itr.next();
-                            	    objtok = itr.next();
-                            	    break;
-                            	}
-                            }
-                            while(!(objtok instanceof XmlElementStart)){
+                                
+                                //skip state of XmlElementEnd
+                                while(!(objtok instanceof XmlElementEnd)){
+                                    objtok = itr.next();                            
+                                }
+                                
+                                //skip remain of XmlCharacters
                                 objtok = itr.next();
+                                while((objtok instanceof XmlCharacters)){
+                                    objtok = itr.next(); 
+                                }
+                                LOGGER.debug("ModifyStateOutputFactory - found next: {}", objtok);
+                            }
+
+                            if (objtok instanceof XmlElementEnd) {
+                                LOGGER.debug("GetStateOutputFactory - found XmlElementEnd: {}", objtok);
+                                if(((XmlElementEnd)objtok).name().equals("obj")) {
+                                    LOGGER.debug("GetStateOutputFactory - objtok20 = " + objtok);
+                                }
+                            }
+                            else{
+                                while(!(objtok instanceof XmlElementStart)){
+                                    objtok = itr.next();
+                                }
                             }
                         }
                         objbuilder.setState(statelist);                    
