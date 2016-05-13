@@ -21,6 +21,8 @@ import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.
 import org.opendaylight.ocpjava.protocol.impl.core.XmlElementStart;
 import org.opendaylight.ocpjava.protocol.impl.core.XmlCharacters;
 
+import org.opendaylight.ocpjava.protocol.impl.deserialization.factories.utils.MessageHelper;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,8 +50,8 @@ import org.slf4j.LoggerFactory;
 
 
 public class DeleteObjOutputFactory implements OCPDeserializer<DeleteObjOutput> {
-
     private static final Logger LOGGER = LoggerFactory.getLogger(DeleteObjOutputFactory.class);
+
     @Override
     public DeleteObjOutput deserialize(List<Object> rawMessage) {
     	DeleteObjOutputBuilder builder = new DeleteObjOutputBuilder();
@@ -62,27 +64,19 @@ public class DeleteObjOutputFactory implements OCPDeserializer<DeleteObjOutput> 
                 if(tok instanceof XmlElementStart) {
                     //msgType
                     if (((XmlElementStart)tok).name().equals("body")){
-                        //XmlCharacters of body
-                        itr.next();
-                        //XmlElementStart of msgType
-                        Object typetok = itr.next();
-                        if (typetok instanceof XmlElementStart){
-                    	    builder.setMsgType(OcpMsgType.valueOf(((XmlElementStart)typetok).name().toUpperCase()));
-                        }
-                        LOGGER.debug("DeleteObjOutputFactory - getMsgType = " + builder.getMsgType());
-                    }                	
+                        String typeStr = MessageHelper.getMsgType(itr);
+                        builder.setMsgType(OcpMsgType.valueOf(typeStr));
+                    }
                     //msgUID
                     else if (((XmlElementStart)tok).name().equals("msgUID")){
-                        Object uidtok = itr.next();
-                        int uid = Integer.parseInt(((XmlCharacters)uidtok).data().toString());
+                        String uidStr = MessageHelper.getMsgUID(itr);
+                        int uid = Integer.parseInt(uidStr);
                         builder.setXid((long)uid);
-                        LOGGER.debug("DeleteObjOutputFactory - getXid = " + builder.getXid());
                     }
                     //result
                     else if (((XmlElementStart)tok).name().equals("result")){
-                        String rel = ((XmlCharacters)itr.next()).data().replace("_", "").toString();
+                        String rel = MessageHelper.getResult(itr);
                         builder.setResult(DeleteObjRes.valueOf(rel));
-                        LOGGER.debug("DeleteObjOutputFactory - getResult = " + builder.getResult());
                     }
                 } 
             }

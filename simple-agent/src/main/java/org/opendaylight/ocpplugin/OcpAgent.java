@@ -24,7 +24,14 @@ public class OcpAgent
     private static final String MSG_HELLO_ACK = "helloAck";
     private static final String MSG_SET_TIME_REQ = "setTimeReq";
     private static final String MSG_HEALTH_CHECK_REQ = "healthCheckReq";
+    private static final String MSG_RESET_REQ = "resetReq";
     private static final String MSG_GET_PARAM_REQ = "getParamReq";
+    private static final String MSG_GET_FAULT_REQ = "getFaultReq";
+    private static final String MSG_GET_STATE_REQ = "getStateReq";
+    private static final String MSG_MOD_PARAM_REQ = "modifyParamReq";
+    private static final String MSG_MOD_STATE_REQ = "modifyStateReq";
+    private static final String MSG_CRE_OBJ_REQ = "createObjReq";
+    private static final String MSG_DEL_OBJ_REQ = "deleteObjReq";
 
     private static final String ELM_MSG_UID = "msgUID";
     private static final String ELM_RESULT = "result";
@@ -145,9 +152,32 @@ public class OcpAgent
                 else if (reader.getLocalName().equals(MSG_HEALTH_CHECK_REQ)) {
                     sendHealthCheckResp(); 
                 }
+                else if (reader.getLocalName().equals(MSG_RESET_REQ)) {
+                    sendResetResp();
+                }
                 else if (reader.getLocalName().equals(MSG_GET_PARAM_REQ)) {
                     sendGetParamResp();
                 }
+                else if (reader.getLocalName().equals(MSG_MOD_PARAM_REQ)){
+                    sendModifyParamResp();
+                }
+                else if (reader.getLocalName().equals(MSG_GET_FAULT_REQ)){
+                    sendGetFaultResp();
+                }
+                else if (reader.getLocalName().equals(MSG_GET_STATE_REQ)){
+                    sendGetStateResp();
+                }
+                else if (reader.getLocalName().equals(MSG_MOD_STATE_REQ)){
+                    sendModifyStateResp();
+                }
+                else if (reader.getLocalName().equals(MSG_CRE_OBJ_REQ)){
+                    sendCreateObjResp();
+                }
+                else if (reader.getLocalName().equals(MSG_DEL_OBJ_REQ)){
+                    sendDeleteObjResp();
+                }
+
+
                 break;
             case XMLStreamConstants.COMMENT:
                 if (reader.hasText())
@@ -163,7 +193,7 @@ public class OcpAgent
                      "<msgUID>0</msgUID>" +
                      "</header>" + 
                      "<body>" +
-                     "<helloInd>\n" +
+                     "<helloInd>" +
                      "<version>4.1.1</version>" +
                      "<vendorId>" + vendorId + "</vendorId>" +
                      "<serialNumber>" + serialNumber + "</serialNumber>" +
@@ -218,6 +248,28 @@ public class OcpAgent
         }
     }
 
+    private void sendResetResp() {
+        String msg = "<msg xmlns=\"http://uri.etsi.org/ori/002-2/v4.1.1\">" +
+                     "<header>" +
+                     "<msgType>RESP</msgType>" +
+                     "<msgUID>" + uid + "</msgUID>" +
+                     "</header>" +
+                     "<body>" +
+                     "<resetResp>" +
+                     "<result>SUCCESS</result>" +
+                     "</resetResp>" +
+                     "</body>" +
+                     "</msg>";
+
+        try {
+            out.writeBytes(msg);
+            System.out.println("\n\n" + msg);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
     private void sendGetParamResp() {
         String msg = "<msg xmlns=\"http://uri.etsi.org/ori/002-2/v4.1.1\">" +
                      "<header>" +
@@ -229,7 +281,29 @@ public class OcpAgent
                      "<result>SUCCESS</result>" +
                      "<obj objID=\"RE:0\">" +
                      "<param name=\"vendorID\">" + vendorId + "</param>" +
+                     "<param name=\"productID\">EMU</param>" +
+                     "<param name=\"productRev\">1.0</param>" +
+                     "<param name=\"serialNumber\">" + serialNumber + "</param>" +
+                     "<param name=\"protocolVer\">4.1.1</param>" +
+                     "<param name=\"agcTargetLevCfgGran\">RE</param>" +
+                     "<param name=\"agcSettlTimeCfgGran\">RE</param>" +
+                     "<param name=\"agcSettlTimeCap\">1fff</param>" +
+                     "<param name=\"numAntPort\">2</param>" +
+                     "<param name=\"numDataLinks\">1</param>" +
+                     "<param name=\"numSigPathPerAntenna\">0</param>" +
+                     "<param name=\"tBD_Bandwith\">20</param>" +
+                     "<param name=\"resourceAllocationDenominator\">20</param>" +
+                     "<param name=\"tBD_MinFrequency\">281000</param>" +
+                     "<param name=\"tBD_MaxFrequency\">282000</param>" +
+                     "<param name=\"tBD_MinPower\">21</param>" +
+                     "<param name=\"tBD_MaxPower\">37</param>" +
                      "</obj>" + 
+                     "<obj objID=\"dynamicResource:0\"><param name=\"objType\">TxSigPath_EUTRAFDD_RoE</param><param name=\"maxNumberOfResources\">8</param></obj>" +
+                     "<obj objID=\"dynamicResource:1\"><param name=\"objType\">RxSigPath_EUTRAFDD_RoE</param><param name=\"maxNumberOfResources\">8</param></obj>" +
+                     "<obj objID=\"antPort:0\"><param name=\"portLabel\">My Antenna port</param><param name=\"topology\">OMNI</param><param name=\"direction\">0</param><param name=\"angle\">0</param><param name=\"maxNumberOfTxSigPaths\">4</param><param name=\"maxNumberOfRxSigPaths\">4</param><param name=\"antennaElements\">1</param></obj>" +
+                     "<obj objID=\"antPort:1\"><param name=\"portLabel\">My Antenna port</param><param name=\"topology\">OMNI</param><param name=\"direction\">0</param><param name=\"angle\">0</param><param name=\"maxNumberOfTxSigPaths\">4</param><param name=\"maxNumberOfRxSigPaths\">4</param><param name=\"antennaElements\">1</param></obj>" +
+                     "<obj objID=\"ethLink:0\"><param name=\"portLabel\">ethLink:0</param><param name=\"portRoleCapability\">SO</param><param name=\"portRole\">SLAVE</param><param name=\"supportedLinkRate\">ffff</param><param name=\"requestedLinkRate\">1</param><param name=\"actualLinkRate\">1</param><param name=\"localAddress\">02:00:00:04:09:00</param></obj>" +
+                     "<obj objID=\"dataLink:0\"><param name=\"portLabel\">link Label</param><param name=\"type\">ETH</param><param name=\"reference\">ethLink:0</param><param name=\"maxNumberOfTxSigPaths\">8</param><param name=\"maxNumberOfRxSigPaths\">8</param></obj>" +
                      "</getParamResp>" +
                      "</body>" +
                      "</msg>";
@@ -240,6 +314,148 @@ public class OcpAgent
             e.printStackTrace();
         }
     }
+
+    private void sendModifyParamResp() {
+        String msg = "<msg xmlns=\"http://uri.etsi.org/ori/002-2/v4.1.1\">" +
+                     "<header>" +
+                     "<msgType>RESP</msgType>" +
+                     "<msgUID>" + uid + "</msgUID>" +
+                     "</header>" +
+                     "<body>" +
+                     "<modifyParamResp>" +
+                     "<globResult>FAIL_PARAMETER_FAIL</globResult>" +
+                     "<obj objID=\"TxSigPath_EUTRAFDD_RoE:0\"><param name=\"maxTxPwr\"/><result>FAIL_PARAM_LOCKREQUIRED</result></obj>" +
+                     "</modifyParamResp>" +
+                     "</body>" +
+                     "</msg>";
+
+        try {
+            out.writeBytes(msg);
+            System.out.println("\n\n" + msg);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+
+    private void sendGetFaultResp() {
+        String msg = "<msg xmlns=\"http://uri.etsi.org/ori/002-2/v4.1.1\">" +
+                     "<header>" +
+                     "<msgType>RESP</msgType>" +
+                     "<msgUID>" + uid + "</msgUID>" +
+                     "</header>" +
+                     "<body>" +
+                     "<getFaultResp>" +
+                     "<result>SUCCESS</result>" +
+                     "<obj objID=\"RE:0\"><fault><faultID>FAULT_RE_OVERTEMP</faultID><severity>DEGRADED</severity><timestamp>2012-02-12T16:35:00Z</timestamp><descr>PA temp too high; Pout reduced</descr><affectedObj>TxSigPath_EUTRA:0</affectedObj><affectedObj>TxSigPath_EUTRA:1</affectedObj></fault><fault><faultID>FAULT_VSWR_OUTOF_RANGE</faultID><severity>WARNING</severity><timestamp>2012-02-12T16:01:05Z</timestamp></fault></obj>" +
+                     "</getFaultResp>" +
+                     "</body>" +
+                     "</msg>";
+
+        try {
+            out.writeBytes(msg);
+            System.out.println("\n\n" + msg);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void sendGetStateResp() {
+        String msg = "<msg xmlns=\"http://uri.etsi.org/ori/002-2/v4.1.1\">" +
+                     "<header>" +
+                     "<msgType>RESP</msgType>" +
+                     "<msgUID>" + uid + "</msgUID>" +
+                     "</header>" +
+                     "<body>" +
+                     "<getStateResp>" +
+                     "<result>SUCCESS</result>" +
+                     "<obj objID=\"RE:0\"><state type=\"FST\">DISABLED</state><state type=\"AST\">LOCKED</state></obj>" +
+                     "<obj objID=\"dynamicResource:0\"><state type=\"FST\">DISABLED</state><state type=\"AST\">LOCKED</state></obj>" +
+                     "<obj objID=\"dynamicResource:1\"><state type=\"FST\">DISABLED</state><state type=\"AST\">LOCKED</state></obj>" +
+                     "<obj objID=\"antPort:0\"><state type=\"FST\">DISABLED</state><state type=\"AST\">LOCKED</state></obj>" +
+                     "<obj objID=\"antPort:1\"><state type=\"FST\">DISABLED</state><state type=\"AST\">LOCKED</state></obj>" +
+                     "<obj objID=\"ethLink:0\"><state type=\"FST\">OPERATIONAL</state><state type=\"AST\">LOCKED</state></obj>" +
+                     "<obj objID=\"dataLink:0\"><state type=\"FST\">DISABLED</state><state type=\"AST\">LOCKED</state></obj>" +
+                     "</getStateResp>" +
+                     "</body>" +
+                     "</msg>";
+
+        try {
+            out.writeBytes(msg);
+            System.out.println("\n\n" + msg);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void sendModifyStateResp() {
+        String msg = "<msg xmlns=\"http://uri.etsi.org/ori/002-2/v4.1.1\">" +
+                     "<header>" +
+                     "<msgType>RESP</msgType>" +
+                     "<msgUID>" + uid + "</msgUID>" +
+                     "</header>" +
+                     "<body>" +
+                     "<modifyStateResp>" +
+                     "<result>FAIL_PRECONDITION_NOTMET</result>" +
+                     "<obj objID=\"TxSigPath_EUTRAFDD_RoE:0\"><state type=\"AST\">UNLOCKED</state></obj>" +
+                     "</modifyStateResp>" +
+                     "</body>" +
+                     "</msg>";
+
+        try {
+            out.writeBytes(msg);
+            System.out.println("\n\n" + msg);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void sendCreateObjResp() {
+        String msg = "<msg xmlns=\"http://uri.etsi.org/ori/002-2/v4.1.1\">" +
+                     "<header>" +
+                     "<msgType>RESP</msgType>" +
+                     "<msgUID>" + uid + "</msgUID>" +
+                     "</header>" +
+                     "<body>" +
+                     "<createObjResp>" +
+                     "<globResult>SUCCESS</globResult>" +
+                     "<obj objID=\"TxSigPath_EUTRAFDD_RoE:0\"><param name=\"antPort\"/><result>SUCCESS</result><param name=\"dataLink\"/><result>SUCCESS</result></obj>" +
+                     "</createObjResp>" +
+                     "</body>" +
+                     "</msg>";
+
+        try {
+            out.writeBytes(msg);
+            System.out.println("\n\n" + msg);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void sendDeleteObjResp() {
+        String msg = "<msg xmlns=\"http://uri.etsi.org/ori/002-2/v4.1.1\">" +
+                     "<header>" +
+                     "<msgType>RESP</msgType>" +
+                     "<msgUID>" + uid + "</msgUID>" +
+                     "</header>" +
+                     "<body>" +
+                     "<deleteObjResp>" +
+                     "<result>SUCCESS</result>" +
+                     "</deleteObjResp>" +
+                     "</body>" +
+                     "</msg>";
+
+        try {
+            out.writeBytes(msg);
+            System.out.println("\n\n" + msg);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public static void main(String[] args) {
         if (args.length != 4) {

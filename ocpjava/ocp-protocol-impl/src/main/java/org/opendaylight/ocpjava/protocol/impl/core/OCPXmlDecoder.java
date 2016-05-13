@@ -9,169 +9,152 @@
 package org.opendaylight.ocpjava.protocol.impl.core;
 
 import org.opendaylight.ocpjava.protocol.impl.core.connection.ConnectionFacade;
+import org.opendaylight.ocpjava.util.ByteBufUtils;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.OcpMsgType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
+import java.io.StringReader;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamConstants;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
 
-import com.fasterxml.aalto.AsyncInputFeeder;
-import com.fasterxml.aalto.AsyncXMLInputFactory;
-import com.fasterxml.aalto.AsyncXMLStreamReader;
-import com.fasterxml.aalto.stax.InputFactoryImpl;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
 
-import javax.xml.stream.XMLStreamConstants;
-import javax.xml.stream.XMLStreamException;
-
-/**
- * Transforms OCP XML Parser
- * @author Marko Lai <marko.ch.lai@foxconn.com>
- */
 
 public class OCPXmlDecoder extends ByteToMessageDecoder {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(OCPXmlDecoder.class);
-    private ConnectionFacade connectionFacade;
-    private boolean firstTlsPass = false;
-    private int unknownMsg = 99;
-    private int MsgLength = 6;
+    private static final XMLInputFactory factory = XMLInputFactory.newFactory();
 
-    private static final AsyncXMLInputFactory XML_INPUT_FACTORY = new InputFactoryImpl();
-    private AsyncXMLStreamReader streamReader = XML_INPUT_FACTORY.createAsyncXMLStreamReader();
-    private AsyncInputFeeder streamFeeder = streamReader.getInputFeeder();
-
+    private List<Object> out;    
+    private String buf = "";
     private List<Object> xmlElms;
     private boolean bodyElmFound;
     private int msgType;
 
+
     public OCPXmlDecoder(ConnectionFacade connectionFacade, boolean tlsPresent) {
         LOGGER.trace("Creating OCPXmlDecoder");
-        if (tlsPresent) {
-            firstTlsPass = true;
-        }
-        this.connectionFacade = connectionFacade;
     }
-
 
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
-        byte[] buffer = new byte[in.readableBytes()];
-        in.readBytes(buffer);
-        
-        //transfer from buffer to String
-        String valueS = new String(buffer, "UTF-8");
-        LOGGER.trace("decode valueS: {}", valueS);
-        
-        try {
-            streamFeeder.feedInput(buffer, 0, buffer.length);
-        } catch (XMLStreamException exception) {
-            in.skipBytes(in.readableBytes());
-            throw exception;
-        }
 
-        while (!streamFeeder.needMoreInput()) {
-            int type = streamReader.next();
-            switch (type) {
-                case XMLStreamConstants.START_DOCUMENT:
-                    XmlDocumentStart xmlDocumentStart = new XmlDocumentStart(streamReader.getEncoding(), streamReader.getVersion(), streamReader.isStandalone(), streamReader.getCharacterEncodingScheme());
-                    break;
-                case XMLStreamConstants.END_DOCUMENT:
-                    break;
-                case XMLStreamConstants.START_ELEMENT:
-                    XmlElementStart elementStart = new XmlElementStart(streamReader.getLocalName(),
-                            streamReader.getName().getNamespaceURI(), streamReader.getPrefix());
-                    for (int x = 0; x < streamReader.getAttributeCount(); x++) {
-                        XmlAttribute attribute = new XmlAttribute(streamReader.getAttributeType(x),
-                                streamReader.getAttributeLocalName(x), streamReader.getAttributePrefix(x),
-                                streamReader.getAttributeNamespace(x), streamReader.getAttributeValue(x));
-                        elementStart.attributes().add(attribute);
-                    }
-                    for (int x = 0; x < streamReader.getNamespaceCount(); x++) {
-                        XmlNamespace namespace = new XmlNamespace(streamReader.getNamespacePrefix(x),
-                                streamReader.getNamespaceURI(x));
-                        elementStart.namespaces().add(namespace);
-                    }
-                    if (elementStart.name().equals("msg")) {
-                        xmlElms = new ArrayList<>();                   
-                        bodyElmFound = false;
-                    }
-                    else if (elementStart.name().equals("body")) {
-                        bodyElmFound = true;
-                    }  
-                    else if (bodyElmFound) {
-	                boolean isOcpMsgType = EnumSet.allOf(OcpMsgType.class).toString().contains(elementStart.name().toUpperCase());
-	                if(!isOcpMsgType){
-	                    LOGGER.warn("OCPXmlDecoder - unknown OcpMsgType format");
-                            //unknown Message
-                            msgType = unknownMsg;
-	                }
-                        else{
-                            msgType = OcpMsgType.valueOf(elementStart.name().toUpperCase()).getIntValue();
-                        }
-                        bodyElmFound = false;
-                        LOGGER.trace("Message start: " + elementStart.name());
-                    }
-                    xmlElms.add(elementStart);
-                    break;
-                case XMLStreamConstants.END_ELEMENT:
-                    XmlElementEnd elementEnd = new XmlElementEnd(streamReader.getLocalName(),
-                            streamReader.getName().getNamespaceURI(), streamReader.getPrefix());
-                    for (int x = 0; x < streamReader.getNamespaceCount(); x++) {
-                        XmlNamespace namespace = new XmlNamespace(streamReader.getNamespacePrefix(x),
-                                streamReader.getNamespaceURI(x));
-                        elementEnd.namespaces().add(namespace);
-                    }
-                    xmlElms.add(elementEnd);
-                    if (elementEnd.name().equals("msg")) {
-                        LOGGER.trace("Message end: " + elementEnd.name());
-                        out.add(new DefaultMessageWrapper((short)1, msgType, xmlElms));
-                        streamFeeder.endOfInput(); 
-                        streamReader = XML_INPUT_FACTORY.createAsyncXMLStreamReader();
-                        streamFeeder = streamReader.getInputFeeder();
+        if (in.readableBytes() == 0)
+            return;
 
-                        LOGGER.trace("valueS length: " + valueS.length());
-                        LOGGER.trace("valueS indexOf: " + valueS.indexOf("</msg>"));
+        this.out = out;
 
-                        // </msg> length is 6
-                        int endidx = valueS.indexOf("</msg>") + MsgLength;
-                        LOGGER.trace("idx: " + endidx);
-                        
-                        //handle remain XML messages
-                        if(valueS.length() - endidx > 0) {
-                            valueS = valueS.substring(endidx);
-                            LOGGER.trace("valueS.length() : " + valueS.length());
-                            byte[] bytesData = valueS.getBytes();
-                            streamFeeder.feedInput(bytesData, 0, bytesData.length);
-                        }
-                    }
-                    break;
-                case XMLStreamConstants.PROCESSING_INSTRUCTION:
-                    xmlElms.add(new XmlProcessingInstruction(streamReader.getPIData(), streamReader.getPITarget()));
-                    break;
-                case XMLStreamConstants.CHARACTERS:
-                    XmlCharacters elementChars = new XmlCharacters(streamReader.getText());
-                    xmlElms.add(elementChars);
-                    break;
-                case XMLStreamConstants.COMMENT:
-                    xmlElms.add(new XmlComment(streamReader.getText()));
-                    break;
-                case XMLStreamConstants.SPACE:
-                    xmlElms.add(new XmlSpace(streamReader.getText()));
-                    break;
-                case XMLStreamConstants.ENTITY_REFERENCE:
-                    xmlElms.add(new XmlEntityReference(streamReader.getLocalName(), streamReader.getText()));
-                    break;
-                case XMLStreamConstants.DTD:
-                    xmlElms.add(new XmlDTD(streamReader.getText()));
-                    break;
-                case XMLStreamConstants.CDATA:
-                    xmlElms.add(new XmlCdata(streamReader.getText()));
-                    break;
+        byte[] bs = new byte[in.readableBytes()];
+        in.readBytes(bs);
+        buf += new String(bs, "UTF-8");
+
+        int index = buf.indexOf("</msg>");
+        while (index != -1) {
+            String msg = buf.substring(0, index + 6);
+            LOGGER.debug("Message = {}", msg);
+            parseDocument(msg);
+            if (index + 6 == buf.length()) {
+                buf = "";
+                break;
+            }
+            else {
+                buf = buf.substring(index + 6, buf.length());
+                index = buf.indexOf("</msg>");
             }
         }
+
+    }
+
+    private void parseDocument(String msg) {
+        try {
+            XMLStreamReader reader = factory.createXMLStreamReader(new StringReader(msg));
+            //Now iteration
+            while (reader.hasNext()) {
+                parseEvent(reader);
+                reader.next();
+            }
+            reader.close();
+        } catch (XMLStreamException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void parseEvent(XMLStreamReader streamReader) {
+
+        switch (streamReader.getEventType()) {
+            case XMLStreamConstants.START_ELEMENT:
+                XmlElementStart elementStart = new XmlElementStart(streamReader.getLocalName(),
+                        streamReader.getName().getNamespaceURI(), streamReader.getPrefix());
+
+                for (int x = 0; x < streamReader.getAttributeCount(); x++) {
+                    XmlAttribute attribute = new XmlAttribute(streamReader.getAttributeType(x),
+                            streamReader.getAttributeLocalName(x), streamReader.getAttributePrefix(x),
+                            streamReader.getAttributeNamespace(x), streamReader.getAttributeValue(x));
+                    elementStart.attributes().add(attribute);
+                }
+     
+                for (int x = 0; x < streamReader.getNamespaceCount(); x++) {
+                    XmlNamespace namespace = new XmlNamespace(streamReader.getNamespacePrefix(x),
+                            streamReader.getNamespaceURI(x));
+                    elementStart.namespaces().add(namespace);
+                }
+        
+                if (elementStart.name().equals("msg")) {
+                    xmlElms = new ArrayList<>();                   
+                    bodyElmFound = false;
+                }
+                else if (elementStart.name().equals("body")) {
+                    bodyElmFound = true;
+                }  
+                else if (bodyElmFound) {
+                    boolean isOcpMsgType = EnumSet.allOf(OcpMsgType.class).toString().contains(elementStart.name().toUpperCase());
+	            if (!isOcpMsgType) {
+	                LOGGER.warn("OCPXmlDecoder - unknown OcpMsgType format");
+                        //unknown Message
+	                msgType = 99; 
+	            }
+	            else {
+                        msgType = OcpMsgType.valueOf(elementStart.name().toUpperCase()).getIntValue();
+                    }
+                    bodyElmFound = false;
+                    LOGGER.trace("Message start: " + elementStart.name());
+                }
+                xmlElms.add(elementStart);
+                break;
+
+            case XMLStreamConstants.END_ELEMENT:
+                XmlElementEnd elementEnd = new XmlElementEnd(streamReader.getLocalName(),
+                        streamReader.getName().getNamespaceURI(), streamReader.getPrefix());
+
+                for (int x = 0; x < streamReader.getNamespaceCount(); x++) {
+                    XmlNamespace namespace = new XmlNamespace(streamReader.getNamespacePrefix(x),
+                            streamReader.getNamespaceURI(x));
+                    elementEnd.namespaces().add(namespace);
+                }
+
+                xmlElms.add(elementEnd);
+
+                if (elementEnd.name().equals("msg")) {
+                    LOGGER.trace("Message end: " + elementEnd.name());
+                    out.add(new DefaultMessageWrapper((short)1, msgType, xmlElms));
+                }
+                break;
+
+            case XMLStreamConstants.CHARACTERS:
+                XmlCharacters elementChars = new XmlCharacters(streamReader.getText());
+                xmlElms.add(elementChars);
+                break;
+
+            default:
+                break;
+        }
+
     }
 
 }

@@ -26,6 +26,8 @@ import org.opendaylight.ocpjava.protocol.impl.core.XmlElementStart;
 import org.opendaylight.ocpjava.protocol.impl.core.XmlElementEnd;
 import org.opendaylight.ocpjava.protocol.impl.core.XmlCharacters;
 
+import org.opendaylight.ocpjava.protocol.impl.deserialization.factories.utils.MessageHelper;
+
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -81,37 +83,19 @@ public class ModifyParamOutputFactory implements OCPDeserializer<ModifyParamOutp
                 if(tok instanceof XmlElementStart) {
                     //msgType
                     if (((XmlElementStart)tok).name().equals("body")){
-                        //XmlCharacters of body
-                        itr.next();
-                        //XmlElementStart of msgType
-                    	Object type = itr.next();
-                        if (type instanceof XmlElementStart){
-                    	    builder.setMsgType(OcpMsgType.valueOf(((XmlElementStart)type).name().toUpperCase()));
-                    	}
-                        LOGGER.debug("ModifyParamOutputFactory - getMsgType = " + builder.getMsgType());
+                        String type = MessageHelper.getMsgType(itr);
+                        builder.setMsgType(OcpMsgType.valueOf(type));
                     }
                     //msgUID
                     else if (((XmlElementStart)tok).name().equals("msgUID")){
-                    	Object uidtok = itr.next();   
-                    	StringBuilder buf = new StringBuilder();
-                    	while(uidtok instanceof XmlCharacters) {
-                    	    buf.append(((XmlCharacters)uidtok).data().toString());
-                    	    uidtok = itr.next();
-                    	}
-                        int uid = Integer.parseInt(buf.toString());
+                        String uidStr = MessageHelper.getMsgUID(itr);
+                        int uid = Integer.parseInt(uidStr);
                         builder.setXid((long)uid);
-                        LOGGER.debug("ModifyParamOutputFactory - getXid = " + builder.getXid());
                     }
                     //globResult
                     else if (((XmlElementStart)tok).name().equals("globResult")){
-                    	Object reltok = itr.next();   
-                    	StringBuilder buf = new StringBuilder();
-                    	while(reltok instanceof XmlCharacters) {
-                    	    buf.append(((XmlCharacters)reltok).data().toString());
-                    	    reltok = itr.next();
-                    	}
-                        builder.setGlobResult(ModifyParamGlobRes.valueOf(buf.toString().replace("_", "")));
-                        LOGGER.debug("ModifyParamOutputFactory - getGlobResult = " + builder.getGlobResult());
+                        String globRel = MessageHelper.getResult(itr);
+                        builder.setGlobResult(ModifyParamGlobRes.valueOf(globRel));
                     }
                     //obj
                     else if (((XmlElementStart)tok).name().equals("obj")) {
@@ -137,15 +121,10 @@ public class ModifyParamOutputFactory implements OCPDeserializer<ModifyParamOutp
                                 
                                 //param result
                                 if(((XmlElementStart)nexttok).name().equals("result")) {
-                                    Object ptok = itr.next();   
-                                    StringBuilder buf = new StringBuilder();
-                                    while(ptok instanceof XmlCharacters) {
-                                        buf.append(((XmlCharacters)ptok).data().toString());
-                                        ptok = itr.next();
-                                    }
-                                    parambuilder.setResult(ModifyParamRes.valueOf(buf.toString().replace("_", "")));
-                                    LOGGER.debug("ModifyParamOutputFactory - getResult = " + parambuilder.getResult());
-                            	}                       	
+                                    String rel = MessageHelper.getResult(itr);
+                                    parambuilder.setResult(ModifyParamRes.valueOf(rel));
+                            	}
+                     	
                                 paramlist.add(parambuilder.build());
                                 parambuilder = new ParamBuilder();
 

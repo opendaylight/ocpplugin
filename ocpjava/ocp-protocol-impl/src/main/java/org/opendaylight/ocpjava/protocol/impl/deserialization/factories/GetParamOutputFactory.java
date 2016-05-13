@@ -25,6 +25,7 @@ import org.opendaylight.ocpjava.protocol.impl.core.XmlElementStart;
 import org.opendaylight.ocpjava.protocol.impl.core.XmlElementEnd;
 import org.opendaylight.ocpjava.protocol.impl.core.XmlCharacters;
 
+import org.opendaylight.ocpjava.protocol.impl.deserialization.factories.utils.MessageHelper;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -78,29 +79,21 @@ public class GetParamOutputFactory implements OCPDeserializer<GetParamOutput> {
             LOGGER.trace("GetParamOutputFactory - itr = " + tok);
             try {
                 if(tok instanceof XmlElementStart) {
-                	//msgType
+                    //msgType
                     if (((XmlElementStart)tok).name().equals("body")){
-                        //XmlCharacters of body
-                        itr.next();
-                        //XmlElementStart of msgType
-                    	Object type = itr.next(); 
-                        if (type instanceof XmlElementStart){
-                    	    builder.setMsgType(OcpMsgType.valueOf(((XmlElementStart)type).name().toUpperCase()));
-                    	}
-                        LOGGER.debug("GetParamOutputFactory - getMsgType = " + builder.getMsgType());
-                    }  
-                    //msgUID
+                        String type = MessageHelper.getMsgType(itr);
+                        builder.setMsgType(OcpMsgType.valueOf(type));
+                    }                    
+                    //msgUID                   
                     else if (((XmlElementStart)tok).name().equals("msgUID")){
-                        Object uidtok = itr.next();
-                        int uid = Integer.parseInt(((XmlCharacters)uidtok).data().toString());
+                        String uidStr = MessageHelper.getMsgUID(itr);
+                        int uid = Integer.parseInt(uidStr);
                         builder.setXid((long)uid);
-                        LOGGER.debug("GetParamOutputFactory - getXid = " + builder.getXid());
                     }
                     //result
                     else if (((XmlElementStart)tok).name().equals("result")){
-                        String rel = ((XmlCharacters)itr.next()).data().replace("_", "").toString();
+                        String rel = MessageHelper.getResult(itr);
                         builder.setResult(GetParamRes.valueOf(rel));
-                        LOGGER.debug("GetParamOutputFactory - getResult = " + builder.getResult());
                     }
                     //obj
                     else if (((XmlElementStart)tok).name().equals("obj")) {
@@ -124,13 +117,8 @@ public class GetParamOutputFactory implements OCPDeserializer<GetParamOutput> {
                                 LOGGER.debug("GetParamOutputFactory - parambuilder getName = " + parambuilder.getName());
                                 
                                 //get param character(content)
-                            	Object chartok = itr.next();      
-                            	StringBuilder buf = new StringBuilder();
-                            	while(chartok instanceof XmlCharacters) {
-                            		buf.append(((XmlCharacters)chartok).data().toString());
-                            		chartok = itr.next();
-                            	}
-                            	parambuilder.setValue(buf.toString());
+                                String bufStr = MessageHelper.getCharVal(itr);
+                            	parambuilder.setValue(bufStr);
                                 
                                 LOGGER.debug("GetParamOutputFactory - parambuilder getValue = " + parambuilder.getValue());
                                 paramlist.add(parambuilder.build());
