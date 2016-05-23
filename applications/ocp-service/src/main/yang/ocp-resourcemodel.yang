@@ -10,10 +10,8 @@ module ocp-resourcemodel {
     import config { prefix config; revision-date 2013-04-05; }
     import opendaylight-inventory { prefix inv; revision-date "2013-08-19";}
     import ocp-xsd { prefix ocpx; revision-date "2015-08-11"; }
-
-    organization "FACA";
-    contact "FACA Web: <https://sites.google.com/site/facafoxconn/>";
-    description "OCP service resourcemodel";    
+    
+    description "OCP Resource Model";    
 
     revision "2015-08-11" {
       description
@@ -24,64 +22,54 @@ module ocp-resourcemodel {
         list RadioHead {
             key nodeId;
             leaf ipAddr {
-                type inet:ipv4-address;
-                // config false;
+                type inet:ipv4-address;                
             }
             leaf nodeId {
-                type inv:node-id;
-                // config false;
+                type inv:node-id;                
             }
             container re{
                 leaf vendorID {
                     type string{
                         length 3;
-                    }
-                    // config false;
+                    }                    
                 }
                 leaf productID {
                     type string{
                         length "0..80";
-                    }
-                    // config false;
+                    }                    
                 }
                 leaf productRev {
                     type string{
                         length "0..80";
-                    }
-                    // config false;
+                    }                    
                 }
                 leaf serialNumber {
                     type string{
                         length "0..40";
-                    }
-                    // config false;
+                    }                    
                 }
                 leaf protocolVer {
                     type string{
                         length "0..10";
-                    }
-                    // config false;
+                    }                    
                 }
                 leaf agcTargetLevCfgGran {
                     type enumeration {
                         enum "RX_SIG_PATH";
                         enum "RE";
-                    }
-                    // config false;
+                    }                    
                 }
                 leaf agcSettlTimeCfgGran {
                     type enumeration {
                         enum "RX_SIG_PATH";
                         enum "RE";
-                    }
-                    // config false;
+                    }                    
                 }
                 leaf agcSettlTimeCap {
                     type string {
                             pattern '([0-9a-fA-F]{2}(:[0-9a-fA-F]{2})*)?';
                             length "4";
-                    }    
-                    // config false;
+                    }                    
                 }
                 leaf numAntPort {
                     type ocpx:xsd-unsignedShort {
@@ -108,15 +96,13 @@ module ocp-resourcemodel {
             list antPort {
                 key id;
                 leaf id {
-                    type ocpx:xsd-unsignedInt;
-                    // config false;
+                    type ocpx:xsd-unsignedInt;                    
                 }
                 description "This is the name provided to the Physical Antenna Port by the RE vendor, as indicated on the RE housing";
                 leaf portLabel {
                     type string{
                         length "0..80";
-                    }
-                    // config false;
+                    }                    
                 }
                 leaf topology {
                     type enumeration {
@@ -128,287 +114,244 @@ module ocp-resourcemodel {
                 leaf direction {
                     type ocpx:xsd-unsignedShort {
                         range "0..359";
-                    }
-                    // config false;
+                    }                    
                 }     
                 leaf angle {
                     type ocpx:xsd-unsignedShort {
                         range "0..359";
-                    }
-                    // config false;
+                    }                    
                 }                     
             }
             
             list TxSigPath_UTRAFDD {
                 key id;
                 leaf id {
-                    type ocpx:xsd-unsignedInt;
-                    // config false;                    
+                    type ocpx:xsd-unsignedInt;                                        
                 }
                 leaf dlCalRFMax {
                     description "Max possible buffer in RE for DL timing calibration";
                     type ocpx:xsd-unsignedShort {
                         range "16..8191";
-                    }
-                    // config false;
+                    }                    
                 }
                 leaf t2a {
                     description "Time delay";
                     type ocpx:xsd-unsignedInt {
                         range "0..66667";
-                    }
-                    // config false;
+                    }                    
                 }
                 leaf dlCalRF {
                     description "Time delay value to enable DL timing delay calibration";
                     type ocpx:xsd-unsignedShort {
                         range "0..65535";
-                    }
-                    // config false;                    
+                    }                                        
                 }
                 leaf maxTxPwr {
                     description "Max Transmission Power";
                     type ocpx:xsd-unsignedShort {
                         range "0..500";
-                    }
-                    // config false;                    
+                    }                                        
                 }
                 leaf axcW {
                     description "AxC container group start position parameter(W)";
                     type ocpx:xsd-unsignedByte {
                         range "1..15";
-                    }
-                    // config false;                    
+                    }                                        
                 }
                 leaf axcB {
                     description "AxC container group start position parameter(B)";
                     type ocpx:xsd-unsignedByte {
                         range "0..255";
-                    }
-                    // config false;                    
+                    }                                        
                 }
                 leaf oriLink {
                     description "The ORI Link on which the required AxC container group is mapped";
-                    type ocpt:ObjId;
-                    // config false;                    
+                    type ocpt:ObjId;                                        
                 }
                 leaf uarfcn {
                     description "The downlink UARFCN of the UTRA carrier";
                     type ocpx:xsd-unsignedShort {
                         range "0..16383";
-                    }
-                    // config false;                    
+                    }                                        
                 }
                 leaf antPort {
                     description "Reference to antenna port object representing the antenna port through which the RF signal of this TxSigPath shall be transmitted.";
-                    type ocpt:ObjId;
-                    // config false;                    
+                    type ocpt:ObjId;                                        
                 }
             }
 
             list TxSigPath_EUTRAFDD {
                 key id;
                 leaf id {
-                    type ocpx:xsd-unsignedInt;
-                    // config false;                    
+                    type ocpx:xsd-unsignedInt;                                        
                 }
                 leaf chanBW {
                     description "E-UTRA Channel Bandwidth of the E-UTRA carrier";
                     type ocpx:xsd-unsignedShort {
                         range "0..500";
-                    }
-                    // config false;                    
+                    }                                        
                 }
                 leaf dlCalREMax {
                     description "Max possible buffer in RE for DL timing calibration expressed in TC/16 (minimum value 1*Tc)";
                     type ocpx:xsd-unsignedShort {
                         range "0..500";
-                    }
-                    // config false;
+                    }                    
                 }
                 leaf t2a {
                     description "Time delay";
                     type ocpx:xsd-unsignedInt {
                         range "0..66667";
-                    }
-                    // config false;
+                    }                    
                 }
                 leaf dlCalRE {
                     description "Time delay value to enable DL timing delay calibration expressed in TC/16";
-                    type ocpx:xsd-unsignedShort;
-                    // config false;                    
+                    type ocpx:xsd-unsignedShort;                                        
                 }
                 leaf maxTxPwr {
                     description "Max Transmission Power";
                     type ocpx:xsd-unsignedShort {
                         range "0..500";
-                    }
-                    // config false;                    
+                    }                                        
                 }
                 leaf axcW {
                     description "AxC container group start position parameter(W)";
                     type ocpx:xsd-unsignedByte {
                         range "1..15";
-                    }
-                    // config false;                   
+                    }                                       
                 }
                 leaf axcB {
                     description "AxC container group start position parameter(B)";
                     type ocpx:xsd-unsignedByte {
                         range "0..255";
-                    }
-                    // config false;                    
+                    }                                        
                 }
                 leaf oriLink {
                     description "The ORI Link on which the required AxC container group is mapped";
-                    type ocpt:ObjId;
-                    // config false;                    
+                    type ocpt:ObjId;                                        
                 }
                 leaf earfcn {
                     description "The downlink EARFCN of the E-UTRA carrier";
                     type ocpx:xsd-unsignedShort {
                         range "0..65535";
-                    }
-                    // config false;                    
+                    }                                        
                 }         
                 leaf antPort {
                     description "Reference to antenna port object representing the antenna port through which the RF signal of this TxSigPath shall be transmitted.";
-                    type ocpt:ObjId;
-                    // config false;                    
+                    type ocpt:ObjId;                                        
                 }        
                 leaf enableIQDLComp {
                     description "Downlink IQ Compression Enable";
-                    type boolean;
-                    // config false;                    
+                    type boolean;                                        
                 }  
                 leaf sigmaIQ {
                     description "Sigma_IQ";
                     type ocpx:xsd-unsignedShort {
                         range "1..65535";
-                    }
-                    // config false;                    
+                    }                                      
                 }  
             }
             
             list TxSigPath_EUTRATDD {
                 key id;
                 leaf id {
-                    type ocpx:xsd-unsignedInt;
-                    // config false;                    
+                    type ocpx:xsd-unsignedInt;                                        
                 }
                 leaf chanBW {
                     description "E-UTRA Channel Bandwidth";
                     type ocpx:xsd-unsignedShort {
                         range "0..500";
-                    }
-                    // config false;                    
+                    }                                        
                 }
                 leaf tddULDLConfig {
                     description "TDD uplink/downlink configuration";
                     type ocpx:xsd-unsignedByte {
                         range "0..255";
-                    }
-                    // config false;                    
+                    }                                        
                 }
                 leaf tddSpecialSFConfig {
                     description "E-UTRA Channel Bandwidth";
                     type ocpx:xsd-unsignedByte {
                         range "0..255";
-                    }
-                    // config false;                    
+                    }                                        
                 }
                 leaf tddCPLengthDL {
                     type enumeration {
                         enum "Normal";
                         enum "Extended";
-                    }
-                    // config false;                    
+                    }                                        
                 }
                 leaf dlCalREMax {
                     description "Max possible buffer in RE for DL timing calibration";
                     type ocpx:xsd-unsignedShort {
                         range "16..8191";
-                    }
-                    // config false;
+                    }                    
                 }
                 leaf t2a {
                     description "Time delay";
                     type ocpx:xsd-unsignedInt {
                         range "0..66667";
-                    }
-                    // config false;
+                    }                    
                 }
                 leaf dlCalRE {
                     description "Time delay value to enable DL timing delay calibration";
                     type ocpx:xsd-unsignedShort {
                         range "0..65535";
-                    }
-                    // config false;                    
+                    }                                        
                 }
                 leaf maxTxPwr {
                     description "Max Transmission Power";
                     type ocpx:xsd-unsignedShort {
                         range "0..500";
-                    }
-                    // config false;                    
+                    }                                        
                 }
                 leaf axcW {
                     description "AxC container group start position parameter(W)";
                     type ocpx:xsd-unsignedByte {
                         range "1..15";
-                    }
-                    // config false;                    
+                    }                                        
                 }
                 leaf axcB {
                     description "AxC container group start position parameter(B)";
                     type ocpx:xsd-unsignedByte {
                         range "0..255";
-                    }
-                    // config false;                    
+                    }                                        
                 }
                 leaf oriLink {
                     description "The ORI Link on which the required AxC container group is mapped";
-                    type ocpt:ObjId;
-                    // config false;                    
+                    type ocpt:ObjId;                                        
                 }
                 leaf earfcn {
                     description "The downlink EARFCN of the E-UTRA carrier";
                     type ocpx:xsd-unsignedShort {
                         range "0..65535";
-                    }
-                    // config false;                    
+                    }                                        
                 }         
                 leaf antPort {
                     description "Reference to antenna port object representing the antenna port through which the RF signal of this TxSigPath shall be transmitted.";
-                    type ocpt:ObjId;
-                    // config false;                    
+                    type ocpt:ObjId;                                        
                 }
                 leaf enableIQDLComp {
                     description "Downlink IQ Compression Enable";
-                    type boolean;
-                    // config false;                    
+                    type boolean;                                        
                 }  
                 leaf sigmaIQ {
                     description "Sigma_IQ";
                     type ocpx:xsd-unsignedShort {
                         range "1..65535";
-                    }
-                    // config false;                    
+                    }                                        
                 }                          
             }
                 
             list TxSigPath_GSM {
                 key id;
                 leaf id {
-                    type ocpx:xsd-unsignedInt;
-                    // config false;                    
+                    type ocpx:xsd-unsignedInt;                                        
                 }
                 leaf dlCalREMax {
                     description "Max possible buffer in RE for DL timing calibration";
                     type ocpx:xsd-unsignedShort {
                         range "16..8191";
-                    }
-                    // config false;
+                    }                    
                 }
                 leaf freqBandInd {
                     description "Frequency band indicator";
@@ -423,8 +366,7 @@ module ocp-resourcemodel {
                     description "Time delay";
                     type ocpx:xsd-unsignedInt {
                         range "0..66667";
-                    }
-                    // config false;
+                    }                    
                 }
                 leaf dlCalRE {
                     description "Time delay value to enable DL timing delay calibration";
@@ -469,15 +411,13 @@ module ocp-resourcemodel {
                     description "Max possible buffer in RE for UL timing calibration";
                     type ocpx:xsd-unsignedShort {
                         range "2..1023";
-                    }
-                    // config false;
+                    }                    
                 }
                 leaf ta3 {
                     description "Time delay";
                     type ocpx:xsd-unsignedInt {
                         range "0..66667";
-                    }
-                    // config false;
+                    }                    
                 }
                 leaf ulCalRE {
                     description "Time delay value to enable UL timing delay calibration";
@@ -552,15 +492,13 @@ module ocp-resourcemodel {
                     description "Max possible buffer in RE for UL timing calibration";
                     type ocpx:xsd-unsignedShort {
                         range "2..1023";
-                    }
-                    // config false;
+                    }                    
                 }
                 leaf ta3 {
                     description "Time delay";
                     type ocpx:xsd-unsignedInt {
                         range "0..66667";
-                    }
-                    // config false;
+                    }                    
                 }
                 leaf ulCalRE {
                     description "Time delay value to enable UL timing delay calibration";
@@ -640,15 +578,13 @@ module ocp-resourcemodel {
                     description "Max possible buffer in RE for UL timing calibration";
                     type ocpx:xsd-unsignedShort {
                         range "2..1023";
-                    }
-                    // config false;
+                    }                    
                 }
                 leaf ta3 {
                     description "Time delay";
                     type ocpx:xsd-unsignedInt {
                         range "0..66667";
-                    }
-                    // config false;
+                    }                    
                 }
                 leaf ulCalRE {
                     description "Time delay value to enable UL timing delay calibration";
@@ -703,8 +639,7 @@ module ocp-resourcemodel {
                     description "Max possible buffer in RE for UL timing calibration";
                     type ocpx:xsd-unsignedShort {
                         range "2..1023";
-                    }
-                    // config false;
+                    }                    
                 }
                 leaf freqBandInd {
                     description "Frequency band indicator";
@@ -719,8 +654,7 @@ module ocp-resourcemodel {
                     description "Time delay";
                     type ocpx:xsd-unsignedInt {
                         range "0..66667";
-                    }
-                    // config false;
+                    }                    
                 }
                 leaf ulCalRE {
                     description "Time delay value to enable UL timing delay calibration";
@@ -764,8 +698,7 @@ module ocp-resourcemodel {
                 leaf portLabel {
                     type string{
                         length "0..80";
-                    }
-                    // config false;
+                    }                    
                 }
                 leaf busPowerEnable {
                     description "Controls the output power of the AISG port";
@@ -785,28 +718,23 @@ module ocp-resourcemodel {
                     leaf releaseID {
                         type ocpx:xsd-unsignedByte {
                             range "0..255";
-                        }
-                    // config false;
+                        }                    
                     }
                     leaf aisgVersion {
                         type ocpx:xsd-unsignedByte {
                             range "0..255";
-                        }
-                    // config false;
+                        }                    
                     }
                     leaf deviceTypeVersion {
-                        type string;
-                    // config false;
+                        type string;                    
                     }		                
                     leaf frameLength {
                         type ocpx:xsd-unsignedShort {
                             range "74..max";
-                        }
-                    // config false;
+                        }                    
                     } 
                     leaf hdlcAddress {
-                        type ocpx:xsd-unsignedByte;
-                    // config false;
+                        type ocpx:xsd-unsignedByte;                    
                     }
                 }
             }
@@ -976,8 +904,7 @@ module ocp-resourcemodel {
                 leaf portLabel {
                     type string{
                         length "0..80";
-                    }
-                    // config false;
+                    }                    
                 }
                 leaf type {
                     description "Determines if it is a reference to a legacy ORI link or if it is a 5G style ETH object";
@@ -999,8 +926,7 @@ module ocp-resourcemodel {
                 leaf portLabel {
                     type string{
                         length "0..80";
-                    }
-                    // config false;
+                    }                    
                 }
                 leaf portRoleCapability {
                     description "See ORI link portRoleCapability. Must be extended by Ethernet roles when known";
