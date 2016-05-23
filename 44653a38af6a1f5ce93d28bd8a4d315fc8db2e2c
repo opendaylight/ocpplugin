@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fa57193c_ca4a84c4",
+        "filename": "applications/ocp-service/src/main/yang/ocp-resourcemodel.yang",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 5842
+      },
+      "writtenOn": "2016-05-23T08:32:48Z",
+      "side": 1,
+      "message": "I\u0027d expect this to be changed to \"OCP Resource Model\"",
+      "range": {
+        "startLine": 14,
+        "startChar": 17,
+        "endLine": 14,
+        "endChar": 42
+      },
+      "revId": "44653a38af6a1f5ce93d28bd8a4d315fc8db2e2c",
+      "serverId": "7fc14799-209e-464c-9743-7a06c2c21a81",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fa57193c_8a27ec11",
+        "filename": "applications/ocp-service/src/main/yang/ocp-resourcemodel.yang",
+        "patchSetId": 1
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5842
+      },
+      "writtenOn": "2016-05-23T08:32:48Z",
+      "side": 1,
+      "message": "Would it make sense to us to also remove this line? Thanks!",
+      "range": {
+        "startLine": 26,
+        "startChar": 2,
+        "endLine": 26,
+        "endChar": 14
+      },
+      "revId": "44653a38af6a1f5ce93d28bd8a4d315fc8db2e2c",
+      "serverId": "7fc14799-209e-464c-9743-7a06c2c21a81",
+      "unresolved": false
+    }
+  ]
+}
