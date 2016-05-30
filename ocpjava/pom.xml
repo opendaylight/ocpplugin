@@ -17,7 +17,9 @@
         <module>ocpjava-config</module>
         <module>ocp-protocol-api</module>
         <module>ocp-protocol-impl</module>
+        <module>ocp-protocol-it</module>
         <module>ocp-protocol-spi</module>
+        <module>simple-client</module>
         <module>parent</module>
         <module>util</module>
     </modules>

@@ -36,7 +36,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Translates StateChange (OCP Protocol v4.1.1)
+ * Translates StateChangeInd message (OCP Protocol v4.1.1)
  * @author Marko Lai <marko.ch.lai@foxconn.com>
  */
 
@@ -111,11 +111,6 @@ public class StateChangeFactory implements OCPDeserializer<StateChange> {
                                 LOGGER.debug("StateChangeFactory - statebuilder getValue = " + statebuilder.getValue());
                                 
                                 statelist.add(statebuilder.build());
-                                
-                                //skip state of XmlElementEnd
-                                while(!(objtok instanceof XmlElementEnd)){
-                                    objtok = itr.next();                            
-                                }
                                 
                                 //skip remain of XmlCharacters
                                 objtok = itr.next();
