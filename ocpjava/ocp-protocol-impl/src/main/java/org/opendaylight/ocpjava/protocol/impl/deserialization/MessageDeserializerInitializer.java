@@ -10,7 +10,6 @@ package org.opendaylight.ocpjava.protocol.impl.deserialization;
 
 import org.opendaylight.ocpjava.protocol.api.extensibility.DeserializerRegistry;
 
-/*Markoadd deserialization registry */
 import org.opendaylight.ocpjava.protocol.impl.deserialization.factories.HealthCheckOutputFactory;
 import org.opendaylight.ocpjava.protocol.impl.deserialization.factories.SetTimeOutputFactory;
 import org.opendaylight.ocpjava.protocol.impl.deserialization.factories.ReResetOutputFactory;
@@ -23,14 +22,11 @@ import org.opendaylight.ocpjava.protocol.impl.deserialization.factories.CreateOb
 import org.opendaylight.ocpjava.protocol.impl.deserialization.factories.DeleteObjOutputFactory;
 import org.opendaylight.ocpjava.protocol.impl.deserialization.factories.ModifyStateOutputFactory;
 import org.opendaylight.ocpjava.protocol.impl.deserialization.factories.StateChangeFactory;
-
 import org.opendaylight.ocpjava.protocol.impl.deserialization.factories.HelloMessageFactory;
-
 
 import org.opendaylight.ocpjava.protocol.api.util.EncodeConstants;
 import org.opendaylight.ocpjava.protocol.impl.util.SimpleDeserializerRegistryHelper;
 
-/*Markoadd deserialization registry */
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.HealthCheckOutput;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.SetTimeOutput;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.ReResetOutput;
@@ -43,7 +39,6 @@ import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.Crea
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.DeleteObjOutput;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.ModifyStateOutput;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.StateChange;
-
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.extension.rev150811.HelloMessage;
 
 /**

@@ -6,7 +6,6 @@
  * and is available at http://www.eclipse.org/legal/epl-v10.html
  */
 
-
 package org.opendaylight.ocpjava.util;
 
 import com.google.common.base.Splitter;
@@ -52,4 +51,16 @@ public abstract class ByteBufUtils {
         return result;
     }
 
+    /**
+     * Converts byte array into String
+     * @param array input byte array
+     * @return String
+     */
+    public static String bytesToHexString(final byte[] array) {
+        StringBuilder sb = new StringBuilder();
+        for (byte element : array) {
+            sb.append(String.format(" %02x", element));
+        }
+        return sb.toString().trim();
+    }
 }

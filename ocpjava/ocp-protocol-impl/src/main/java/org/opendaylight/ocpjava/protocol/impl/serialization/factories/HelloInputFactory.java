@@ -19,12 +19,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Translates Hello Input messages
+ * Translates HelloAck message (OCP Protocol v4.1.1)
  * @author Marko Lai <marko.ch.lai@foxconn.com>
  */
 
 /*
-<!-- Example1: Hello Request(No repsponse) -->
+<!-- Example1: Hello Ack (No repsponse) -->
 <?xml version="1.0" encoding="UTF-8"?>
     <msg xmlns="http://uri.etsi.org/ori/002-2/v4.1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://uri.etsi.org/ori/002-2/v4.1.1 ORI_Messages_v4.1.1.xsd">
         <header>

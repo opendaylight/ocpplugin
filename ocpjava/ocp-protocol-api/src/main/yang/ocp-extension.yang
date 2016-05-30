@@ -92,6 +92,4 @@
         uses ocpt:ocpHeader;
         uses helloInd;
     }  // notification hello-message
-    
-
 }

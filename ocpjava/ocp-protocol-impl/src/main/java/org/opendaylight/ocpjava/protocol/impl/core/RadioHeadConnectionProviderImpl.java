@@ -31,8 +31,6 @@ import com.google.common.util.concurrent.SettableFuture;
 
 /**
  * Exposed class for server handling<br>
- * C - {@link MatchEntrySerializerKey} parameter representing oxm_class (see specification)<br>
- * F - {@link MatchEntrySerializerKey} parameter representing oxm_field (see specification)
  * @author mirehak
  * @author michal.polkorab
  * @author Marko Lai <marko.ch.lai@foxconn.com>

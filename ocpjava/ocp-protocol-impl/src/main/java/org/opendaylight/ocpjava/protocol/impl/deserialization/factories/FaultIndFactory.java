@@ -38,7 +38,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Translates FaultInd Message (OCP Protocol v4.1.1)
+ * Translates FaultInd message (OCP Protocol v4.1.1)
  * @author Marko Lai <marko.ch.lai@foxconn.com>
  */
 
