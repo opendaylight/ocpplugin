@@ -36,7 +36,7 @@ import org.slf4j.LoggerFactory;
 
 
 /**
- * Translates GetParamOutput messages (OCP Protocol v4.1.1)
+ * Translates GetParamResp message (OCP Protocol v4.1.1)
  * @author Marko Lai <marko.ch.lai@foxconn.com>
  */
 

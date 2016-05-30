@@ -37,7 +37,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Translates GetParamOutput messages (OCP Protocol v4.1.1)
+ * Translates GetStateResp message (OCP Protocol v4.1.1)
  * @author Marko Lai <marko.ch.lai@foxconn.com>
  */
 
@@ -116,16 +116,11 @@ public class GetStateOutputFactory implements OCPDeserializer<GetStateOutput> {
                                 LOGGER.trace("GetStateOutputFactory - getName = " + statebuilder.getName());
 
                                 //set state Value
-                                String bufStr = MessageHelper.getCharVal(itr);
+                                String bufStr = MessageHelper.getMsgUID(itr);
                                 statebuilder.setValue(StateVal.valueOf(bufStr));
                                 
                                 LOGGER.trace("GetStateOutputFactory - getValue = " + statebuilder.getValue());
                                 statelist.add(statebuilder.build());
-                                
-                                //skip state of XmlElementEnd
-                                while(!(objtok instanceof XmlElementEnd)){
-                                    objtok = itr.next();                            
-                                }
                                 
                                 //skip remain of XmlCharacters
                                 objtok = itr.next();

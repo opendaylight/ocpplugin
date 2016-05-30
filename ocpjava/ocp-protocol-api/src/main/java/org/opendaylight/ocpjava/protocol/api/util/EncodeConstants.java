@@ -17,6 +17,8 @@ public abstract class EncodeConstants {
     /** OCP v4.1.1 Version wire protocol number */
     //given hash value
     public static final short OCP_VERSION_ID = 1;
+    public static final short UNKNOWN_VER_ID = 0;
+
     /** Length of mac address */
     public static final byte MAC_ADDRESS_LENGTH = 6;
     /** Number of groups in ipv4 address */

@@ -17,6 +17,7 @@ import org.opendaylight.ocpjava.protocol.impl.deserialization.DeserializationFac
 import org.opendaylight.ocpjava.statistics.CounterEventTypes;
 import org.opendaylight.ocpjava.statistics.OcpStatisticsCounters;
 import org.opendaylight.yangtools.yang.binding.DataObject;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

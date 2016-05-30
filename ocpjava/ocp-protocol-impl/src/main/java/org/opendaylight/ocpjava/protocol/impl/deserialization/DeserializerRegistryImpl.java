@@ -21,9 +21,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ * 
  * Stores and registers deserializers
  * @author michal.polkorab
  * @author Marko Lai <marko.ch.lai@foxconn.com>
+ * 
  */
 public class DeserializerRegistryImpl implements DeserializerRegistry {
 
@@ -38,7 +40,6 @@ public class DeserializerRegistryImpl implements DeserializerRegistry {
         registry = new HashMap<>();
         // register message deserializers
         MessageDeserializerInitializer.registerMessageDeserializers(this);
-
     }
 
     @Override

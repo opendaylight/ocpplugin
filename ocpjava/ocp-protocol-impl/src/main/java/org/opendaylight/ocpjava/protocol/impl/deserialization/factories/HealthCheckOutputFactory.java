@@ -27,7 +27,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Translates Hello messages (OCP Protocol v4.1.1)
+ * Translates HealthCheckResp message (OCP Protocol v4.1.1)
  * @author Marko Lai <marko.ch.lai@foxconn.com>
  */
 

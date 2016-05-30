@@ -27,7 +27,6 @@ import io.netty.handler.codec.ByteToMessageDecoder;
 
 
 public class OCPXmlDecoder extends ByteToMessageDecoder {
-
     private static final Logger LOGGER = LoggerFactory.getLogger(OCPXmlDecoder.class);
     private static final XMLInputFactory factory = XMLInputFactory.newFactory();
 
@@ -68,7 +67,6 @@ public class OCPXmlDecoder extends ByteToMessageDecoder {
                 index = buf.indexOf("</msg>");
             }
         }
-
     }
 
     private void parseDocument(String msg) {

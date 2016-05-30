@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2013 Pantheon Technologies s.r.o. and others. All rights reserved.
- * Copyright (c) 2015 Foxconn Corporation
+ * Copyright (c) 2016 Foxconn Corporation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0 which accompanies this distribution,
@@ -76,9 +76,11 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Handles messages (notifications + rpcs) and connections
+ * 
  * @author mirehak
  * @author michal.polkorab
  * @author Marko Lai <marko.ch.lai@foxconn.com>
+ * 
  */
 public class ConnectionAdapterImpl implements ConnectionFacade {
     /** after this time, RPC future response objects will be thrown away (in minutes) */

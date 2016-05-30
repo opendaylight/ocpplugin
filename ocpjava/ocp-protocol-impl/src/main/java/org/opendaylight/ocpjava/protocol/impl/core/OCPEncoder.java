@@ -33,7 +33,7 @@ public class OCPEncoder extends MessageToByteEncoder<MessageListenerWrapper> {
     /** Constructor of class */
     public OCPEncoder() {
         statisticsCounters = OcpStatisticsCounters.getInstance();
-        LOGGER.trace("Creating OF13Encoder");
+        LOGGER.trace("Creating OCPEncoder");
     }
 
     @Override
