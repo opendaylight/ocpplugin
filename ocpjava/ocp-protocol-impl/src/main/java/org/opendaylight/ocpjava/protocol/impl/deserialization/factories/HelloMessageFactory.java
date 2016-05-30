@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 Foxconn Corporation and others.  All rights reserved.
+ * Copyright (c) 2016 Foxconn Corporation and others.  All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0 which accompanies this distribution,
@@ -28,13 +28,12 @@ import org.slf4j.LoggerFactory;
 
 
 /**
- * Translates HelloInd messages (OCP Protocol v4.1.1 Extension)
+ * Translates HelloInd message (OCP Protocol v4.1.1 Extension)
  * @author Marko Lai <marko.ch.lai@foxconn.com>
  */
 
 
 /*
-
 <!-- Example: HelloInd Message from RRH to Controller -->
 <?xml version="1.0" encoding="UTF-8"?>
 <msg xmlns="http://uri.etsi.org/ori/002-2/v4.1.1"> 
