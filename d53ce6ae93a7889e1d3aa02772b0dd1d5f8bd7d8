@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "da5c1566_7cca95a2",
+        "filename": "ocpjava/ocp-protocol-impl/src/main/java/org/opendaylight/ocpjava/protocol/impl/deserialization/factories/ReResetOutputFactory.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 5842
+      },
+      "writtenOn": "2016-05-30T06:16:00Z",
+      "side": 1,
+      "message": "Should be \"ReResetResp\" ?",
+      "range": {
+        "startLine": 30,
+        "startChar": 14,
+        "endLine": 30,
+        "endChar": 24
+      },
+      "revId": "d53ce6ae93a7889e1d3aa02772b0dd1d5f8bd7d8",
+      "serverId": "7fc14799-209e-464c-9743-7a06c2c21a81",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da5c1566_5ccfd1b0",
+        "filename": "ocpjava/ocp-protocol-impl/src/main/java/org/opendaylight/ocpjava/protocol/impl/serialization/factories/HelloInputFactory.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5842
+      },
+      "writtenOn": "2016-05-30T06:16:00Z",
+      "side": 1,
+      "message": "Should be \"Ack\"",
+      "range": {
+        "startLine": 27,
+        "startChar": 21,
+        "endLine": 27,
+        "endChar": 28
+      },
+      "revId": "d53ce6ae93a7889e1d3aa02772b0dd1d5f8bd7d8",
+      "serverId": "7fc14799-209e-464c-9743-7a06c2c21a81",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da5c1566_bcc38d89",
+        "filename": "ocpjava/ocp-protocol-impl/src/main/java/org/opendaylight/ocpjava/protocol/impl/serialization/factories/ReResetInputFactory.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 5842
+      },
+      "writtenOn": "2016-05-30T06:16:00Z",
+      "side": 1,
+      "message": "Should be \"ReResetReq\"",
+      "range": {
+        "startLine": 22,
+        "startChar": 14,
+        "endLine": 22,
+        "endChar": 22
+      },
+      "revId": "d53ce6ae93a7889e1d3aa02772b0dd1d5f8bd7d8",
+      "serverId": "7fc14799-209e-464c-9743-7a06c2c21a81",
+      "unresolved": false
+    }
+  ]
+}
