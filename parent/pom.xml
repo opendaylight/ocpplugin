@@ -37,6 +37,7 @@
         <sal.api.version>0.11.0-SNAPSHOT</sal.api.version>
         <jmxGeneratorPath>src/main/yang-gen-config</jmxGeneratorPath>
         <salGeneratorPath>src/main/yang-gen-sal</salGeneratorPath>
+        <exi.nagasena.version>0000.0002.0053.0</exi.nagasena.version>
         <controller.distribution.version>0.4.0-SNAPSHOT</controller.distribution.version>
         <config.version>0.5.0-SNAPSHOT</config.version>
         <mdsal.version>1.4.0-SNAPSHOT</mdsal.version>
