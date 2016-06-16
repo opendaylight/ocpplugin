@@ -78,7 +78,8 @@ public class SalConfigMgmtServiceImpl implements SalConfigMgmtService {
             public void onSuccess(final RpcResult<org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.ModifyParamOutput> result) {
                 org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.ModifyParamOutput output = result.getResult();
                 ModifyParamOutputBuilder builder = new ModifyParamOutputBuilder();
-                builder.setObj(output.getObj());
+                builder.setObjId(output.getObjId());
+                builder.setParam(output.getParam());
                 builder.setGlobResult(output.getGlobResult());
                 RpcResultBuilder<ModifyParamOutput> rpcResultBuilder = RpcResultBuilder.success(builder);
                 finalFuture.set(rpcResultBuilder.build());

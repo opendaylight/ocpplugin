@@ -32,7 +32,8 @@ final class GetParam extends AbstractSimpleService<GetParamInput, GetParamOutput
         final GetParamInputBuilder inputBuilder = new GetParamInputBuilder();
         inputBuilder.setMsgType(OcpMsgType.GETPARAMREQ); 
         inputBuilder.setXid(xid.getValue());
-        inputBuilder.setObj(input.getObj());
+        inputBuilder.setObjId(input.getObjId());
+        inputBuilder.setParamName(input.getParamName());
         return inputBuilder.build();
     }
 

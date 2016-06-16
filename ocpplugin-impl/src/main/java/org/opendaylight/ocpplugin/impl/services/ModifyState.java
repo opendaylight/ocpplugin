@@ -32,7 +32,9 @@ final class ModifyState extends AbstractSimpleService<ModifyStateInput, ModifySt
         final ModifyStateInputBuilder inputBuilder = new ModifyStateInputBuilder();
         inputBuilder.setMsgType(OcpMsgType.MODIFYSTATEREQ);
         inputBuilder.setXid(xid.getValue());
-        inputBuilder.setObj(input.getObj());
+        inputBuilder.setObjId(input.getObjId());
+        inputBuilder.setStateType(input.getStateType());
+        inputBuilder.setStateValue(input.getStateValue());
         return inputBuilder.build();
     }
 
