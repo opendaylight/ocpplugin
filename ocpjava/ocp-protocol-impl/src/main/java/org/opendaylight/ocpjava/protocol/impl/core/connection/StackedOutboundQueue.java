@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLongFieldUpdater;
+import java.util.Timer;
+import java.util.TimerTask;
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.GuardedBy;
 import org.opendaylight.ocpjava.protocol.api.connection.OutboundQueue;
@@ -44,6 +46,11 @@ final class StackedOutboundQueue implements OutboundQueue {
     @GuardedBy("unflushedSegments")
     private Integer shutdownOffset;
 
+    private boolean oneMsgOutgoing;
+    private Timer timer;
+    private TimerTask timerTask;
+    private static final int respTimeOut = 15000;
+
     // Accessed from Netty only
     private int flushOffset;
 
@@ -52,6 +59,7 @@ final class StackedOutboundQueue implements OutboundQueue {
         firstSegment = StackedSegment.create(0L);
         uncompletedSegments.add(firstSegment);
         unflushedSegments.add(firstSegment);
+        this.oneMsgOutgoing = false;
     }
 
     @GuardedBy("unflushedSegments")
@@ -164,6 +172,11 @@ final class StackedOutboundQueue implements OutboundQueue {
         int entries = 0;
 
         while (channel.isWritable()) {
+
+            if (getOneMsgOutgoing() == true) {
+                break;
+            }
+
             final OutboundQueueEntry entry = segment.getEntry(flushOffset);
             if (!entry.isCommitted()) {
                 LOG.debug("Queue {} XID {} segment {} offset {} not committed yet", this, segment.getBaseXid() + flushOffset, segment, flushOffset);
@@ -219,6 +232,22 @@ final class StackedOutboundQueue implements OutboundQueue {
                     LOG.debug("Queue {} flush moved to segment {}", this, segment);
                 }
             }
+
+            setOneMsgOutgoing(true);
+            //New a timer if received no response, set oneMsgOutgoing false to let others message outgoing after timeout
+            timer = new Timer();
+            timerTask = new TimerTask() {
+                @Override
+                public void run() {
+                    LOG.error("Timeout, no resp of msg = {}, msg Xid = {}", message, message.getXid());
+                    timer.cancel();
+                    timer.purge();
+                    setOneMsgOutgoing(false);
+                    return;
+                }
+            };
+            LOG.debug("Timer countDown");
+            timer.schedule(timerTask, respTimeOut);
         }
 
         return entries;
@@ -240,6 +269,11 @@ final class StackedOutboundQueue implements OutboundQueue {
                 it.remove();
                 queue.recycle();
             }
+
+            LOG.trace("Received resp, permit another outGoing message");
+            timer.cancel();
+            timer.purge();
+            setOneMsgOutgoing(false);
 
             return true;
         }
@@ -308,5 +342,14 @@ final class StackedOutboundQueue implements OutboundQueue {
         }
 
         return firstSegment.getEntry(flushOffset).isCommitted();
+    }
+
+    boolean getOneMsgOutgoing() {
+        return this.oneMsgOutgoing;
+    }
+
+    void setOneMsgOutgoing(boolean oneMsgOutgoing) {
+        LOG.debug("oneMsgOutgoing = {}", oneMsgOutgoing);
+        this.oneMsgOutgoing = oneMsgOutgoing;
     }
 }
