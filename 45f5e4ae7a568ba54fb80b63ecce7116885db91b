@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "ba51214e_f420639d",
+        "filename": "ocpjava/ocp-protocol-impl/src/main/java/org/opendaylight/ocpjava/protocol/impl/core/connection/StackedOutboundQueue.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 5859
+      },
+      "writtenOn": "2016-06-16T17:18:01Z",
+      "side": 1,
+      "message": "removed it",
+      "parentUuid": "ba51214e_1feff5b1",
+      "range": {
+        "startLine": 175,
+        "startChar": 12,
+        "endLine": 175,
+        "endChar": 95
+      },
+      "revId": "45f5e4ae7a568ba54fb80b63ecce7116885db91b",
+      "serverId": "7fc14799-209e-464c-9743-7a06c2c21a81",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ba51214e_7f60b135",
         "filename": "ocpjava/ocp-protocol-impl/src/main/java/org/opendaylight/ocpjava/protocol/impl/core/connection/StackedOutboundQueue.java",
         "patchSetId": 1
@@ -36,6 +60,30 @@
       "writtenOn": "2016-06-16T09:47:04Z",
       "side": 1,
       "message": "It would make more sense to say \"This is to make sure there exists only one outstanding message at any given time\"",
+      "range": {
+        "startLine": 176,
+        "startChar": 12,
+        "endLine": 176,
+        "endChar": 44
+      },
+      "revId": "45f5e4ae7a568ba54fb80b63ecce7116885db91b",
+      "serverId": "7fc14799-209e-464c-9743-7a06c2c21a81",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba51214e_743453de",
+        "filename": "ocpjava/ocp-protocol-impl/src/main/java/org/opendaylight/ocpjava/protocol/impl/core/connection/StackedOutboundQueue.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 5859
+      },
+      "writtenOn": "2016-06-16T17:18:01Z",
+      "side": 1,
+      "message": "modified as you mention",
+      "parentUuid": "ba51214e_7f60b135",
       "range": {
         "startLine": 176,
         "startChar": 12,
@@ -94,6 +142,30 @@
     },
     {
       "key": {
+        "uuid": "ba51214e_54314feb",
+        "filename": "ocpjava/ocp-protocol-impl/src/main/java/org/opendaylight/ocpjava/protocol/impl/core/connection/StackedOutboundQueue.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 5859
+      },
+      "writtenOn": "2016-06-16T17:18:01Z",
+      "side": 1,
+      "message": "added it",
+      "parentUuid": "ba51214e_7f88b122",
+      "range": {
+        "startLine": 177,
+        "startChar": 43,
+        "endLine": 177,
+        "endChar": 44
+      },
+      "revId": "45f5e4ae7a568ba54fb80b63ecce7116885db91b",
+      "serverId": "7fc14799-209e-464c-9743-7a06c2c21a81",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ba51214e_7fc71113",
         "filename": "ocpjava/ocp-protocol-impl/src/main/java/org/opendaylight/ocpjava/protocol/impl/core/connection/StackedOutboundQueue.java",
         "patchSetId": 1
@@ -105,6 +177,30 @@
       "writtenOn": "2016-06-16T09:47:04Z",
       "side": 1,
       "message": "Don\u0027t think this line of comment is meaningful and necessary",
+      "range": {
+        "startLine": 237,
+        "startChar": 12,
+        "endLine": 237,
+        "endChar": 95
+      },
+      "revId": "45f5e4ae7a568ba54fb80b63ecce7116885db91b",
+      "serverId": "7fc14799-209e-464c-9743-7a06c2c21a81",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba51214e_b44d4b75",
+        "filename": "ocpjava/ocp-protocol-impl/src/main/java/org/opendaylight/ocpjava/protocol/impl/core/connection/StackedOutboundQueue.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 5859
+      },
+      "writtenOn": "2016-06-16T17:18:01Z",
+      "side": 1,
+      "message": "Removed it",
+      "parentUuid": "ba51214e_7fc71113",
       "range": {
         "startLine": 237,
         "startChar": 12,
@@ -140,6 +236,30 @@
     },
     {
       "key": {
+        "uuid": "ba51214e_9452c711",
+        "filename": "ocpjava/ocp-protocol-impl/src/main/java/org/opendaylight/ocpjava/protocol/impl/core/connection/StackedOutboundQueue.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 5859
+      },
+      "writtenOn": "2016-06-16T17:18:01Z",
+      "side": 1,
+      "message": "added it",
+      "parentUuid": "ba51214e_3ffc793e",
+      "range": {
+        "startLine": 241,
+        "startChar": 39,
+        "endLine": 241,
+        "endChar": 40
+      },
+      "revId": "45f5e4ae7a568ba54fb80b63ecce7116885db91b",
+      "serverId": "7fc14799-209e-464c-9743-7a06c2c21a81",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ba51214e_7fbc316d",
         "filename": "ocpjava/ocp-protocol-impl/src/main/java/org/opendaylight/ocpjava/protocol/impl/core/connection/StackedOutboundQueue.java",
         "patchSetId": 1
@@ -151,6 +271,30 @@
       "writtenOn": "2016-06-16T09:47:04Z",
       "side": 1,
       "message": "setOneMsgOutgoing(false) should be after timer.purge() in order to prevent race condition",
+      "range": {
+        "startLine": 244,
+        "startChar": 20,
+        "endLine": 244,
+        "endChar": 45
+      },
+      "revId": "45f5e4ae7a568ba54fb80b63ecce7116885db91b",
+      "serverId": "7fc14799-209e-464c-9743-7a06c2c21a81",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba51214e_14acf7ec",
+        "filename": "ocpjava/ocp-protocol-impl/src/main/java/org/opendaylight/ocpjava/protocol/impl/core/connection/StackedOutboundQueue.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 5859
+      },
+      "writtenOn": "2016-06-16T17:18:01Z",
+      "side": 1,
+      "message": "updated value should consider race condition, make sure timer already be removed",
+      "parentUuid": "ba51214e_7fbc316d",
       "range": {
         "startLine": 244,
         "startChar": 20,
@@ -186,6 +330,30 @@
     },
     {
       "key": {
+        "uuid": "ba51214e_74b9f32d",
+        "filename": "ocpjava/ocp-protocol-impl/src/main/java/org/opendaylight/ocpjava/protocol/impl/core/connection/StackedOutboundQueue.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 252,
+      "author": {
+        "id": 5859
+      },
+      "writtenOn": "2016-06-16T17:18:01Z",
+      "side": 1,
+      "message": "defined it",
+      "parentUuid": "ba51214e_5fc16de3",
+      "range": {
+        "startLine": 252,
+        "startChar": 38,
+        "endLine": 252,
+        "endChar": 42
+      },
+      "revId": "45f5e4ae7a568ba54fb80b63ecce7116885db91b",
+      "serverId": "7fc14799-209e-464c-9743-7a06c2c21a81",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ba51214e_9fbb0572",
         "filename": "ocpjava/ocp-protocol-impl/src/main/java/org/opendaylight/ocpjava/protocol/impl/core/connection/StackedOutboundQueue.java",
         "patchSetId": 1
@@ -197,6 +365,30 @@
       "writtenOn": "2016-06-16T09:47:04Z",
       "side": 1,
       "message": "Don\u0027t think this line of comment is meaningful and necessary",
+      "range": {
+        "startLine": 275,
+        "startChar": 12,
+        "endLine": 275,
+        "endChar": 95
+      },
+      "revId": "45f5e4ae7a568ba54fb80b63ecce7116885db91b",
+      "serverId": "7fc14799-209e-464c-9743-7a06c2c21a81",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba51214e_54b66f3e",
+        "filename": "ocpjava/ocp-protocol-impl/src/main/java/org/opendaylight/ocpjava/protocol/impl/core/connection/StackedOutboundQueue.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 275,
+      "author": {
+        "id": 5859
+      },
+      "writtenOn": "2016-06-16T17:18:01Z",
+      "side": 1,
+      "message": "removed it",
+      "parentUuid": "ba51214e_9fbb0572",
       "range": {
         "startLine": 275,
         "startChar": 12,
@@ -232,6 +424,30 @@
     },
     {
       "key": {
+        "uuid": "ba51214e_34965b95",
+        "filename": "ocpjava/ocp-protocol-impl/src/main/java/org/opendaylight/ocpjava/protocol/impl/core/connection/StackedOutboundQueue.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 277,
+      "author": {
+        "id": 5859
+      },
+      "writtenOn": "2016-06-16T17:18:01Z",
+      "side": 1,
+      "message": "down the level to trace",
+      "parentUuid": "ba51214e_3faab919",
+      "range": {
+        "startLine": 277,
+        "startChar": 12,
+        "endLine": 277,
+        "endChar": 123
+      },
+      "revId": "45f5e4ae7a568ba54fb80b63ecce7116885db91b",
+      "serverId": "7fc14799-209e-464c-9743-7a06c2c21a81",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ba51214e_ffcde187",
         "filename": "ocpjava/ocp-protocol-impl/src/main/java/org/opendaylight/ocpjava/protocol/impl/core/connection/StackedOutboundQueue.java",
         "patchSetId": 1
@@ -255,6 +471,30 @@
     },
     {
       "key": {
+        "uuid": "ba51214e_7490d395",
+        "filename": "ocpjava/ocp-protocol-impl/src/main/java/org/opendaylight/ocpjava/protocol/impl/core/connection/StackedOutboundQueue.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 351,
+      "author": {
+        "id": 5859
+      },
+      "writtenOn": "2016-06-16T17:18:01Z",
+      "side": 1,
+      "message": "remove it",
+      "parentUuid": "ba51214e_ffcde187",
+      "range": {
+        "startLine": 351,
+        "startChar": 4,
+        "endLine": 351,
+        "endChar": 17
+      },
+      "revId": "45f5e4ae7a568ba54fb80b63ecce7116885db91b",
+      "serverId": "7fc14799-209e-464c-9743-7a06c2c21a81",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ba51214e_3fc8f973",
         "filename": "ocpjava/ocp-protocol-impl/src/main/java/org/opendaylight/ocpjava/protocol/impl/core/connection/StackedOutboundQueue.java",
         "patchSetId": 1
@@ -266,6 +506,30 @@
       "writtenOn": "2016-06-16T09:47:04Z",
       "side": 1,
       "message": "Same as above",
+      "range": {
+        "startLine": 360,
+        "startChar": 4,
+        "endLine": 360,
+        "endChar": 15
+      },
+      "revId": "45f5e4ae7a568ba54fb80b63ecce7116885db91b",
+      "serverId": "7fc14799-209e-464c-9743-7a06c2c21a81",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba51214e_548dcf7a",
+        "filename": "ocpjava/ocp-protocol-impl/src/main/java/org/opendaylight/ocpjava/protocol/impl/core/connection/StackedOutboundQueue.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 360,
+      "author": {
+        "id": 5859
+      },
+      "writtenOn": "2016-06-16T17:18:01Z",
+      "side": 1,
+      "message": "remove it",
+      "parentUuid": "ba51214e_3fc8f973",
       "range": {
         "startLine": 360,
         "startChar": 4,
