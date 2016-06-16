@@ -45,17 +45,16 @@ public final class ScenarioFactory {
      * </ol>
      * @return stack filled with Handshake messages
      */
-    
     public static Deque<ClientEvent> createHandshakeScenario() {
         Deque<ClientEvent> stack = new ArrayDeque<>();
-        
+
         StringBuilder seq = new StringBuilder("");
         seq.append("<msg xmlns=");
         seq.append("\"http://uri.etsi.org/ori/002-2/v4.1.1\">");
             seq.append("<header>");
                 seq.append("<msgType>IND</msgType>");
                 seq.append("<msgUID>0</msgUID>");
-            seq.append("</header>");              
+            seq.append("</header>");
             seq.append("<body>");
                 seq.append("<helloInd>");
                     seq.append("<version>4.1.1</version>");
