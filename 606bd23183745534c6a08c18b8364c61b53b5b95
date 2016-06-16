@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ba51214e_9fb945ec",
+        "filename": "ocpjava/ocp-protocol-impl/src/main/java/org/opendaylight/ocpjava/protocol/impl/core/connection/StackedOutboundQueue.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5842
+      },
+      "writtenOn": "2016-06-16T09:47:04Z",
+      "side": 0,
+      "message": ".java file should not have \"x\" file attribute",
+      "revId": "606bd23183745534c6a08c18b8364c61b53b5b95",
+      "serverId": "7fc14799-209e-464c-9743-7a06c2c21a81",
+      "unresolved": false
+    }
+  ]
+}

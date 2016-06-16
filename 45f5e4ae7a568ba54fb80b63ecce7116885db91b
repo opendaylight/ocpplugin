@@ -1,0 +1,280 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ba51214e_1feff5b1",
+        "filename": "ocpjava/ocp-protocol-impl/src/main/java/org/opendaylight/ocpjava/protocol/impl/core/connection/StackedOutboundQueue.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 5842
+      },
+      "writtenOn": "2016-06-16T09:47:04Z",
+      "side": 1,
+      "message": "Don\u0027t think this line of comment is meaningful and necessary",
+      "range": {
+        "startLine": 175,
+        "startChar": 12,
+        "endLine": 175,
+        "endChar": 95
+      },
+      "revId": "45f5e4ae7a568ba54fb80b63ecce7116885db91b",
+      "serverId": "7fc14799-209e-464c-9743-7a06c2c21a81",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba51214e_7f60b135",
+        "filename": "ocpjava/ocp-protocol-impl/src/main/java/org/opendaylight/ocpjava/protocol/impl/core/connection/StackedOutboundQueue.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 5842
+      },
+      "writtenOn": "2016-06-16T09:47:04Z",
+      "side": 1,
+      "message": "It would make more sense to say \"This is to make sure there exists only one outstanding message at any given time\"",
+      "range": {
+        "startLine": 176,
+        "startChar": 12,
+        "endLine": 176,
+        "endChar": 44
+      },
+      "revId": "45f5e4ae7a568ba54fb80b63ecce7116885db91b",
+      "serverId": "7fc14799-209e-464c-9743-7a06c2c21a81",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba51214e_1f9c1569",
+        "filename": "ocpjava/ocp-protocol-impl/src/main/java/org/opendaylight/ocpjava/protocol/impl/core/connection/StackedOutboundQueue.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 5842
+      },
+      "writtenOn": "2016-06-16T09:47:04Z",
+      "side": 1,
+      "message": "Add a space here",
+      "range": {
+        "startLine": 177,
+        "startChar": 14,
+        "endLine": 177,
+        "endChar": 15
+      },
+      "revId": "45f5e4ae7a568ba54fb80b63ecce7116885db91b",
+      "serverId": "7fc14799-209e-464c-9743-7a06c2c21a81",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba51214e_7f88b122",
+        "filename": "ocpjava/ocp-protocol-impl/src/main/java/org/opendaylight/ocpjava/protocol/impl/core/connection/StackedOutboundQueue.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 5842
+      },
+      "writtenOn": "2016-06-16T09:47:04Z",
+      "side": 1,
+      "message": "Add a space here",
+      "range": {
+        "startLine": 177,
+        "startChar": 43,
+        "endLine": 177,
+        "endChar": 44
+      },
+      "revId": "45f5e4ae7a568ba54fb80b63ecce7116885db91b",
+      "serverId": "7fc14799-209e-464c-9743-7a06c2c21a81",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba51214e_7fc71113",
+        "filename": "ocpjava/ocp-protocol-impl/src/main/java/org/opendaylight/ocpjava/protocol/impl/core/connection/StackedOutboundQueue.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 5842
+      },
+      "writtenOn": "2016-06-16T09:47:04Z",
+      "side": 1,
+      "message": "Don\u0027t think this line of comment is meaningful and necessary",
+      "range": {
+        "startLine": 237,
+        "startChar": 12,
+        "endLine": 237,
+        "endChar": 95
+      },
+      "revId": "45f5e4ae7a568ba54fb80b63ecce7116885db91b",
+      "serverId": "7fc14799-209e-464c-9743-7a06c2c21a81",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba51214e_3ffc793e",
+        "filename": "ocpjava/ocp-protocol-impl/src/main/java/org/opendaylight/ocpjava/protocol/impl/core/connection/StackedOutboundQueue.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 5842
+      },
+      "writtenOn": "2016-06-16T09:47:04Z",
+      "side": 1,
+      "message": "Add a space here",
+      "range": {
+        "startLine": 241,
+        "startChar": 39,
+        "endLine": 241,
+        "endChar": 40
+      },
+      "revId": "45f5e4ae7a568ba54fb80b63ecce7116885db91b",
+      "serverId": "7fc14799-209e-464c-9743-7a06c2c21a81",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba51214e_7fbc316d",
+        "filename": "ocpjava/ocp-protocol-impl/src/main/java/org/opendaylight/ocpjava/protocol/impl/core/connection/StackedOutboundQueue.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 5842
+      },
+      "writtenOn": "2016-06-16T09:47:04Z",
+      "side": 1,
+      "message": "setOneMsgOutgoing(false) should be after timer.purge() in order to prevent race condition",
+      "range": {
+        "startLine": 244,
+        "startChar": 20,
+        "endLine": 244,
+        "endChar": 45
+      },
+      "revId": "45f5e4ae7a568ba54fb80b63ecce7116885db91b",
+      "serverId": "7fc14799-209e-464c-9743-7a06c2c21a81",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba51214e_5fc16de3",
+        "filename": "ocpjava/ocp-protocol-impl/src/main/java/org/opendaylight/ocpjava/protocol/impl/core/connection/StackedOutboundQueue.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 252,
+      "author": {
+        "id": 5842
+      },
+      "writtenOn": "2016-06-16T09:47:04Z",
+      "side": 1,
+      "message": "What about using a constant to define the max request timeout?",
+      "range": {
+        "startLine": 252,
+        "startChar": 38,
+        "endLine": 252,
+        "endChar": 42
+      },
+      "revId": "45f5e4ae7a568ba54fb80b63ecce7116885db91b",
+      "serverId": "7fc14799-209e-464c-9743-7a06c2c21a81",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba51214e_9fbb0572",
+        "filename": "ocpjava/ocp-protocol-impl/src/main/java/org/opendaylight/ocpjava/protocol/impl/core/connection/StackedOutboundQueue.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 275,
+      "author": {
+        "id": 5842
+      },
+      "writtenOn": "2016-06-16T09:47:04Z",
+      "side": 1,
+      "message": "Don\u0027t think this line of comment is meaningful and necessary",
+      "range": {
+        "startLine": 275,
+        "startChar": 12,
+        "endLine": 275,
+        "endChar": 95
+      },
+      "revId": "45f5e4ae7a568ba54fb80b63ecce7116885db91b",
+      "serverId": "7fc14799-209e-464c-9743-7a06c2c21a81",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba51214e_3faab919",
+        "filename": "ocpjava/ocp-protocol-impl/src/main/java/org/opendaylight/ocpjava/protocol/impl/core/connection/StackedOutboundQueue.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 277,
+      "author": {
+        "id": 5842
+      },
+      "writtenOn": "2016-06-16T09:47:04Z",
+      "side": 1,
+      "message": "1. This looks more like a trace message\n2. But looking at the content of the message, it seems like it is a line of comment instead of something to be logged",
+      "range": {
+        "startLine": 277,
+        "startChar": 12,
+        "endLine": 277,
+        "endChar": 123
+      },
+      "revId": "45f5e4ae7a568ba54fb80b63ecce7116885db91b",
+      "serverId": "7fc14799-209e-464c-9743-7a06c2c21a81",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba51214e_ffcde187",
+        "filename": "ocpjava/ocp-protocol-impl/src/main/java/org/opendaylight/ocpjava/protocol/impl/core/connection/StackedOutboundQueue.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 351,
+      "author": {
+        "id": 5842
+      },
+      "writtenOn": "2016-06-16T09:47:04Z",
+      "side": 1,
+      "message": "useless comments; what comments would you add in case you modify the same code fragment for fixing another bug in the future?",
+      "range": {
+        "startLine": 351,
+        "startChar": 4,
+        "endLine": 351,
+        "endChar": 17
+      },
+      "revId": "45f5e4ae7a568ba54fb80b63ecce7116885db91b",
+      "serverId": "7fc14799-209e-464c-9743-7a06c2c21a81",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ba51214e_3fc8f973",
+        "filename": "ocpjava/ocp-protocol-impl/src/main/java/org/opendaylight/ocpjava/protocol/impl/core/connection/StackedOutboundQueue.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 360,
+      "author": {
+        "id": 5842
+      },
+      "writtenOn": "2016-06-16T09:47:04Z",
+      "side": 1,
+      "message": "Same as above",
+      "range": {
+        "startLine": 360,
+        "startChar": 4,
+        "endLine": 360,
+        "endChar": 15
+      },
+      "revId": "45f5e4ae7a568ba54fb80b63ecce7116885db91b",
+      "serverId": "7fc14799-209e-464c-9743-7a06c2c21a81",
+      "unresolved": false
+    }
+  ]
+}
