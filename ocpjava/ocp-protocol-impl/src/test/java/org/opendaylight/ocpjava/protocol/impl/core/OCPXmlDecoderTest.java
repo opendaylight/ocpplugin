@@ -35,6 +35,7 @@ public class OCPXmlDecoderTest {
         assertThat(((XmlDocumentStart) temp).encoding(), is("UTF-8"));
         assertThat(((XmlDocumentStart) temp).standalone(), is(false));
         assertThat(((XmlDocumentStart) temp).encodingScheme(), is(nullValue()));
+        assertThat(((XmlDocumentStart) temp).equals(temp), is(true));
 
         //<employee xmlns:nettya=\"http://netty.io/netty/a\">
         XmlElementStart temp2 = new XmlElementStart("employee", "", "");
@@ -49,6 +50,7 @@ public class OCPXmlDecoderTest {
         assertThat(((XmlElementStart) temp2).namespaces().size(), is(1));
         assertThat(((XmlElementStart) temp2).namespaces().get(0).prefix(), is("nettya"));
         assertThat(((XmlElementStart) temp2).namespaces().get(0).uri(), is("http://netty.io/netty/a"));
+        assertThat(((XmlElementStart) temp2).equals(temp2), is(true));
 
         XmlElementStart temp3 = new XmlElementStart("id", "http://netty.io/netty/a", "nettya");
         LOGGER.debug("temp3 = {}", temp3);
@@ -70,11 +72,13 @@ public class OCPXmlDecoderTest {
         assertThat(((XmlElementEnd) temp5).name(), is("id"));
         assertThat(((XmlElementEnd) temp5).prefix(), is("nettya"));
         assertThat(((XmlElementEnd) temp5).namespace(), is("http://netty.io/netty/a"));
+        assertThat(((XmlElementEnd) temp5).equals(temp5), is(true));
 
         XmlCharacters temp6 = new XmlCharacters("\n");
         LOGGER.debug("temp6 = {}", temp6);
         assertThat(temp6, instanceOf(XmlCharacters.class));
         assertThat(((XmlCharacters) temp6).data(), is("\n"));
+        assertThat(((XmlCharacters) temp6).equals(temp6), is(true));
         
         //<name type=\"given\">
         XmlElementStart temp7 = new XmlElementStart("name", "", "");

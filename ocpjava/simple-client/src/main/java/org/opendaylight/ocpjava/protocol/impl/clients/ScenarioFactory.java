@@ -45,7 +45,6 @@ public final class ScenarioFactory {
      * </ol>
      * @return stack filled with Handshake messages
      */
-    
     public static Deque<ClientEvent> createHandshakeScenario() {
         Deque<ClientEvent> stack = new ArrayDeque<>();
         

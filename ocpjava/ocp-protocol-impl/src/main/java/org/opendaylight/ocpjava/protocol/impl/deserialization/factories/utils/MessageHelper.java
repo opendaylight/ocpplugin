@@ -79,55 +79,6 @@ public abstract class MessageHelper {
         LOGGER.debug("MessageHelper - getCharVal = {}", rel);
         return rel;
     }
-    
-    
-    public static List<org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.modifystateoutput.obj.State> getStateList(Iterator itr){
-        
-        Object objtok = itr.next();
-        while(!(objtok instanceof XmlElementStart)){
-            objtok = itr.next();
-        }
-        
-        org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.modifystateoutput.obj.StateBuilder statebuilder = new org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.modifystateoutput.obj.StateBuilder();
-        List<org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.modifystateoutput.obj.State> statelist = new ArrayList();
-        
-        while(objtok instanceof XmlElementStart) {
-            if(((XmlElementStart)objtok).name().equals("state")) {
-                //set state Name                       
-                String tmp = ((XmlElementStart)objtok).attributes().get(0).value();                                
-                statebuilder.setName(StateType.valueOf(tmp));
-                LOGGER.debug("ModifyStateOutputFactory - statebuilder getName = " + statebuilder.getName());
-                
-                //set state Value
-                String bufStr = MessageHelper.getMsgUID(itr);
-                statebuilder.setValue(StateVal.valueOf(bufStr));
-                LOGGER.debug("ModifyStateOutputFactory - statebuilder getValue = " + statebuilder.getValue());
-                
-                statelist.add(statebuilder.build());
-            }
-            
-            while(!(objtok instanceof XmlElementEnd)){
-                objtok = itr.next();                            
-            }
-            
-            objtok = itr.next();
-            LOGGER.info("ModifyStateOutputFactory - found next: {}", objtok);
-
-            if (objtok instanceof XmlElementEnd) {
-                LOGGER.info("ModifyStateOutputFactory - found XmlElementEnd: {}", objtok);
-                if(((XmlElementEnd)objtok).name().equals("obj")) {
-                    LOGGER.info("ModifyStateOutputFactory - objtok20 = " + objtok);
-                }
-            }
-            else{
-                while(!(objtok instanceof XmlElementStart)){
-                    objtok = itr.next();
-                }
-            }
-        }
-        return statelist;
-    }
-    
 }
 
 

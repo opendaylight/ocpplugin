@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLongFieldUpdater;
+import java.util.Timer;
+import java.util.TimerTask;
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.GuardedBy;
 import org.opendaylight.ocpjava.protocol.api.connection.OutboundQueue;
@@ -44,6 +46,10 @@ final class StackedOutboundQueue implements OutboundQueue {
     @GuardedBy("unflushedSegments")
     private Integer shutdownOffset;
 
+    private boolean oneMsgOutgoing;
+    private Timer timer;
+    private TimerTask timerTask;
+
     // Accessed from Netty only
     private int flushOffset;
 
@@ -52,6 +58,7 @@ final class StackedOutboundQueue implements OutboundQueue {
         firstSegment = StackedSegment.create(0L);
         uncompletedSegments.add(firstSegment);
         unflushedSegments.add(firstSegment);
+        this.oneMsgOutgoing = false;
     }
 
     @GuardedBy("unflushedSegments")
@@ -164,6 +171,13 @@ final class StackedOutboundQueue implements OutboundQueue {
         int entries = 0;
 
         while (channel.isWritable()) {
+
+            //Fixed BUG#5793 # of outstanding OCP messages per connection should not exceed one
+            //check status of oneMsgOutgoing
+            if(getOneMsgOutgoing() == true){
+                break;
+            }
+
             final OutboundQueueEntry entry = segment.getEntry(flushOffset);
             if (!entry.isCommitted()) {
                 LOG.debug("Queue {} XID {} segment {} offset {} not committed yet", this, segment.getBaseXid() + flushOffset, segment, flushOffset);
@@ -219,6 +233,23 @@ final class StackedOutboundQueue implements OutboundQueue {
                     LOG.debug("Queue {} flush moved to segment {}", this, segment);
                 }
             }
+
+            //Fixed BUG#5793 # of outstanding OCP messages per connection should not exceed one
+            //New a timer if received no response, set oneMsgOutgoing false to let others message outgo
+            setOneMsgOutgoing(true);
+            timer = new Timer();
+            timerTask = new TimerTask(){
+                @Override
+                public void run() {
+                    setOneMsgOutgoing(false);
+                    LOG.error("Timeout, no resp of msg = {}, msg Xid = {}", message, message.getXid());
+                    timer.cancel();
+                    timer.purge();
+                    return;
+                }
+            };
+            LOG.debug("Timer countDown");
+            timer.schedule(timerTask, 15000);
         }
 
         return entries;
@@ -240,6 +271,12 @@ final class StackedOutboundQueue implements OutboundQueue {
                 it.remove();
                 queue.recycle();
             }
+
+            //Fixed BUG#5793 # of outstanding OCP messages per connection should not exceed one
+            setOneMsgOutgoing(false);
+            LOG.debug("Received resp, change outGoing status to {}, permit another outGoing message", getOneMsgOutgoing());
+            timer.cancel();
+            timer.purge();
 
             return true;
         }
@@ -309,4 +346,16 @@ final class StackedOutboundQueue implements OutboundQueue {
 
         return firstSegment.getEntry(flushOffset).isCommitted();
     }
+
+    //Fixed BUG#5793 # of outstanding OCP messages per connection should not exceed one
+    //added start
+    boolean getOneMsgOutgoing(){
+        return this.oneMsgOutgoing;
+    }
+
+    void setOneMsgOutgoing(boolean oneMsgOutgoing){
+        LOG.debug("oneMsgOutgoing = {}", oneMsgOutgoing);
+        this.oneMsgOutgoing = oneMsgOutgoing;
+    }
+    //added end
 }
