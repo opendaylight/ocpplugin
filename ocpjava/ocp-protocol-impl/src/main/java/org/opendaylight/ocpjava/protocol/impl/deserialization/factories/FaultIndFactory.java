@@ -10,17 +10,17 @@ package org.opendaylight.ocpjava.protocol.impl.deserialization.factories;
 
 import org.opendaylight.ocpjava.protocol.api.extensibility.OCPDeserializer;
 
-import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.FaultIdType;
-import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.IndFaultState;
-import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.FaultServType;
+//import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.FaultIdType;
+import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.FaultId;
+//import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.IndFaultState;
+import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.FaultState;
+//import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.FaultServType;
+import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.FaultSeverity;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.xsd.types.rev150811.XsdDateTime;
 
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.FaultInd;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.FaultIndBuilder;
-import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.faultindsource.Obj;
-import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.faultindsource.ObjBuilder;
-import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.faultindsource.obj.FaultObj;
-import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.faultindsource.obj.FaultObjBuilder;
+
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.OcpMsgType;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.ObjId;
 
@@ -41,6 +41,8 @@ import org.slf4j.LoggerFactory;
  * Translates FaultInd message (OCP Protocol v4.1.1)
  * @author Marko Lai <marko.ch.lai@foxconn.com>
  */
+
+/* limitation: objId:1, faultId:1 */
 
 /*
 <!-- Example: Fault Reporting Indication -->
@@ -73,13 +75,8 @@ public class FaultIndFactory implements OCPDeserializer<FaultInd> {
     @Override
     public FaultInd deserialize(List<Object> rawMessage) {
         FaultIndBuilder builder = new FaultIndBuilder();
-        ObjBuilder objbuilder = new ObjBuilder();       
-        FaultObjBuilder faultobjbuilder = new FaultObjBuilder();
-
-        List<FaultObj> faultobj = new ArrayList();
-        List<Obj> obj = new ArrayList();
-     
         Iterator itr = rawMessage.iterator();
+
         while(itr.hasNext()) {
             Object tok = itr.next();
             LOGGER.trace("FaultIndFactory - itr = " + tok);
@@ -99,8 +96,8 @@ public class FaultIndFactory implements OCPDeserializer<FaultInd> {
                     //obj
                     else if (((XmlElementStart)tok).name().equals("obj")) {
                         //set Obj ID
-                        objbuilder.setId(new ObjId(((XmlElementStart)tok).attributes().get(0).value()));
-                        LOGGER.debug("FaultIndFactory - faultobjbuilder getId: " + objbuilder.getId());
+                        builder.setObjId(new ObjId(((XmlElementStart)tok).attributes().get(0).value()));
+                        LOGGER.debug("FaultIndFactory - builder getObjId: " + builder.getObjId());
 
                         //Character
                         tok = itr.next(); 
@@ -118,22 +115,22 @@ public class FaultIndFactory implements OCPDeserializer<FaultInd> {
                                 if(((XmlElementStart)faultTok).name().equals("faultID")) {
                             	    //get Character
                                     String bufStr = MessageHelper.getCharVal(itr);
-                                    faultobjbuilder.setFaultID(FaultIdType.valueOf(bufStr));
+                                    builder.setFaultId(FaultId.valueOf(bufStr));
                                 }
                             	else if(((XmlElementStart)faultTok).name().equals("state")) {
                       		        //get state character(content)  
                             	    String bufStr = MessageHelper.getCharVal(itr);
-                                    faultobjbuilder.setState(IndFaultState.valueOf(bufStr));
+                                    builder.setState(FaultState.valueOf(bufStr));
                                 }
                             	else if(((XmlElementStart)faultTok).name().equals("severity")) {
                       	            //get severity character(content)  
                                     String bufStr = MessageHelper.getCharVal(itr);
-                                    faultobjbuilder.setSeverity(FaultServType.valueOf(bufStr));
+                                    builder.setSeverity(FaultSeverity.valueOf(bufStr));
                                 }
                             	else if(((XmlElementStart)faultTok).name().equals("timestamp")) {
                       		        //get timestamp character(content)  
                                     String bufStr = MessageHelper.getCharVal(itr);
-                                    faultobjbuilder.setTimestamp(new XsdDateTime(bufStr));
+                                    builder.setTimestamp(new XsdDateTime(bufStr));
                                 }
                             	else if(((XmlElementStart)faultTok).name().equals("descr")) {
                                     //get descr character(content)  
@@ -143,13 +140,13 @@ public class FaultIndFactory implements OCPDeserializer<FaultInd> {
                                         buf.append(((XmlCharacters)faultTok).data().toString());
                                         faultTok = itr.next();
                                     }
-                                    faultobjbuilder.setDescr(buf.toString());
+                                    builder.setDescr(buf.toString());
                                 }
                             	else if(((XmlElementStart)faultTok).name().equals("affectedObj")) {
                                     //get descr character(content)  
                                     String bufStr = MessageHelper.getCharVal(itr);
                                     afftok.add(bufStr);
-                                    faultobjbuilder.setAffectedObj(afftok);
+                                    builder.setAffectedObj(afftok);
                                 }
                             	else {
                                     //ignore non-fault parameter, jump to next fault/non-fault parameter
@@ -171,13 +168,8 @@ public class FaultIndFactory implements OCPDeserializer<FaultInd> {
                                     break;
                                 }
                             }
-                            faultobjbuilder.setAffectedObj(afftok);
-                            LOGGER.trace("FaultIndFactory - faultobjbuilder: " + faultobjbuilder.build());
-                            faultobj.add(faultobjbuilder.build());
+                            builder.setAffectedObj(afftok);
                         }
-                        objbuilder.setFaultObj(faultobj);                    
-                        obj.add(objbuilder.build());
-                        LOGGER.trace("FaultIndFactory - objbuilder: " + objbuilder.build());
                     } 
                 }
             }
@@ -185,7 +177,6 @@ public class FaultIndFactory implements OCPDeserializer<FaultInd> {
                 LOGGER.error("Error " + tok + " " + t.toString());
             }
         }
-        builder.setObj(obj);
         LOGGER.debug("FaultIndFactory - Builder: " + builder.build());
         return builder.build();
     }

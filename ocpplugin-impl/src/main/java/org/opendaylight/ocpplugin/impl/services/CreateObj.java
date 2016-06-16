@@ -32,7 +32,8 @@ final class CreateObj extends AbstractSimpleService<CreateObjInput, CreateObjOut
         final CreateObjInputBuilder inputBuilder = new CreateObjInputBuilder();
         inputBuilder.setMsgType(OcpMsgType.CREATEOBJREQ);
         inputBuilder.setXid(xid.getValue());
-        inputBuilder.setObj(input.getObj());
+        inputBuilder.setObjType(input.getObjType());
+        inputBuilder.setParam(input.getParam());
         return inputBuilder.build();
     }
 

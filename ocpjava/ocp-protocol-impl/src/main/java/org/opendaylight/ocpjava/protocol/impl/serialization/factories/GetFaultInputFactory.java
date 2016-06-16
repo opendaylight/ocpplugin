@@ -12,9 +12,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufUtil;
 
 import org.opendaylight.ocpjava.protocol.api.extensibility.OCPSerializer;
-
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.GetFaultInput;
-import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.getfaultinput.Obj;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +21,8 @@ import org.slf4j.LoggerFactory;
  * Translates GetParamReq message (OCP Protocol v4.1.1)
  * @author Marko Lai <marko.ch.lai@foxconn.com>
  */
+
+/* limitation: objId:1 */
 
 /*
 <!-- Example: Fault Reporting Request -->
@@ -59,19 +59,19 @@ public class GetFaultInputFactory implements OCPSerializer<GetFaultInput> {
             seq.append("</header>");
             seq.append("<body>");
                 seq.append("<"); seq.append(MESSAGE_TYPE); seq.append(">");
-                //Retrival values from multiple objs
-                for (Obj currObj : message.getObj()) {
+
+                    //Retrieve single object Id
                     seq.append("<obj objID=\"");
-                    seq.append(currObj.getId().getValue().toString());
-                    seq.append("\"/>");               
-                }
-                
-                if(message.isEventDrivenReporting()){
-                    seq.append("<eventDrivenReporting>true</eventDrivenReporting>");
-                }
-                else{
-                    seq.append("<eventDrivenReporting>false</eventDrivenReporting>");
-                }
+                    seq.append(message.getObjId().getValue().toString());
+                    seq.append("\"/>");
+
+                    if(message.isEventDrivenReporting()){
+                        seq.append("<eventDrivenReporting>true</eventDrivenReporting>");
+                    }
+                    else{
+                        seq.append("<eventDrivenReporting>false</eventDrivenReporting>");
+                    }
+
                 seq.append("</"); seq.append(MESSAGE_TYPE); seq.append(">");
             seq.append("</body>");
         seq.append("</msg>");

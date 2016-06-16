@@ -123,12 +123,12 @@ public class FaultIndFactoryTest {
         BufferHelper.checkHeaderV10(builtByFactory);
         Assert.assertNotNull("Wrong elements", builtByFactory.getMsgType());
         Assert.assertNotNull("Wrong elements", builtByFactory.getXid());
-        Assert.assertNotNull("Wrong elements", builtByFactory.getObj().get(0).getId().getValue());
-        Assert.assertNotNull("Wrong elements", builtByFactory.getObj().get(0).getFaultObj().get(0).getFaultID());
-        Assert.assertNotNull("Wrong elements", builtByFactory.getObj().get(0).getFaultObj().get(0).getSeverity());
-        Assert.assertNotNull("Wrong elements", builtByFactory.getObj().get(0).getFaultObj().get(0).getTimestamp());
-        Assert.assertNotNull("Wrong elements", builtByFactory.getObj().get(0).getFaultObj().get(0).getDescr());
-        Assert.assertNotNull("Wrong elements", builtByFactory.getObj().get(0).getFaultObj().get(0).getAffectedObj().get(0));
-        Assert.assertNotNull("Wrong elements", builtByFactory.getObj().get(0).getFaultObj().get(0).getAffectedObj().get(1));
+        Assert.assertNotNull("Wrong elements", builtByFactory.getObjId().getValue());
+        Assert.assertNotNull("Wrong elements", builtByFactory.getFaultId());
+        Assert.assertNotNull("Wrong elements", builtByFactory.getSeverity());
+        Assert.assertNotNull("Wrong elements", builtByFactory.getTimestamp());
+        Assert.assertNotNull("Wrong elements", builtByFactory.getDescr());
+        Assert.assertNotNull("Wrong elements", builtByFactory.getAffectedObj().get(0));
+        Assert.assertNotNull("Wrong elements", builtByFactory.getAffectedObj().get(1));
     }
 }

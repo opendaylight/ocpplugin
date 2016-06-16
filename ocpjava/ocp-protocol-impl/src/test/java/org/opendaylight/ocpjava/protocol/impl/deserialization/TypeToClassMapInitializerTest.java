@@ -26,7 +26,7 @@ import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.Dele
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.GetStateOutput;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.ModifyStateOutput;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.GetFaultOutput;
-import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.StateChange;
+import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.StateChangeInd;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.FaultInd;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.extension.rev150811.HelloMessage;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.extension.rev150811.ReDirectOutput;
@@ -56,7 +56,7 @@ public class TypeToClassMapInitializerTest {
         assertEquals("Wrong class", CreateObjOutput.class, messageClassMap.get(new TypeToClassKey(version, 11)));
         assertEquals("Wrong class", DeleteObjOutput.class, messageClassMap.get(new TypeToClassKey(version, 13)));
         assertEquals("Wrong class", GetStateOutput.class, messageClassMap.get(new TypeToClassKey(version, 15)));
-        assertEquals("Wrong class", StateChange.class, messageClassMap.get(new TypeToClassKey(version, 16)));
+        assertEquals("Wrong class", StateChangeInd.class, messageClassMap.get(new TypeToClassKey(version, 16)));
         assertEquals("Wrong class", ModifyStateOutput.class, messageClassMap.get(new TypeToClassKey(version, 18)));
         assertEquals("Wrong class", GetFaultOutput.class, messageClassMap.get(new TypeToClassKey(version, 20)));
         assertEquals("Wrong class", FaultInd.class, messageClassMap.get(new TypeToClassKey(version, 21)));

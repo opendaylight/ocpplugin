@@ -14,10 +14,8 @@ import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.Crea
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.CreateObjRes;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.CreateObjGlobRes;
 
-import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.createobjoutput.Obj;
-import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.createobjoutput.ObjBuilder;
-import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.createobjoutput.obj.Param;
-import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.createobjoutput.obj.ParamBuilder;
+import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.createobjoutput.Param;
+import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.createobjoutput.ParamBuilder;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.OcpMsgType;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.ObjId;
 
@@ -38,6 +36,8 @@ import org.slf4j.LoggerFactory;
  * Translates CreateObjResp message (OCP Protocol v4.1.1)
  * @author Marko Lai <marko.ch.lai@foxconn.com>
  */
+
+/* limitation: objId:0..1, params(name, result):1..X */
 
 /*
 <!-- Example: Object Creation Response (multiple parameters, parameter failure) -->
@@ -69,10 +69,8 @@ public class CreateObjOutputFactory implements OCPDeserializer<CreateObjOutput> 
     @Override
     public CreateObjOutput deserialize(List<Object> rawMessage) {
         CreateObjOutputBuilder builder = new CreateObjOutputBuilder();
-        ObjBuilder objbuilder = new ObjBuilder();       
-        List<Obj> objs = new ArrayList();
-
         Iterator itr = rawMessage.iterator();
+
         while(itr.hasNext()) {
             Object tok = itr.next();
             LOGGER.trace("CreateObjOutputFactory - itr = " + tok);
@@ -98,12 +96,11 @@ public class CreateObjOutputFactory implements OCPDeserializer<CreateObjOutput> 
                     else if (((XmlElementStart)tok).name().equals("obj")) {
                     	//set Obj ID
                     	if(((XmlElementStart)tok).attributes().size() >= 1){
-                    	    objbuilder.setId(new ObjId(((XmlElementStart)tok).attributes().get(0).value()));
+                            builder.setObjId(new ObjId(((XmlElementStart)tok).attributes().get(0).value()));
                     	}
-                    	objbuilder.setParam(getListParam(itr));
+                        builder.setParam(getListParam(itr));
               
-                        LOGGER.trace("CreateObjOutputFactory - objbuilder.build() " + objbuilder.build());
-                        objs.add(objbuilder.build());
+                        LOGGER.trace("CreateObjOutputFactory - builder.getParam() " + builder.getParam());
                     }
                 } 
             }
@@ -111,14 +108,12 @@ public class CreateObjOutputFactory implements OCPDeserializer<CreateObjOutput> 
                 LOGGER.error("Error {} ", tok, t);
             }
         }
-        builder.setObj(objs);
-        LOGGER.debug("CreateObjOutputFactory - Builder: " + builder.build());
+        LOGGER.info("CreateObjOutputFactory - Builder: " + builder.build());
         return builder.build();
     }
 
 
     public List<Param> getListParam(Iterator itr){
-        
         ParamBuilder parambuilder = new ParamBuilder();
         List<Param> plist = new ArrayList();
 

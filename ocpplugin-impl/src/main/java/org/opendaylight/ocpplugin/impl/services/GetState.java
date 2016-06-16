@@ -32,7 +32,8 @@ final class GetState extends AbstractSimpleService<GetStateInput, GetStateOutput
         final GetStateInputBuilder inputBuilder = new GetStateInputBuilder();
         inputBuilder.setMsgType(OcpMsgType.GETSTATEREQ);
         inputBuilder.setXid(xid.getValue());
-        inputBuilder.setObj(input.getObj());
+        inputBuilder.setObjId(input.getObjId());
+        inputBuilder.setStateType(input.getStateType());
         inputBuilder.setEventDrivenReporting(input.isEventDrivenReporting());
         return inputBuilder.build();
     }

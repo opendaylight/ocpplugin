@@ -28,10 +28,6 @@ import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.GetP
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.GetParamInputBuilder;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.ObjId;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.OcpMsgType;
-import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.getparaminput.Obj;
-import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.getparaminput.ObjBuilder;
-import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.getparaminput.obj.Param;
-import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.getparaminput.obj.ParamBuilder;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.xsd.types.rev150811.XsdUnsignedShort;
 
 import org.slf4j.Logger;
@@ -71,25 +67,17 @@ public class GetParamInputFactoryTest {
         Method m2_t = hib.getClass().getMethod("setXid", Long.class);
         m2_t.invoke(hib, new Long(0));
 
-
-        //set Obj
-        ObjBuilder objbuilder = new ObjBuilder();
-        ParamBuilder parambuilder1 = new ParamBuilder();
-        List<Param> plist = new ArrayList();
-        parambuilder1.setName("vendorID");
-        plist.add(parambuilder1.build());
-        objbuilder.setParam(plist);
+        //set ObjId
+        Method m3_t = hib.getClass().getMethod("setObjId", ObjId.class);
+        m3_t.invoke(hib, new ObjId(testObjId));
         
-        objbuilder.setId(new ObjId(testObjId));
-        List<Obj> objlist = new ArrayList();
-        objlist.add(objbuilder.build());
-        
-        Method m_t = hib.getClass().getMethod("setObj", List.class);
-        m_t.invoke(hib, objlist);
+        //set paramName
+        Method m4_t = hib.getClass().getMethod("setParamName", String.class);
+        m4_t.invoke(hib, "vendorID");
         
         GetParamInput hi = hib.build();
-        LOGGER.debug("GetParamInputFactoryTest - hi objId = {}", hi.getObj().get(0).getId().getValue());    
-        LOGGER.debug("GetParamInputFactoryTest - hi param = {}", hi.getObj().get(0).getParam().get(0).getName());    
+        LOGGER.debug("GetParamInputFactoryTest - hi objId = {}", hi.getObjId().getValue());
+        LOGGER.debug("GetParamInputFactoryTest - hi paramName = {}", hi.getParamName());
 
         ByteBuf out = UnpooledByteBufAllocator.DEFAULT.buffer();
         getParamInputFactory.serialize(hi, out);

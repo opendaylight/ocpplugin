@@ -28,8 +28,6 @@ import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.GetF
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.GetFaultInputBuilder;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.ObjId;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.OcpMsgType;
-import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.getfaultinput.Obj;
-import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.getfaultinput.ObjBuilder;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.xsd.types.rev150811.XsdUnsignedShort;
 
 import org.slf4j.Logger;
@@ -70,21 +68,16 @@ public class GetFaultInputFactoryTest {
         Method m2_t = hib.getClass().getMethod("setXid", Long.class);
         m2_t.invoke(hib, new Long(0));
 
-        //set eventDrivenReporting
-        Method m3_t = hib.getClass().getMethod("setEventDrivenReporting", Boolean.class);
-        m3_t.invoke(hib, new Boolean(testEvent));
+        //set ObjId
+        Method m3_t = hib.getClass().getMethod("setObjId", ObjId.class);
+        m3_t.invoke(hib, new ObjId(testObjId));
 
-        //set Obj
-        ObjBuilder objbuilder = new ObjBuilder();
-        objbuilder.setId(new ObjId(testObjId));
-        List<Obj> objlist = new ArrayList();
-        objlist.add(objbuilder.build());
-        
-        Method m4_t = hib.getClass().getMethod("setObj", List.class);
-        m4_t.invoke(hib, objlist);
-        
+        //set eventDrivenReporting
+        Method m4_t = hib.getClass().getMethod("setEventDrivenReporting", Boolean.class);
+        m4_t.invoke(hib, new Boolean(testEvent));
+
         GetFaultInput hi = hib.build();
-        LOGGER.debug("GetFaultInputFactoryTest - hi objId value = {}", hi.getObj().get(0).getId().getValue());    
+        LOGGER.debug("GetFaultInputFactoryTest - hi objId value = {}", hi.getObjId());
 
         ByteBuf out = UnpooledByteBufAllocator.DEFAULT.buffer();
         getFaultInputFactory.serialize(hi, out);

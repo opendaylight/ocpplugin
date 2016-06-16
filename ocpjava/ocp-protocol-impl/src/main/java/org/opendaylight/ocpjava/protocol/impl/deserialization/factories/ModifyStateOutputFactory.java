@@ -16,10 +16,6 @@ import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.StateVal;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.ModifyStateRes;
 
-import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.modifystateoutput.Obj;
-import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.modifystateoutput.ObjBuilder;
-import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.modifystateoutput.obj.State;
-import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.modifystateoutput.obj.StateBuilder;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.OcpMsgType;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.ObjId;
 
@@ -41,6 +37,8 @@ import org.slf4j.LoggerFactory;
  * @author Marko Lai <marko.ch.lai@foxconn.com>
  */
 
+/* limitation: objId:1, state(name, result):1 */
+
 /*
 <!-- Example: Object State Modification Response -->
 <msg xmlns="http://uri.etsi.org/ori/002-2/v4.1.1">
@@ -54,9 +52,6 @@ import org.slf4j.LoggerFactory;
             <obj objID="exampleObj:0">
                 <state type="AST">UNLOCKED</state>
             </obj>
-            <obj objID="exampleObj:1">
-                <state type="AST">UNLOCKED</state>
-            </obj>
         </modifyStateResp>
     </body>
 </msg>
@@ -68,7 +63,6 @@ public class ModifyStateOutputFactory implements OCPDeserializer<ModifyStateOutp
     @Override
     public ModifyStateOutput deserialize(List<Object> rawMessage) {
         ModifyStateOutputBuilder builder = new ModifyStateOutputBuilder();
-        List<Obj> objlist = new ArrayList();
         Iterator itr = rawMessage.iterator();
         
         while(itr.hasNext()) {
@@ -94,34 +88,26 @@ public class ModifyStateOutputFactory implements OCPDeserializer<ModifyStateOutp
                     }
                     //obj
                     if (((XmlElementStart)tok).name().equals("obj")) {
-
-                        ObjBuilder objbuilder = new ObjBuilder();       
-                        
                         //set Obj ID
-                        objbuilder.setId(new ObjId(((XmlElementStart)tok).attributes().get(0).value()));
-                        LOGGER.debug("ModifyStateOutputFactory - objbuilder getId = " + objbuilder.getId());
+                        builder.setObjId(new ObjId(((XmlElementStart)tok).attributes().get(0).value()));
+                        LOGGER.debug("ModifyStateOutputFactory - builder getObjId = " + builder.getObjId());
 
                         Object objtok = itr.next();
                         while(!(objtok instanceof XmlElementStart)){
                             objtok = itr.next();
                         }
-
-                        StateBuilder statebuilder = new StateBuilder();
-                        List<State> statelist = new ArrayList();
                         
                         while(objtok instanceof XmlElementStart) {
                             if(((XmlElementStart)objtok).name().equals("state")) {
                                 //set state Name                       
                                 String tmp = ((XmlElementStart)objtok).attributes().get(0).value();                                
-                                statebuilder.setName(StateType.valueOf(tmp));
-                                LOGGER.debug("ModifyStateOutputFactory - statebuilder getName = " + statebuilder.getName());
+                                builder.setStateType(StateType.valueOf(tmp));
+                                LOGGER.debug("ModifyStateOutputFactory - builder getStateType = " + builder.getStateType());
 
                                 //set state Value
                                 String bufStr = MessageHelper.getCharVal(itr);
-                            	statebuilder.setValue(StateVal.valueOf(bufStr));
-                                LOGGER.debug("ModifyStateOutputFactory - statebuilder getValue = " + statebuilder.getValue());
-
-                                statelist.add(statebuilder.build());
+                                builder.setStateValue(StateVal.valueOf(bufStr));
+                                LOGGER.debug("ModifyStateOutputFactory - builder getStateValue = " + builder.getStateValue());
 
                                 //skip state of XmlElementEnd
                                 while(!(objtok instanceof XmlElementEnd)){
@@ -150,9 +136,6 @@ public class ModifyStateOutputFactory implements OCPDeserializer<ModifyStateOutp
                                 }
                             }
                         }
-                        objbuilder.setState(statelist);                    
-                        LOGGER.trace("ModifyStateOutputFactory - objbuilder.build(): " + objbuilder.build());
-                        objlist.add(objbuilder.build());
                     }
                 } 
             }
@@ -160,7 +143,6 @@ public class ModifyStateOutputFactory implements OCPDeserializer<ModifyStateOutp
                 LOGGER.error("Error " + tok + " " + t.toString());
             }
         }
-        builder.setObj(objlist);
         LOGGER.debug("ModifyStateOutputFactory - Builder: " + builder.build());
         return builder.build();
     }

@@ -29,10 +29,8 @@ import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.Modi
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.ObjId;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.OcpMsgType;
 
-import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.modifyparaminput.Obj;
-import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.modifyparaminput.ObjBuilder;
-import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.modifyparaminput.obj.Param;
-import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.modifyparaminput.obj.ParamBuilder;
+import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.modifyparaminput.Param;
+import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.modifyparaminput.ParamBuilder;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -72,33 +70,30 @@ public class ModifyParamInputFactoryTest {
         Method m_t = hib.getClass().getMethod("setXid", Long.class);
         m_t.invoke(hib, new Long(0));
 
-        //set Obj with params
-        ObjBuilder objbuilder = new ObjBuilder();
+        //set ObjId
+        Method m2_t = hib.getClass().getMethod("setObjId", ObjId.class);
+        m2_t.invoke(hib, new ObjId(testObjId));
         
-        ParamBuilder parambuilder1 = new ParamBuilder();
+        //set Params
         List<Param> plist = new ArrayList();
+        ParamBuilder parambuilder1 = new ParamBuilder();
         parambuilder1.setName("parameter1");
-        parambuilder1.setName("value1");
+        parambuilder1.setValue("value1");
         plist.add(parambuilder1.build());
         ParamBuilder parambuilder2 = new ParamBuilder();
         parambuilder2.setName("parameter2");
-        parambuilder2.setName("value2");
+        parambuilder2.setValue("value2");
         plist.add(parambuilder2.build());
         ParamBuilder parambuilder3 = new ParamBuilder();
         parambuilder3.setName("parameter3");
-        parambuilder3.setName("a wrong value");
+        parambuilder3.setValue("a wrong value");
         plist.add(parambuilder3.build());
-        objbuilder.setParam(plist);
-        
-        objbuilder.setId(new ObjId(testObjId));
-        List<Obj> objlist = new ArrayList();
-        objlist.add(objbuilder.build());
-        
-        Method m2_t = hib.getClass().getMethod("setObj", List.class);
-        m2_t.invoke(hib, objlist);
+
+        Method m3_t = hib.getClass().getMethod("setParam", List.class);
+        m3_t.invoke(hib, plist);
         
         ModifyParamInput hi = hib.build();
-        LOGGER.debug("ModifyParamInputFactoryTest - hi objId value = {}", hi.getObj().get(0).getId().getValue());    
+        LOGGER.debug("ModifyParamInputFactoryTest - hi objId value = {}", hi.getObjId());
 
         ByteBuf out = UnpooledByteBufAllocator.DEFAULT.buffer();
         modifyParamInputFactory.serialize(hi, out);

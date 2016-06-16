@@ -28,10 +28,8 @@ import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.Crea
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.CreateObjInputBuilder;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.ObjType;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.OcpMsgType;
-import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.createobjinput.Obj;
-import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.createobjinput.ObjBuilder;
-import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.createobjinput.obj.Param;
-import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.createobjinput.obj.ParamBuilder;
+import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.createobjinput.Param;
+import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.createobjinput.ParamBuilder;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.xsd.types.rev150811.XsdUnsignedShort;
 
 import org.opendaylight.ocpjava.protocol.impl.core.XmlElementStart;
@@ -71,14 +69,17 @@ public class CreateObjInputFactoryTest {
         CreateObjInputBuilder hib = new CreateObjInputBuilder();
         BufferHelper.setupHeader(hib, OcpMsgType.valueOf("CREATEOBJREQ"));
         boolean testEvent = true;
-        String testObjId = "exampleObj";
+        String testObjTypeId = "exampleObj";
         
         //set xid
         Method m2_t = hib.getClass().getMethod("setXid", Long.class);
         m2_t.invoke(hib, new Long(0));
 
-        //set Obj with param
-        ObjBuilder objbuilder = new ObjBuilder();
+        //set ObjType
+        Method m3_t = hib.getClass().getMethod("setObjType", ObjType.class);
+        m3_t.invoke(hib, new ObjType(testObjTypeId));
+
+        //set params
         ParamBuilder parambuilder1 = new ParamBuilder();
         List<Param> plist = new ArrayList();
         parambuilder1.setName("parameter1");
@@ -88,18 +89,11 @@ public class CreateObjInputFactoryTest {
         parambuilder2.setName("parameter2");
         parambuilder2.setValue("value2");
         plist.add(parambuilder2.build());
-        objbuilder.setParam(plist);
-
-        objbuilder.setType(new ObjType(testObjId));
-        
-        List<Obj> objlist = new ArrayList();
-        objlist.add(objbuilder.build());
-        
-        Method m4_t = hib.getClass().getMethod("setObj", List.class);
-        m4_t.invoke(hib, objlist);
+        Method m4_t = hib.getClass().getMethod("setParam", List.class);
+        m4_t.invoke(hib, plist);
         
         CreateObjInput hi = hib.build();
-        LOGGER.debug("CreateObjInputFactoryTest - hi objId value = {}", hi.getObj());    
+        LOGGER.debug("CreateObjInputFactoryTest - hi objId value = {}", hi.getObjType());
 
         ByteBuf out = UnpooledByteBufAllocator.DEFAULT.buffer();
         createObjInputFactory.serialize(hi, out);
@@ -117,7 +111,7 @@ public class CreateObjInputFactoryTest {
 
         StringBuilder seq2 = new StringBuilder("");
         seq2.append("<objType objTypeID=\"");
-        seq2.append(testObjId);
+        seq2.append(testObjTypeId);
         seq2.append("\">");
         boolean checkVal2 = buf.contains(seq2);
         

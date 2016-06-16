@@ -16,8 +16,6 @@ import io.netty.buffer.*;
 
 import java.util.*;
 import org.opendaylight.ocpjava.util.ByteBufUtils;
-import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.getparaminput.Obj;
-import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.getparaminput.obj.Param;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,6 +43,7 @@ public final class ScenarioFactory {
      * </ol>
      * @return stack filled with Handshake messages
      */
+
     public static Deque<ClientEvent> createHandshakeScenario() {
         Deque<ClientEvent> stack = new ArrayDeque<>();
 

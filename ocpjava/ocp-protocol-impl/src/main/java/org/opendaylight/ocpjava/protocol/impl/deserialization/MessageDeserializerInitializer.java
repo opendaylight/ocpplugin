@@ -38,7 +38,7 @@ import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.Modi
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.CreateObjOutput;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.DeleteObjOutput;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.ModifyStateOutput;
-import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.StateChange;
+import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.StateChangeInd;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.extension.rev150811.HelloMessage;
 
 /**
@@ -68,7 +68,7 @@ public final class MessageDeserializerInitializer {
         helper.registerDeserializer(11, null, CreateObjOutput.class, new CreateObjOutputFactory());
         helper.registerDeserializer(13, null, DeleteObjOutput.class, new DeleteObjOutputFactory());        
         helper.registerDeserializer(15, null, GetStateOutput.class, new GetStateOutputFactory());
-        helper.registerDeserializer(16, null, StateChange.class, new StateChangeFactory());
+        helper.registerDeserializer(16, null, StateChangeInd.class, new StateChangeFactory());
         helper.registerDeserializer(18, null, ModifyStateOutput.class, new ModifyStateOutputFactory());
         helper.registerDeserializer(20, null, GetFaultOutput.class, new GetFaultOutputFactory());
         helper.registerDeserializer(21, null, FaultInd.class, new FaultIndFactory());

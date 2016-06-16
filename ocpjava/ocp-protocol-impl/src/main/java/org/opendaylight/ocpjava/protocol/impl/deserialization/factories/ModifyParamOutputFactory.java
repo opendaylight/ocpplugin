@@ -16,10 +16,9 @@ import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.ModifyParamGlobRes;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.ObjId;
 
-import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.modifyparamoutput.Obj;
-import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.modifyparamoutput.ObjBuilder;
-import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.modifyparamoutput.obj.Param;
-import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.modifyparamoutput.obj.ParamBuilder;
+import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.modifyparamoutput.Param;
+import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.modifyparamoutput.ParamBuilder;
+
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.OcpMsgType;
 
 import org.opendaylight.ocpjava.protocol.impl.core.XmlElementStart;
@@ -39,6 +38,8 @@ import org.slf4j.LoggerFactory;
  * Translates ModifyParamResp message (OCP Protocol v4.1.1)
  * @author Marko Lai <marko.ch.lai@foxconn.com>
  */
+
+/* limitation: objId:0..1, params(name, result):1..X */
 
 /*
 <!-- Example: Modify Parameter Response (multiple parameters, failure) -->
@@ -70,13 +71,10 @@ public class ModifyParamOutputFactory implements OCPDeserializer<ModifyParamOutp
     @Override
     public ModifyParamOutput deserialize(List<Object> rawMessage) {
         ModifyParamOutputBuilder builder = new ModifyParamOutputBuilder();
-        ObjBuilder objbuilder = new ObjBuilder();       
         ParamBuilder parambuilder = new ParamBuilder();
-
         List<Param> paramlist = new ArrayList();
-        List<Obj> objlist = new ArrayList();
-
         Iterator itr = rawMessage.iterator();
+
         while(itr.hasNext()) {
             Object tok = itr.next();
             LOGGER.trace("ModifyParamOutputFactory - itr = " + tok);
@@ -101,9 +99,9 @@ public class ModifyParamOutputFactory implements OCPDeserializer<ModifyParamOutp
                     //obj
                     else if (((XmlElementStart)tok).name().equals("obj")) {
                         if(((XmlElementStart)tok).attributes().size() >= 1){
-                    	    objbuilder.setId(new ObjId(((XmlElementStart)tok).attributes().get(0).value()));
+                            builder.setObjId(new ObjId(((XmlElementStart)tok).attributes().get(0).value()));
                     	}
-                        LOGGER.debug("ModifyParamOutputFactory - getId = " + objbuilder.getId());
+                        LOGGER.debug("ModifyParamOutputFactory - getObjId = " + builder.getObjId());
 
                         tok = itr.next();                                                	
                         while(!(tok instanceof XmlElementStart)) {
@@ -146,10 +144,9 @@ public class ModifyParamOutputFactory implements OCPDeserializer<ModifyParamOutp
                                 }
                             }
                         }
-                        objbuilder.setParam(paramlist);                    
+                        builder.setParam(paramlist);
                         paramlist = new ArrayList();
-                        LOGGER.trace("ModifyParamOutputFactory - objbuilder.build() = " + objbuilder.build());                        
-                        objlist.add(objbuilder.build());
+                        LOGGER.trace("ModifyParamOutputFactory - builder.getParam() = " + builder.getParam());
                     }
                 } 
             }
@@ -157,8 +154,7 @@ public class ModifyParamOutputFactory implements OCPDeserializer<ModifyParamOutp
                 LOGGER.error("Error " + tok + " " + t.toString());
             }
         }
-        builder.setObj(objlist);
-        LOGGER.debug("ModifyParamOutputFactory - Builder: " + builder.build());
+        LOGGER.info("ModifyParamOutputFactory - Builder: " + builder.build());
         return builder.build();
     }
 }

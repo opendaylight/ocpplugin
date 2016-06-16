@@ -32,7 +32,8 @@ final class ModifyParam extends AbstractSimpleService<ModifyParamInput, ModifyPa
         final ModifyParamInputBuilder inputBuilder = new ModifyParamInputBuilder();
         inputBuilder.setMsgType(OcpMsgType.MODIFYPARAMREQ);
         inputBuilder.setXid(xid.getValue());
-        inputBuilder.setObj(input.getObj());
+        inputBuilder.setObjId(input.getObjId());
+        inputBuilder.setParam(input.getParam());
         return inputBuilder.build();
     }
 

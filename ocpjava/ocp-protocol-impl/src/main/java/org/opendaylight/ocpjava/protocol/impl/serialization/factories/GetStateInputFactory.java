@@ -12,10 +12,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufUtil;
 
 import org.opendaylight.ocpjava.protocol.api.extensibility.OCPSerializer;
-
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.GetStateInput;
-import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.getstateinput.Obj;
-import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.getstateinput.obj.State;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +21,8 @@ import org.slf4j.LoggerFactory;
  * Translates GetParamReq message (OCP Protocol v4.1.1)
  * @author Marko Lai <marko.ch.lai@foxconn.com>
  */
+
+/* limitation: objId:1, stateType:1 */
 
 /*
 <!-- Example: Object State Reporting Request (wildcarded) -->
@@ -62,18 +61,16 @@ public class GetStateInputFactory implements OCPSerializer<GetStateInput> {
             seq.append("</header>");
             seq.append("<body>");
                 seq.append("<"); seq.append(MESSAGE_TYPE); seq.append(">");
-                //Retrival values from multiple objs
-                for (Obj currObj : message.getObj()) {
+
+                    //Retrieve single object Id
                     seq.append("<obj objID=\"");
-                    seq.append(currObj.getId().getValue().toString());
-                    seq.append("\">");               
-                    for (State currState : currObj.getState()) {
-                       seq.append("<state type=\"");
-                           seq.append(currState.getName().toString());
-                           seq.append("\"/>");
-                        }
-                        seq.append("</obj>");
-                    }
+                    seq.append(message.getObjId().getValue().toString());
+                    seq.append("\">");
+                        //Retrieve single stateType
+                        seq.append("<state type=\"");
+                        seq.append(message.getStateType().toString());
+                        seq.append("\"/>");
+                    seq.append("</obj>");
                 
                 if(message.isEventDrivenReporting()){
                     seq.append("<eventDrivenReporting>true</eventDrivenReporting>");
@@ -81,6 +78,7 @@ public class GetStateInputFactory implements OCPSerializer<GetStateInput> {
                 else{
                     seq.append("<eventDrivenReporting>false</eventDrivenReporting>");
                 }
+
                 seq.append("</"); seq.append(MESSAGE_TYPE); seq.append(">");
             seq.append("</body>");
         seq.append("</msg>");

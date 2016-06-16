@@ -66,7 +66,6 @@
         }
     }
 
-    //Add 20151013
     rpc re-direct {
         input {
             uses ocpt:ocpHeader;
@@ -79,7 +78,6 @@
     }  // rpc re-direct
 
 
-    //Add 20151013
     rpc hello {
         input {
             uses ocpt:ocpHeader;
@@ -87,7 +85,6 @@
         }
     }  // rpc hello
 
-    //Modify 20151013
     notification hello-message {
         uses ocpt:ocpHeader;
         uses helloInd;

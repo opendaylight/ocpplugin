@@ -33,7 +33,7 @@ module sal-fault-mgmt {
 
     notification fault-ind {
         uses inv:node-context-ref;
-        uses ocpt:faultIndSource;
+        uses ocpt:faultInd;
     }
 
 }

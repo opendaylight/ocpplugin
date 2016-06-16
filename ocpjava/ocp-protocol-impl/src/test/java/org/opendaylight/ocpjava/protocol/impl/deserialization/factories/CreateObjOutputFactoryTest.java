@@ -138,12 +138,12 @@ public class CreateObjOutputFactoryTest {
         Assert.assertNotNull("Wrong elements", builtByFactory.getMsgType());
         Assert.assertNotNull("Wrong elements", builtByFactory.getGlobResult());
         Assert.assertNotNull("Wrong elements", builtByFactory.getXid());
-        Assert.assertNotNull("Wrong elements", builtByFactory.getObj().get(0).getId().getValue());
-        Assert.assertNotNull("Wrong elements", builtByFactory.getObj().get(0).getParam().get(0).getName());
-        Assert.assertNotNull("Wrong elements", builtByFactory.getObj().get(0).getParam().get(0).getResult());
-        Assert.assertNotNull("Wrong elements", builtByFactory.getObj().get(0).getParam().get(1).getName());
-        Assert.assertNotNull("Wrong elements", builtByFactory.getObj().get(0).getParam().get(1).getResult());
-        Assert.assertNotNull("Wrong elements", builtByFactory.getObj().get(0).getParam().get(2).getName());
-        Assert.assertNotNull("Wrong elements", builtByFactory.getObj().get(0).getParam().get(2).getResult());
+        Assert.assertNotNull("Wrong elements", builtByFactory.getObjId().getValue());
+        Assert.assertNotNull("Wrong elements", builtByFactory.getParam().get(0).getName());
+        Assert.assertNotNull("Wrong elements", builtByFactory.getParam().get(0).getResult());
+        Assert.assertNotNull("Wrong elements", builtByFactory.getParam().get(1).getName());
+        Assert.assertNotNull("Wrong elements", builtByFactory.getParam().get(1).getResult());
+        Assert.assertNotNull("Wrong elements", builtByFactory.getParam().get(2).getName());
+        Assert.assertNotNull("Wrong elements", builtByFactory.getParam().get(2).getResult());
     }
 }

@@ -11,7 +11,7 @@ import java.util.List;
 import org.opendaylight.ocpplugin.api.ocp.device.Xid;
 import org.opendaylight.ocpplugin.api.ocp.device.listener.OcpMessageListenerFacade;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.FaultInd;
-import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.StateChange;
+import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.StateChangeInd;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.extension.rev150811.HelloMessage;
 
 /*
@@ -32,6 +32,6 @@ public interface DeviceReplyProcessor {
      *
      * @param errorMessage
      */
-    public void processStateChange(StateChange stateChange);
+    public void processStateChange(StateChangeInd stateChange);
 
 }
