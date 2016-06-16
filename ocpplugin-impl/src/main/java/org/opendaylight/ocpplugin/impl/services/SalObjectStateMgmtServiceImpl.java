@@ -78,7 +78,9 @@ public class SalObjectStateMgmtServiceImpl implements SalObjectStateMgmtService 
             public void onSuccess(final RpcResult<org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.ModifyStateOutput> result) {
                 org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.ModifyStateOutput output = result.getResult();
                 ModifyStateOutputBuilder builder = new ModifyStateOutputBuilder();
-                builder.setObj(output.getObj());
+                builder.setObjId(output.getObjId());
+                builder.setStateType(output.getStateType());
+                builder.setStateValue(output.getStateValue());
                 builder.setResult(output.getResult());
                 RpcResultBuilder<ModifyStateOutput> rpcResultBuilder = RpcResultBuilder.success(builder);
                 finalFuture.set(rpcResultBuilder.build());

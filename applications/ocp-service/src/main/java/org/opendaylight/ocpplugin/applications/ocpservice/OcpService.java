@@ -27,7 +27,6 @@ import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.device.mgmt.rev150811.*
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.object.state.mgmt.rev150811.*;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.object.lifecycle.rev150811.*;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.OriRes;
-import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.modifyparaminput.obj.Param;
 import org.opendaylight.yangtools.yang.common.RpcResult;
 import org.opendaylight.yangtools.yang.common.RpcResultBuilder;
 import org.opendaylight.controller.md.sal.common.api.data.DataReader;
@@ -129,7 +128,8 @@ public class OcpService implements OcpServiceService, DataChangeListener, SalDev
         GetParamInputBuilder inputBuilder = new GetParamInputBuilder();  
         GetParamOutput getParamOutput;
         inputBuilder.setNode(new NodeRef(NODES_IDENTIFIER.child(Node.class, new NodeKey(new NodeId(input.getNodeId())))));
-        inputBuilder.setObj(input.getObj());
+        inputBuilder.setObjId(input.getObjId());
+        inputBuilder.setParamName(input.getParamName());
         GetParamNbOutputBuilder outputBuilder = new  GetParamNbOutputBuilder();             
         ResourceModelBroker resourceModelBroker = new ResourceModelBroker(input.getNodeId() ,dataBroker);
         
@@ -165,50 +165,50 @@ public class OcpService implements OcpServiceService, DataChangeListener, SalDev
         ModifyParamInputBuilder inputBuilder = new ModifyParamInputBuilder();  
         ModifyParamOutput modifyParamOutput;
         inputBuilder.setNode(new NodeRef(NODES_IDENTIFIER.child(Node.class, new NodeKey(new NodeId(input.getNodeId())))));
-        inputBuilder.setObj(input.getObj());
+        inputBuilder.setObjId(input.getObjId());
+        inputBuilder.setParam(input.getParam());
         ModifyParamNbOutputBuilder outputBuilder = new  ModifyParamNbOutputBuilder();            
         ResourceModelBroker resourceModelBroker = new ResourceModelBroker(input.getNodeId() ,dataBroker);
         int objKey;
-        int i = 0, j = 0;
+        int i = 0;
 
-        LOG.info("Start doing modifyParamNb with input {}", input);                                   
+        LOG.debug("Start doing modifyParamNb with input {}", input);
         try {
             RpcResult<ModifyParamOutput> result = ocpConfigMgmtService.modifyParam(inputBuilder.build()).get();
-            LOG.info("Get result {}", result);       
-            if (result.isSuccessful()) {
-                modifyParamOutput = result.getResult();              
-                while (i < input.getObj().size()) {
-                    List<org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.getparamoutput.obj.Param> outputParams = 
-                        new ArrayList<org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.getparamoutput.obj.Param>();                  
-                    org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.getparamoutput.obj.ParamBuilder outputParamBuilder = 
-                        new org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.getparamoutput.obj.ParamBuilder();                                       
-                    
-                    j = 0;
-                    while (j < input.getObj().get(i).getParam().size()) {
-                        if (modifyParamOutput.getObj().get(i).getParam().get(j).getResult() != ModifyParamRes.forValue(0)) {
-                            j++;
-                            continue;                    
-                        }
-                        outputParamBuilder.setName(input.getObj().get(i).getParam().get(j).getName());
-                        outputParamBuilder.setValue(input.getObj().get(i).getParam().get(j).getValue());   
-                        outputParams.add(outputParamBuilder.build()); 
-                        j++;
-                    }
+            LOG.debug("modifyParam result {}", result);       
 
-                    LOG.debug("Updating dataObject : {}", outputParams);   
-                    resourceModelBroker.updateObj(outputParams, input.getObj().get(i).getId().getValue().toString());
+            if (result.isSuccessful()) {
+                modifyParamOutput = result.getResult();
+                List<org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.getparamoutput.obj.Param> outputParams = 
+                        new ArrayList<org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.getparamoutput.obj.Param>();
+
+                while (i < input.getParam().size()) {
+                    if (modifyParamOutput.getParam().get(i).getResult() != ModifyParamRes.SUCCESS) {
+                        i++;
+                        continue;                    
+                    }
+                    
+                    org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.getparamoutput.obj.ParamBuilder outputParamBuilder =    
+                        new org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.getparamoutput.obj.ParamBuilder();
+                    outputParamBuilder.setName(input.getParam().get(i).getName());
+                    outputParamBuilder.setValue(input.getParam().get(i).getValue());
+                    outputParams.add(outputParamBuilder.build());
                     i++;
-                }                
-                return  RpcResultBuilder.success(outputBuilder.setGlobResult(modifyParamOutput.getGlobResult()).setObj(modifyParamOutput.getObj()).build()).buildFuture();   
+                }
+
+                LOG.debug("Updating dataObject : {}", outputParams);   
+                resourceModelBroker.updateObj(outputParams, input.getObjId().getValue().toString());
+
+                return  RpcResultBuilder.success(outputBuilder.setGlobResult(modifyParamOutput.getGlobResult()).setObjId(modifyParamOutput.getObjId()).setParam(modifyParamOutput.getParam()).build()).buildFuture();   
             } else {
-                LOG.info("ModifyParamNb Failed(SB returns error) on RE({})", input.getNodeId());  
+                LOG.error("ModifyParamNb failed (SB returned error) on RE({})", input.getNodeId());  
                 return  RpcResultBuilder.<ModifyParamNbOutput>failed().withError(RpcError.ErrorType.APPLICATION,
-                            "Failed to modify param.(SB returns error)").buildFuture();              
+                            "Failed to modify param (SB returned error)").buildFuture();              
             }           
         } catch (Exception exc) {  
-            LOG.info("ModifyParam Failed{}", exc);     
+            LOG.error("ModifyParam failed {}", exc);     
             return  RpcResultBuilder.<ModifyParamNbOutput>failed().withError(RpcError.ErrorType.APPLICATION,
-                            "Failed to  modify param.(SB RPC error)").buildFuture();        
+                            "Failed to modify param (SB RPC error)").buildFuture();        
         }        
     }
     
@@ -297,7 +297,7 @@ public class OcpService implements OcpServiceService, DataChangeListener, SalDev
         GetFaultInputBuilder inputBuilder = new GetFaultInputBuilder();  
         GetFaultOutput getFaultOutput;
         inputBuilder.setNode(new NodeRef(NODES_IDENTIFIER.child(Node.class, new NodeKey(new NodeId(input.getNodeId())))));
-        inputBuilder.setObj(input.getObj());
+        inputBuilder.setObjId(input.getObjId());
         inputBuilder.setEventDrivenReporting(input.isEventDrivenReporting());        
         GetFaultNbOutputBuilder outputBuilder = new GetFaultNbOutputBuilder();        
 
@@ -325,7 +325,8 @@ public class OcpService implements OcpServiceService, DataChangeListener, SalDev
         GetStateInputBuilder inputBuilder = new GetStateInputBuilder();  
         GetStateOutput getStateOutput;
         inputBuilder.setNode(new NodeRef(NODES_IDENTIFIER.child(Node.class, new NodeKey(new NodeId(input.getNodeId())))));
-        inputBuilder.setObj(input.getObj());
+        inputBuilder.setObjId(input.getObjId());
+        inputBuilder.setStateType(input.getStateType());
         inputBuilder.setEventDrivenReporting(input.isEventDrivenReporting());        
         GetStateNbOutputBuilder outputBuilder = new GetStateNbOutputBuilder();        
 
@@ -353,7 +354,9 @@ public class OcpService implements OcpServiceService, DataChangeListener, SalDev
         ModifyStateInputBuilder inputBuilder = new ModifyStateInputBuilder();  
         ModifyStateOutput modifyStateOutput;
         inputBuilder.setNode(new NodeRef(NODES_IDENTIFIER.child(Node.class, new NodeKey(new NodeId(input.getNodeId())))));
-        inputBuilder.setObj(input.getObj());
+        inputBuilder.setObjId(input.getObjId());
+        inputBuilder.setStateType(input.getStateType());
+        inputBuilder.setStateValue(input.getStateValue());
         ModifyStateNbOutputBuilder outputBuilder = new ModifyStateNbOutputBuilder();        
 
         LOG.info("Start doing modifyStateNb with input {}", input);          
@@ -362,16 +365,16 @@ public class OcpService implements OcpServiceService, DataChangeListener, SalDev
             LOG.info("Get result {}", result);       
             if (result.isSuccessful()) {
                 modifyStateOutput = result.getResult();
-                return  RpcResultBuilder.success(outputBuilder.setResult(modifyStateOutput.getResult()).setObj(modifyStateOutput.getObj()).build()).buildFuture();   
+                return  RpcResultBuilder.success(outputBuilder.setResult(modifyStateOutput.getResult()).setObjId(modifyStateOutput.getObjId()).setStateType(modifyStateOutput.getStateType()).setStateValue(modifyStateOutput.getStateValue()).build()).buildFuture();   
             } else {
-                LOG.info("modifyStateNb Failed(SB returns error) on RE({})", input.getNodeId());               
+                LOG.error("modifyStateNb failed (SB returned error) on RE({})", input.getNodeId());               
                 return  RpcResultBuilder.<ModifyStateNbOutput>failed().withError(RpcError.ErrorType.APPLICATION,
-                            "Failed to modify state.(SB returns error)").buildFuture();              
+                            "Failed to modify state.(SB returned error)").buildFuture();              
             }                 
         } catch (Exception exc) {  
-            LOG.info("modifyStateNb Failed{}", exc);     
+            LOG.error("modifyStateNb failed{}", exc);     
             return  RpcResultBuilder.<ModifyStateNbOutput>failed().withError(RpcError.ErrorType.APPLICATION,
-                            "Failed to modify state.(SB rpc error)").buildFuture();        
+                            "Failed to modify state (SB rpc error)").buildFuture();        
         }        
     }
 
@@ -380,52 +383,50 @@ public class OcpService implements OcpServiceService, DataChangeListener, SalDev
         CreateObjInputBuilder inputBuilder = new CreateObjInputBuilder();  
         CreateObjOutput createObjOutput;
         inputBuilder.setNode(new NodeRef(NODES_IDENTIFIER.child(Node.class, new NodeKey(new NodeId(input.getNodeId())))));
-        inputBuilder.setObj(input.getObj());
-        CreateObjNbOutputBuilder outputBuilder = new  CreateObjNbOutputBuilder();         
-        ResourceModelBroker resourceModelBroker = new ResourceModelBroker(input.getNodeId() ,dataBroker);
-        int i = 0, j = 0;
+        inputBuilder.setObjType(input.getObjType());
+        inputBuilder.setParam(input.getParam());
+        CreateObjNbOutputBuilder outputBuilder = new CreateObjNbOutputBuilder();         
+        ResourceModelBroker resourceModelBroker = new ResourceModelBroker(input.getNodeId(), dataBroker);
+        int i = 0;
 
-        LOG.info("Start doing createObjNb with input {}", input);             
+        LOG.debug("Start doing createObjNb with input {}", input);             
         try {
             RpcResult<CreateObjOutput> result = ocpObjectLifecycleService.createObj(inputBuilder.build()).get();
-            LOG.info("Get result {}", result);       
+            LOG.debug("createObj result {}", result);       
+
             if (result.isSuccessful()) {
                 createObjOutput = result.getResult();            
-                while ((createObjOutput.getGlobResult() == CreateObjGlobRes.forValue(0)) && (i < input.getObj().size())) {
+                if (createObjOutput.getGlobResult() == CreateObjGlobRes.SUCCESS) {
                     List<org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.getparamoutput.obj.Param> outputParams = 
                         new ArrayList<org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.getparamoutput.obj.Param>();                  
-                    org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.getparamoutput.obj.ParamBuilder outputParamBuilder = 
-                        new org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.getparamoutput.obj.ParamBuilder();                                      
-                    
-                    j = 0;
                     try {
-                        while (j < input.getObj().get(i).getParam().size()) {
-                            if (createObjOutput.getObj().get(i).getParam().get(j).getResult() != CreateObjRes.forValue(0)){
-                                j++;                             
-                                continue;                      
+                        while (i < input.getParam().size()) {
+                            if (createObjOutput.getParam().get(i).getResult() != CreateObjRes.SUCCESS){
+                                i++; 
+                                continue;
                             }
-                            outputParamBuilder.setName(input.getObj().get(i).getParam().get(j).getName());
-                            outputParamBuilder.setValue(input.getObj().get(i).getParam().get(j).getValue());   
+                            org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.getparamoutput.obj.ParamBuilder outputParamBuilder = new org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.getparamoutput.obj.ParamBuilder();
+                            outputParamBuilder.setName(input.getParam().get(i).getName());
+                            outputParamBuilder.setValue(input.getParam().get(i).getValue());   
                             outputParams.add(outputParamBuilder.build());
-                            j++;
+                            i++;
                         }  
                     } catch (Exception exc) { 
                         LOG.debug("No param existing in RE {}", input.getNodeId());                        
                     }
                     LOG.debug("Creating dataObject : {}", outputParams);                     
-                    resourceModelBroker.updateObj(outputParams, createObjOutput.getObj().get(i).getId().getValue().toString());
-                    i++;
-                }                
-                return  RpcResultBuilder.success(outputBuilder.setGlobResult(createObjOutput.getGlobResult()).setObj(createObjOutput.getObj()).build()).buildFuture();   
+                    resourceModelBroker.updateObj(outputParams, createObjOutput.getObjId().getValue().toString());
+                }
+                return  RpcResultBuilder.success(outputBuilder.setGlobResult(createObjOutput.getGlobResult()).setObjId(createObjOutput.getObjId()).setParam(createObjOutput.getParam()).build()).buildFuture();   
             } else {
-                LOG.info("CreateObjectNb Failed(SB returns error) on RE({})", input.getNodeId());  
+                LOG.error("CreateObjectNb failed (SB returned error) on RE({})", input.getNodeId());  
                 return  RpcResultBuilder.<CreateObjNbOutput>failed().withError(RpcError.ErrorType.APPLICATION,
-                            "Failed to create param.(SB returns error)").buildFuture();              
+                            "Failed to create object (SB returned error)").buildFuture();              
             }           
         } catch  (Exception exc) {  
-            LOG.info("CreateObject Failed{}", exc);     
+            LOG.error("CreateObject Failed{}", exc);     
             return  RpcResultBuilder.<CreateObjNbOutput>failed().withError(RpcError.ErrorType.APPLICATION,
-                            "Failed to  create param.(SB RPC error)").buildFuture();        
+                            "Failed to create object (SB RPC error)").buildFuture();        
         }        
     }    
 
@@ -469,54 +470,43 @@ public class OcpService implements OcpServiceService, DataChangeListener, SalDev
         Future<String> future = connectedExecutor.submit(new Callable<String>() {
             @Override
             public String call() {
-                GetParamInputBuilder inputBuilder = new GetParamInputBuilder();  
-                GetParamOutput getParamOutput;
-                SetTimeOutput setTimeOutput;                
-                GetParamNbOutputBuilder outputBuilder = new  GetParamNbOutputBuilder();      
                 ResourceModelBroker resourceModelBroker = new ResourceModelBroker(notification.getNodeId() ,dataBroker);
+                GetParamInputBuilder inputBuilder = new GetParamInputBuilder(); 
+                GetParamOutput getParamOutput;
+                GetParamNbOutputBuilder outputBuilder = new GetParamNbOutputBuilder(); 
+                SetTimeInputBuilder setInputBuilder = new SetTimeInputBuilder();
+                SetTimeOutput setTimeOutput;
                 int i = 0;
-                SetTimeInputBuilder setInputBuilder = new SetTimeInputBuilder(); 
-                LOG.info("Get deviceConnected notification with notification {}", notification);                  
-                List<org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.getparaminput.obj.Param> inputParam = 
-                    new ArrayList<org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.getparaminput.obj.Param>();
-                
-                org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.getparaminput.obj.ParamBuilder inputParamBuilder = 
-                    new org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.getparaminput.obj.ParamBuilder();           
 
-                List<org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.getparaminput.Obj> inputObjs = 
-                    new ArrayList<org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.getparaminput.Obj>();
+                LOG.debug("Get deviceConnected notification with notification {}", notification);                  
                 
-                org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.getparaminput.ObjBuilder inputObjBuilder = 
-                    new org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.getparaminput.ObjBuilder();     
-                    
                 try {
-                    resourceModelBroker.deleteObj("ALL");                  
+                    resourceModelBroker.deleteObj("ALL");
                 } catch (Exception exc) {
-                        LOG.info("Failed to delete node:({}, {})", notification.getNodeId(), exc);                 
+                    LOG.error("Failed to delete node:({}, {})", notification.getNodeId(), exc); 
                 }
                 try {
                     setInputBuilder.setNode(new NodeRef(NODES_IDENTIFIER.child(Node.class, new NodeKey(new NodeId(notification.getNodeId())))));
-                    setInputBuilder.setNewTime(new XsdDateTime(getSystemTime()));                    
-                    LOG.info("Starting setTime({}) on {} in alignment", getSystemTime(),notification.getNodeId());                       
+                    setInputBuilder.setNewTime(new XsdDateTime(getSystemTime())); 
+                    LOG.debug("Starting setTime({}) on {} in alignment", getSystemTime(), notification.getNodeId());                       
                     RpcResult<SetTimeOutput> timeresult = ocpDeviceMgmtService.setTime(setInputBuilder.build()).get();
-                    LOG.info("Get timeresult {}", timeresult);       
+                    LOG.debug("SetTime result {}", timeresult);
                     if (timeresult.isSuccessful()) {
                         LOG.info("SetTimeNb done on ({})", notification.getNodeId()); 
                     } else {
-                        LOG.info("SetTimeNb Failed when doing alignment (SB returns error) on ({})", notification.getNodeId());            
+                        LOG.error("SetTimeNb failed when doing alignment (SB returned error) on ({})", notification.getNodeId());            
                     }                     
                 } catch (Exception exc) {
-                    LOG.info("Failed to setTime on {} in alignment {}", notification.getNodeId(), exc);  
+                    LOG.error("Failed to setTime on {} in alignment {}", notification.getNodeId(), exc);  
                 }
                 
                 try {        
-                    inputParam.add(inputParamBuilder.setName("ALL").build());
-                    inputObjs.add(inputObjBuilder.setId(new ObjId("ALL")).setParam(inputParam).build());                      
                     inputBuilder.setNode(new NodeRef(NODES_IDENTIFIER.child(Node.class, new NodeKey(new NodeId(notification.getNodeId())))));
-                    inputBuilder.setObj(inputObjs);                
-
+                    inputBuilder.setObjId(new ObjId("ALL"));
+                    inputBuilder.setParamName("ALL");
                     RpcResult<GetParamOutput> result = ocpConfigMgmtService.getParam(inputBuilder.build()).get();
                     LOG.info("Get result {}", result);       
+
                     if (result.isSuccessful()) {
                         getParamOutput = result.getResult();              
                         while (i < getParamOutput.getObj().size()) {                                      
@@ -537,10 +527,10 @@ public class OcpService implements OcpServiceService, DataChangeListener, SalDev
                         notificationProvider.publish(builder.build());
                
                     } else {
-                        LOG.info("Alignment Failed(SB returns error) on RE({})", notification.getNodeId());  
+                        LOG.error("Alignment failed (SB returned error) on RE({})", notification.getNodeId());  
                     }           
                 } catch (Exception exc) {  
-                    LOG.info("Alignment Failed{}", exc); 
+                    LOG.error("Alignment failed {}", exc); 
                 }             
                 return "DONE";
             }

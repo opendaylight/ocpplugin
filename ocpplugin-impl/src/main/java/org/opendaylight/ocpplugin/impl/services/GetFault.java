@@ -32,7 +32,7 @@ final class GetFault extends AbstractSimpleService<GetFaultInput, GetFaultOutput
         final GetFaultInputBuilder inputBuilder = new GetFaultInputBuilder();
         inputBuilder.setMsgType(OcpMsgType.GETFAULTREQ);
         inputBuilder.setXid(xid.getValue());
-        inputBuilder.setObj(input.getObj());
+        inputBuilder.setObjId(input.getObjId());
         inputBuilder.setEventDrivenReporting(input.isEventDrivenReporting());
         return inputBuilder.build();
     }

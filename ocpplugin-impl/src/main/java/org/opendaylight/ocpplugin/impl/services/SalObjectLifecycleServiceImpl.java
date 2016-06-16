@@ -53,7 +53,8 @@ public class SalObjectLifecycleServiceImpl implements SalObjectLifecycleService 
             public void onSuccess(final RpcResult<org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.CreateObjOutput> result) {
                 org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.CreateObjOutput output = result.getResult();
                 CreateObjOutputBuilder builder = new CreateObjOutputBuilder();
-                builder.setObj(output.getObj());                
+                builder.setObjId(output.getObjId());                
+                builder.setParam(output.getParam());
                 builder.setGlobResult(output.getGlobResult());
                 RpcResultBuilder<CreateObjOutput> rpcResultBuilder = RpcResultBuilder.success(builder);
                 finalFuture.set(rpcResultBuilder.build());

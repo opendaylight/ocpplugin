@@ -41,6 +41,7 @@ import org.slf4j.LoggerFactory;
  * @author Marko Lai <marko.ch.lai@foxconn.com>
  */
 
+/* limitation: objId:0..X, states(type, value):1..X */
 
 /*
 <!-- Example: Object State Reporting Response -->
@@ -110,10 +111,10 @@ public class GetStateOutputFactory implements OCPDeserializer<GetStateOutput> {
 
                         while(objtok instanceof XmlElementStart){
                             if(((XmlElementStart)objtok).name().equals("state")) {
-                                //set state Name                       
+                                //set state Type
                                 String tmp = ((XmlElementStart)objtok).attributes().get(0).value();                                
-                                statebuilder.setName(StateType.valueOf(tmp));
-                                LOGGER.trace("GetStateOutputFactory - getName = " + statebuilder.getName());
+                                statebuilder.setType(StateType.valueOf(tmp));
+                                LOGGER.trace("GetStateOutputFactory - getType = " + statebuilder.getType());
 
                                 //set state Value
                                 String bufStr = MessageHelper.getMsgUID(itr);

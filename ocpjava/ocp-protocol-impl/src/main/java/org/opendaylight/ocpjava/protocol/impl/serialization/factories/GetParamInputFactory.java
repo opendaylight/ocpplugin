@@ -12,11 +12,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufUtil;
 
 import org.opendaylight.ocpjava.protocol.api.extensibility.OCPSerializer;
-
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.GetParamInput;
-
-import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.getparaminput.Obj;
-import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.getparaminput.obj.Param;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,6 +24,7 @@ import org.slf4j.LoggerFactory;
 
 
 /* the rawMessage */
+/* limitation: objId:1, param:1 */
 /*
 <msg xmlns="http://uri.etsi.org/ori/002-2/v4.1.1">
     <header>
@@ -66,20 +63,17 @@ public class GetParamInputFactory implements OCPSerializer<GetParamInput> {
             seq.append("</header>");
             seq.append("<body>");
                 seq.append("<"); seq.append(MESSAGE_TYPE); seq.append(">");
-                //Retrival values from multiple objs
-                for (Obj currObj : message.getObj()) {
+
+                    //Retrieve single objId
                     seq.append("<obj objID=\"");
-                    seq.append(currObj.getId().getValue().toString());
-                    seq.append("\">");               
-                    if(currObj.getParam() != null) {
-                        for (Param currParam : currObj.getParam()) {
-                           seq.append("<param name=\"");
-                           seq.append(currParam.getName());
-                           seq.append("\"/>");
-                        }
-                    }
+                    seq.append(message.getObjId().getValue().toString());
+                    seq.append("\">");
+                        //Retrieve value of paramName
+                        seq.append("<param name=\"");
+                        seq.append(message.getParamName().toString());
+                        seq.append("\"/>");
                     seq.append("</obj>");
-                }
+
                 seq.append("</"); seq.append(MESSAGE_TYPE); seq.append(">");
             seq.append("</body>");
         seq.append("</msg>");

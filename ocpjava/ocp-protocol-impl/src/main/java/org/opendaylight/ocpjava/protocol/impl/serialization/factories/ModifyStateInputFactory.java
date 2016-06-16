@@ -12,11 +12,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufUtil;
 
 import org.opendaylight.ocpjava.protocol.api.extensibility.OCPSerializer;
-
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.ModifyStateInput;
-
-import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.modifystateinput.Obj;
-import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.modifystateinput.obj.State;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +21,8 @@ import org.slf4j.LoggerFactory;
  * Translates ModifyStateReq message (OCP Protocol v4.1.1)
  * @author Marko Lai <marko.ch.lai@foxconn.com>
  */
+
+/* limitation: objId:1, stateType:1, stateValue:1 */
 
 /*
 <!-- Example: Object State Modification Request -->
@@ -62,30 +60,29 @@ public class ModifyStateInputFactory implements OCPSerializer<ModifyStateInput> 
             seq.append("</header>");
             seq.append("<body>");
                 seq.append("<"); seq.append(MESSAGE_TYPE); seq.append(">");
-                //Retrival values from multiple objs
-                for (Obj currObj : message.getObj()) {
-                    seq.append("<obj objID=\"");
-                    seq.append(currObj.getId().getValue().toString());
-                    seq.append("\">");               
-                    for (State currState : currObj.getState()) {
-                    	seq.append("<state type=\"");
-                    	seq.append(currState.getName());
-                    	seq.append("\">");
 
-                    	// To fix YANG ENUM translation to Java code, it will remove the underline character 
-                        if(currState.getValue().toString().equals("PREOPERATIONAL")){
+                    //Retrieve single object Id
+                    seq.append("<obj objID=\"");
+                    seq.append(message.getObjId().getValue().toString());
+                    seq.append("\">");
+                        //Retrieve single stateType
+                        seq.append("<state type=\"");
+                        seq.append(message.getStateType().toString());
+                        seq.append("\">");
+                        //Retrieve single stateValue
+                        //To fix YANG ENUM translation to Java code, it will remove the underline character
+                        if(message.getStateValue().toString().equals("PREOPERATIONAL")){
                             seq.append("PRE_OPERATIONAL");
                         }
-                        else if(currState.getValue().toString().equals("NOTOPERATIONAL")){
+                        else if(message.getStateValue().toString().equals("NOTOPERATIONAL")){
                             seq.append("NOT_OPERATIONAL");
                         }
                         else{
-                            seq.append(currState.getValue());
+                            seq.append(message.getStateValue());
                         }
-                    	seq.append("</state>");
-                        }
+                        seq.append("</state>");
                     seq.append("</obj>");
-                    }
+
                 seq.append("</"); seq.append(MESSAGE_TYPE); seq.append(">");
             seq.append("</body>");
         seq.append("</msg>");

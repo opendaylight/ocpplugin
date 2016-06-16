@@ -45,9 +45,9 @@ module sal-object-state-mgmt {
     } // rpc modify-state
 
 
-    notification state-change {
+    notification state-change-ind {
         uses inv:node-context-ref;
-        uses ocpt:stateChangeSource;
+        uses ocpt:stateChangeInd;
     }
 
 }

@@ -27,10 +27,6 @@ import org.opendaylight.ocpjava.protocol.api.util.EncodeConstants;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.ModifyStateInput;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.ModifyStateInputBuilder;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.ObjId;
-import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.modifystateinput.Obj;
-import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.modifystateinput.ObjBuilder;
-import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.modifystateinput.obj.State;
-import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.modifystateinput.obj.StateBuilder;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.OcpMsgType;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.StateType;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.StateVal;
@@ -76,25 +72,20 @@ public class ModifyStateInputFactoryTest {
         Method m2_t = hib.getClass().getMethod("setXid", Long.class);
         m2_t.invoke(hib, new Long(0));
 
-        //set Obj
-        ObjBuilder objbuilder = new ObjBuilder();
+        //set ObjId
+        Method m3_t = hib.getClass().getMethod("setObjId", ObjId.class);
+        m3_t.invoke(hib, new ObjId(testObjId));
         
-        StateBuilder statebuilder = new StateBuilder();
-        List<State> slist = new ArrayList();
-        statebuilder.setName(StateType.valueOf(testType));
-        statebuilder.setValue(StateVal.valueOf(testVal));
-        slist.add(statebuilder.build());
-        objbuilder.setState(slist);
-        
-        objbuilder.setId(new ObjId(testObjId));
-        List<Obj> objlist = new ArrayList();
-        objlist.add(objbuilder.build());
-        
-        Method m4_t = hib.getClass().getMethod("setObj", List.class);
-        m4_t.invoke(hib, objlist);
-        
+        //set stateType
+        Method m4_t = hib.getClass().getMethod("setStateType", StateType.class);
+        m4_t.invoke(hib, StateType.valueOf(testType));
+
+        //set stateValue
+        Method m5_t = hib.getClass().getMethod("setStateValue", StateVal.class);
+        m5_t.invoke(hib, StateVal.valueOf(testVal));
+
         ModifyStateInput hi = hib.build();
-        LOGGER.debug("ModifyStateInputFactoryTest - hi objId value = {}", hi.getObj().get(0).getId().getValue());    
+        LOGGER.debug("ModifyStateInputFactoryTest - hi objId value = {}", hi.getObjId());
 
         ByteBuf out = UnpooledByteBufAllocator.DEFAULT.buffer();
         modifyStateInputFactory.serialize(hi, out);

@@ -30,14 +30,14 @@ import org.opendaylight.ocpjava.protocol.impl.core.XmlAttribute;
 import org.opendaylight.ocpjava.protocol.impl.core.XmlDocumentStart;
 import org.opendaylight.ocpjava.protocol.impl.core.XmlDocumentEnd;
 
-import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.StateChange;
+import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.StateChangeInd;
 
 /**
  * @author Marko Lai <marko.ch.lai@foxconn.com>
  */
 public class StateChangeFactoryTest {
 
-    private OCPDeserializer<StateChange> stateChangeFactory;
+    private OCPDeserializer<StateChangeInd> stateChangeFactory;
     private static final XmlDocumentEnd XML_DOCUMENT_END = XmlDocumentEnd.INSTANCE;
     /**
      * Initializes deserializer registry and lookups correct deserializer
@@ -47,7 +47,7 @@ public class StateChangeFactoryTest {
         DeserializerRegistry registry = new DeserializerRegistryImpl();
         registry.init();
         stateChangeFactory = registry.getDeserializer(
-                new MessageCodeKey(EncodeConstants.OCP_VERSION_ID, 16, StateChange.class));
+                new MessageCodeKey(EncodeConstants.OCP_VERSION_ID, 16, StateChangeInd.class));
     }
 
     /**
@@ -56,7 +56,7 @@ public class StateChangeFactoryTest {
     @Test
     public void testWithoutElements() {
         List<Object> bb = new ArrayList<>(); 
-        StateChange builtByFactory = BufferHelper.deserialize(stateChangeFactory, bb);
+        StateChangeInd builtByFactory = BufferHelper.deserialize(stateChangeFactory, bb);
         
         Assert.assertNull("Wrong elements", builtByFactory.getMsgType());
         Assert.assertNull("Wrong elements", builtByFactory.getXid());
@@ -103,12 +103,12 @@ public class StateChangeFactoryTest {
             bb.add(new XmlElementEnd("body", "", ""));
         bb.add(new XmlElementEnd("msg", "", ""));
 
-        StateChange builtByFactory = BufferHelper.deserialize(stateChangeFactory, bb);
+        StateChangeInd builtByFactory = BufferHelper.deserialize(stateChangeFactory, bb);
 
         BufferHelper.checkHeaderV10(builtByFactory);
         Assert.assertNotNull("Wrong elements", builtByFactory.getMsgType());
         Assert.assertNotNull("Wrong elements", builtByFactory.getXid());
-        Assert.assertNotNull("Wrong elements", builtByFactory.getObj().get(0).getState().get(0).getValue());
-        Assert.assertNotNull("Wrong elements", builtByFactory.getObj().get(0).getState().get(0).getName());
+        Assert.assertNotNull("Wrong elements", builtByFactory.getStateType());
+        Assert.assertNotNull("Wrong elements", builtByFactory.getStateValue());
     }
 }

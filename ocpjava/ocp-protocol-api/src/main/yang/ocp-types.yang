@@ -10,12 +10,12 @@
     namespace "urn:opendaylight:ocp:common:types";
     prefix "ocpt";
 
-    import ocp-xsd {prefix ocpx; revision-date 2015-08-11; }
+    import ocp-xsd { prefix ocpx; revision-date 2015-08-11; }
     import ietf-yang-types { prefix yang; }
 
     organization "Foxconn";
     contact "marko.ch.lai@foxconn.com";
-    description "OCP - common types model";
+    description "OCP common types";
     
     revision "2015-08-11" {
       description
@@ -24,29 +24,22 @@
 
     grouping ocpHeader {
         reference "ocp_header struct in ORI Spec";
-            leaf msgType {
-                type OcpMsgType;
-                description "OCP message type";
-            }
-            leaf xid {
-                type uint32;
-                description "Transaction ID";
-            }
+        leaf msgType {
+            type OcpMsgType;
+            description "OCP message type";
+        }
+        leaf xid {
+            type uint32;
+            description "Transaction ID";
+        }
     }
 
     grouping getParamInput {
-        list obj {
-            key id;
-            leaf id {
-                type ObjId; 
-            }
-            list param {
-                key name;
-                leaf name {
-                    type string;
-                }
-                ordered-by user; 
-            }
+        leaf objId {
+            type ObjId;
+        }
+        leaf paramName {
+            type string;
         }
     }
 
@@ -69,89 +62,71 @@
     }
 
     grouping modifyParamInput {
-        list obj {
-            key id;
-            leaf id {
-                type ObjId;
+        leaf objId {
+            type ObjId;
+        }
+        list param {
+            key name;
+            leaf name {
+                type string;
             }
-            list param {
-                key name;
-                leaf name {
-                    type string;
-                }
-                leaf value {
-                    type string;
-                }
+            leaf value {
+                type string;
             }
         }
     }
 
     grouping modifyParamOutput {
-        list obj {
-            key id;
-            leaf id {
-                type ObjId;
+        leaf objId {
+            type ObjId;
+        }
+        list param {
+            key name;
+            leaf name {
+                type string;
             }
-            list param {
-                key name;
-                leaf name {
-                    type string;
-                }
-                leaf result {
-                    type ModifyParamRes;
-                }
+            leaf result {
+                type ModifyParamRes;
             }
         }
     }
 
     grouping createObjInput {
-        list obj {
-            key type;
-            leaf type {
-                type ObjType;
+        leaf objType {
+            type ObjType;
+        }
+        list param {
+            key name;
+            leaf name {
+                type string;
             }
-            list param {
-                key name;
-                leaf name {
-                    type string;
-                }
-                leaf value {
-                    type string;
-                }
+            leaf value {
+                type string;
             }
         }
     }
 
     grouping createObjOutput {
-        list obj {
-            key id;
-            leaf id {
-                type ObjId;
+        leaf objId {
+            type ObjId;
+        }
+        list param {
+            key name;
+            leaf name {
+                type string;
             }
-            list param {
-                key name;
-                leaf name {
-                    type string;
-                }
-                leaf result {
-                    type CreateObjRes;
-                }
+            leaf result {
+                type CreateObjRes;
             }
         }
     }
 
     grouping getStateInput {
-        list obj {
-            key id;
-            leaf id {
-                type ObjId;
-            }
-            list state {
-                key name; //key type
-                leaf name { //leaf type
-                    type StateAllType;
-                }
-            }
+        leaf objId {
+            type ObjId;
+        }
+        leaf stateType {
+            type StateAllType;
         }
         leaf eventDrivenReporting {
             type boolean;
@@ -165,8 +140,8 @@
                 type ObjId;
             }
             list state {
-                key name; //key type
-                leaf name { //leaf type
+                key type;
+                leaf type {
                     type StateType;
                 }
                 leaf value {
@@ -177,47 +152,32 @@
     }
 
     grouping modifyStateInput {
-        list obj {
-            key id;
-            leaf id {
-                type ObjId;
-            }
-            list state { //only each one state modification
-                key name; //key type
-                leaf name { //leaf type
-                    type StateType;
-                }
-                leaf value {
-                    type StateVal;
-                }
-            }
+        leaf objId {
+            type ObjId;
+        }
+        leaf stateType {
+            type StateType;
+        }
+        leaf stateValue {
+            type StateVal;
         }
     }
 
     grouping modifyStateOutput {
-        list obj {
-            key id;
-            leaf id {
-                type ObjId;
-            }        
-            list state {
-                key name; //key type
-                leaf name { //leaf type
-                    type StateType;
-                }
-                leaf value {
-                    type StateVal;
-                }
-            }
+        leaf objId {
+            type ObjId;
+        }
+        leaf stateType {
+            type StateType;
+        }
+        leaf stateValue {
+            type StateVal;
         }
     }
 
     grouping getFaultInput {
-        list obj {
-            key id;
-            leaf id {
-                type ObjId;
-            }
+        leaf objId {
+            type ObjId;
         }
         leaf eventDrivenReporting {
             type boolean;
@@ -230,13 +190,13 @@
             leaf id {
                 type ObjId;
             }
-            list fault-obj {
-                key faultID;
-                leaf faultID {
-                    type FaultIdType;
+            list fault {
+                key id;
+                leaf id {
+                    type FaultId;
                 }
                 leaf severity {
-                    type FaultServType;
+                    type FaultSeverity;
                 }
                 leaf timestamp{
                     type ocpx:xsd-dateTime;
@@ -251,51 +211,39 @@
         }
     }
 
-    grouping stateChangeSource {
-        list obj {
-            key id;
-            leaf id {
-                type ObjId;
-            }
-            list state {
-                key name; //key type
-                leaf name { //leaf type
-                    type StateType;
-                }
-                leaf value {
-                    type StateVal;
-                }
-            }
+    grouping stateChangeInd {
+        leaf objId {
+            type ObjId;
+        }
+        leaf stateType {
+            type StateType;
+        }
+        leaf stateValue {
+            type StateVal;
         }
     }
 
-    grouping faultIndSource {
-        list obj {
-            key id;
-            leaf id {
-                type ObjId;
-            }
-            list fault-obj {
-                key faultID;
-                leaf faultID {
-                    type FaultIdType;
-                }
-                leaf state{
-                    type IndFaultState;
-                }
-                leaf severity {
-                    type FaultServType;
-                }
-                leaf timestamp{
-                    type ocpx:xsd-dateTime;
-                }
-                leaf descr {
-                    type string;
-                }
-                leaf-list affectedObj {
-                    type string;
-                }
-            }
+    grouping faultInd {
+        leaf objId {
+            type ObjId;
+        }
+        leaf faultId {
+            type FaultId;
+        }
+        leaf state{
+            type FaultState;
+        }
+        leaf severity {
+            type FaultSeverity;
+        }
+        leaf timestamp{
+            type ocpx:xsd-dateTime;
+        }
+        leaf descr {
+            type string;
+        }
+        leaf-list affectedObj {
+            type string;
         }
     }
 
@@ -542,7 +490,7 @@
         }
     }
 
-    typedef FaultIdType {
+    typedef FaultId {
         type enumeration {
             enum "FAULT_EXT_SUPPLY_UNDERVOLT";
             enum "FAULT_RE_OVERTEMP";
@@ -559,14 +507,14 @@
         }
     }
     
-    typedef IndFaultState {
+    typedef FaultState {
         type enumeration {
             enum "ACTIVE";
             enum "CLEARED";
         }
     }
 
-    typedef FaultServType {
+    typedef FaultSeverity {
         type enumeration {
             enum "FAILED";
             enum "DEGRADED";

@@ -122,9 +122,9 @@ public class GetStateOutputFactoryTest {
         Assert.assertNotNull("Wrong elements", builtByFactory.getResult());
         Assert.assertNotNull("Wrong elements", builtByFactory.getXid());
         Assert.assertNotNull("Wrong elements", builtByFactory.getObj().get(0).getId().getValue());
-        Assert.assertNotNull("Wrong elements", builtByFactory.getObj().get(0).getState().get(0).getName());
+        Assert.assertNotNull("Wrong elements", builtByFactory.getObj().get(0).getState().get(0).getType());
         Assert.assertNotNull("Wrong elements", builtByFactory.getObj().get(0).getState().get(0).getValue());
-        Assert.assertNotNull("Wrong elements", builtByFactory.getObj().get(0).getState().get(1).getName());
+        Assert.assertNotNull("Wrong elements", builtByFactory.getObj().get(0).getState().get(1).getType());
         Assert.assertNotNull("Wrong elements", builtByFactory.getObj().get(0).getState().get(1).getValue());
     }
 }

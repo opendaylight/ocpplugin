@@ -43,10 +43,10 @@ import org.opendaylight.yang.gen.v1.urn.opendaylight.inventory.rev130819.NodeId;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.inventory.rev130819.NodeRef;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.inventory.rev130819.nodes.NodeKey;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.FaultInd;
-import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.StateChange;
+import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.StateChangeInd;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.extension.rev150811.HelloMessage;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.fault.mgmt.rev150811.FaultIndBuilder;
-import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.object.state.mgmt.rev150811.StateChangeBuilder; 
+import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.object.state.mgmt.rev150811.StateChangeIndBuilder; 
 import org.opendaylight.ocpplugin.impl.util.InventoryDataServiceUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -204,15 +204,23 @@ public class DeviceContextImpl implements DeviceContext {
     public void processFaultIndication(FaultInd faultInd) {
         FaultIndBuilder builder = new FaultIndBuilder();
         builder.setNode(InventoryDataServiceUtil.nodeRefFromNodeKey(new NodeKey(connectionContext.getNodeId())));
-        builder.setObj(faultInd.getObj());        
+        builder.setObjId(faultInd.getObjId());
+        builder.setFaultId(faultInd.getFaultId());
+        builder.setState(faultInd.getState());
+        builder.setSeverity(faultInd.getSeverity());
+        builder.setTimestamp(faultInd.getTimestamp());
+        builder.setDescr(faultInd.getDescr());
+        builder.setAffectedObj(faultInd.getAffectedObj());
         publishNotification(builder.build()); 
     }
 
     @Override
-    public void processStateChange(StateChange stateChange) {
-        StateChangeBuilder builder = new StateChangeBuilder();
+    public void processStateChange(StateChangeInd stateChange) {
+        StateChangeIndBuilder builder = new StateChangeIndBuilder();
         builder.setNode(InventoryDataServiceUtil.nodeRefFromNodeKey(new NodeKey(connectionContext.getNodeId())));
-        builder.setObj(stateChange.getObj());
+        builder.setObjId(stateChange.getObjId());
+        builder.setStateType(stateChange.getStateType());
+        builder.setStateValue(stateChange.getStateValue());
         publishNotification(builder.build());
     }
 

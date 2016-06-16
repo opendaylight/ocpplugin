@@ -12,10 +12,8 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufUtil;
 
 import org.opendaylight.ocpjava.protocol.api.extensibility.OCPSerializer;
-
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.CreateObjInput;
-import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.createobjinput.Obj;
-import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.createobjinput.obj.Param;
+import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.createobjinput.Param;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +22,8 @@ import org.slf4j.LoggerFactory;
  * Translates CreateObjReq message (OCP Protocol v4.1.1)
  * @author Marko Lai <marko.ch.lai@foxconn.com>
  */
+
+/* limitation: objId:1, param:X */
 
 /*
 <!-- Example: Object Creation Request (multiple parameters, success) -->
@@ -63,22 +63,23 @@ public class CreateObjInputFactory implements OCPSerializer<CreateObjInput> {
             seq.append("</header>");
             seq.append("<body>");
                 seq.append("<"); seq.append(MESSAGE_TYPE); seq.append(">");
-                //Retrival values from multiple objs
-                for (Obj currObj : message.getObj()) {
+
+                    //Retrieve single object Id
                     seq.append("<objType objTypeID=\"");
-                    seq.append(currObj.getType().getValue().toString());
-                    seq.append("\">");               
-                    if (currObj.getParam() != null) {
-                        for (Param currParam : currObj.getParam()) {
-                    	    seq.append("<param name=\"");
-                    	    seq.append(currParam.getName());
-                    	    seq.append("\">");
-                       	    seq.append(currParam.getValue());
-                    	    seq.append("</param>");
+                    seq.append(message.getObjType().getValue());
+                    seq.append("\">");
+                    //Retrieve name and result of params
+                    if (message.getParam() != null) {
+                        for (Param currParam : message.getParam()) {
+                            seq.append("<param name=\"");
+                            seq.append(currParam.getName());
+                            seq.append("\">");
+                            seq.append(currParam.getValue());
+                            seq.append("</param>");
                         }
                     }
                     seq.append("</objType>");
-                }
+
                 seq.append("</"); seq.append(MESSAGE_TYPE); seq.append(">");
             seq.append("</body>");
         seq.append("</msg>");

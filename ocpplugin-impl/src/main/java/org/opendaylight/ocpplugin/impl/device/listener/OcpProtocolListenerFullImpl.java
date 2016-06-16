@@ -11,7 +11,7 @@ import org.opendaylight.ocpjava.protocol.api.connection.ConnectionAdapter;
 import org.opendaylight.ocpplugin.api.ocp.device.handlers.DeviceReplyProcessor;
 import org.opendaylight.ocpplugin.api.ocp.device.listener.OcpMessageListenerFacade;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.FaultInd;
-import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.StateChange;
+import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.StateChangeInd;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.extension.rev150811.HelloMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,7 +42,7 @@ public class OcpProtocolListenerFullImpl implements OcpMessageListenerFacade {
     }
 
     @Override
-    public void onStateChange(final StateChange stateChange) {
+    public void onStateChangeInd(final StateChangeInd stateChange) {
         deviceReplyProcessor.processStateChange(stateChange); 
     }
 

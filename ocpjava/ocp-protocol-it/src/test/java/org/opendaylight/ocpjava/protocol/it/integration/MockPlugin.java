@@ -36,14 +36,9 @@ import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.GetP
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.GetParamRes;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.ObjId;
 
-import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.getparaminput.Obj;
-import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.getparaminput.ObjBuilder;
-import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.getparaminput.obj.Param;
-import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.getparaminput.obj.ParamBuilder;
-
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.extension.rev150811.OcpExtensionListener;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.OcpProtocolListener;
-import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.StateChange;
+import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.StateChangeInd;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.FaultInd;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.system.rev150811.DisconnectEvent;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.system.rev150811.RadioHeadIdleEvent;
@@ -92,7 +87,7 @@ public class MockPlugin implements OcpProtocolListener, OcpExtensionListener, Ra
     }
 
     @Override
-    public void onStateChange(StateChange notification) {
+    public void onStateChangeInd(StateChangeInd notification) {
         LOGGER.debug("StateChange message received"); 
     }
 
@@ -154,21 +149,11 @@ public class MockPlugin implements OcpProtocolListener, OcpExtensionListener, Ra
     }
 
     protected void getParam(){
-        
         GetParamInputBuilder builder = new GetParamInputBuilder();
-        ObjBuilder objbuilder = new ObjBuilder();       
-        ParamBuilder parambuilder = new ParamBuilder();
-        
-        List<Param> paramlist = new ArrayList();
-        List<Obj> objlist = new ArrayList();
         
         builder.setXid(2L);
-            objbuilder.setId(new ObjId("ALL"));
-                parambuilder.setName("ALL");
-                paramlist.add(parambuilder.build());
-            objbuilder.setParam(paramlist);                    
-            objlist.add(objbuilder.build());
-        builder.setObj(objlist);        
+        builder.setObjId(new ObjId("ALL"));
+        builder.setParamName("ALL");
         
         GetParamInput getParamInput = builder.build();
         

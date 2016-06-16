@@ -22,8 +22,8 @@ import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.OcpP
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.extension.rev150811.OcpExtensionListener;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.FaultInd;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.FaultIndBuilder;
-import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.StateChange;
-import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.StateChangeBuilder;
+import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.StateChangeInd;
+import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.StateChangeIndBuilder;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.extension.rev150811.HelloMessage;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.extension.rev150811.HelloMessageBuilder;
 
@@ -74,11 +74,11 @@ public class OcpProtocolListenerFullImplTest {
      * Test method for OcpProtocolListenerFullImpl#onStateChange(org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.StateChange).
      */
     @Test
-    public void testOnStateChange() {
-        StateChange stateChange = new StateChangeBuilder().setXid(xid).build();
-        ocpProtocolListener.onStateChange(stateChange);
+    public void testOnStateChangeInd() {
+        StateChangeInd stateChangeInd = new StateChangeIndBuilder().setXid(xid).build();
+        ocpProtocolListener.onStateChangeInd(stateChangeInd);
 
-        Mockito.verify(deviceReplyProcessor).processStateChange(Matchers.any(StateChange.class));
+        Mockito.verify(deviceReplyProcessor).processStateChange(Matchers.any(StateChangeInd.class));
     }
 
     /**

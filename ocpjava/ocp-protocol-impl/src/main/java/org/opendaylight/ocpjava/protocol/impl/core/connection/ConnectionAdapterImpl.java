@@ -53,7 +53,7 @@ import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.Modi
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.ModifyStateOutput;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.GetFaultInput;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.GetFaultOutput;
-import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.StateChange;
+import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.StateChangeInd;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.FaultInd;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.OcpProtocolListener;
 
@@ -262,9 +262,9 @@ public class ConnectionAdapterImpl implements ConnectionFacade {
                 systemListener.onRadioHeadIdleEvent((RadioHeadIdleEvent) message);
 
             // OCP messages
-            } else if (message instanceof StateChange) {
-                LOG.info("StateChange received / branch");
-                messageListener.onStateChange((StateChange) message);
+            } else if (message instanceof StateChangeInd) {
+                LOG.info("StateChangeInd received / branch");
+                messageListener.onStateChangeInd((StateChangeInd) message);
                 statisticsCounters.incrementCounter(CounterEventTypes.US_MESSAGE_PASS);
 
             } else if (message instanceof FaultInd) {

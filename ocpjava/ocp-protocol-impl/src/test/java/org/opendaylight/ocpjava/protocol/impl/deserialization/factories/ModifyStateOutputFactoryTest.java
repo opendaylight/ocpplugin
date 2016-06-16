@@ -115,8 +115,8 @@ public class ModifyStateOutputFactoryTest {
         Assert.assertNotNull("Wrong elements", builtByFactory.getMsgType());
         Assert.assertNotNull("Wrong elements", builtByFactory.getResult());
         Assert.assertNotNull("Wrong elements", builtByFactory.getXid());
-        Assert.assertNotNull("Wrong elements", builtByFactory.getObj().get(0).getId().getValue());
-        Assert.assertNotNull("Wrong elements", builtByFactory.getObj().get(0).getState().get(0).getValue());
-        Assert.assertNotNull("Wrong elements", builtByFactory.getObj().get(0).getState().get(0).getName());
+        Assert.assertNotNull("Wrong elements", builtByFactory.getObjId());
+        Assert.assertNotNull("Wrong elements", builtByFactory.getStateType());
+        Assert.assertNotNull("Wrong elements", builtByFactory.getStateValue());
     }
 }

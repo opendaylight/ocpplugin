@@ -29,10 +29,6 @@ import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.GetS
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.ObjId;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.StateAllType;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.OcpMsgType;
-import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.getstateinput.Obj;
-import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.getstateinput.ObjBuilder;
-import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.getstateinput.obj.State;
-import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.getstateinput.obj.StateBuilder;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -78,23 +74,16 @@ public class GetStateInputFactoryTest {
         Method m3_t = hib.getClass().getMethod("setEventDrivenReporting", Boolean.class);
         m3_t.invoke(hib, new Boolean(testEvent));
 
-        //set Obj with state
-        ObjBuilder objbuilder = new ObjBuilder();
-        StateBuilder statebuilder = new StateBuilder();
-        List<State> slist = new ArrayList();
-        statebuilder.setName(StateAllType.valueOf(testStateType));
-        slist.add(statebuilder.build());
-        objbuilder.setState(slist);
+        //set ObjId
+        Method m4_t = hib.getClass().getMethod("setObjId", ObjId.class);
+        m4_t.invoke(hib, new ObjId(testObjId));
         
-        objbuilder.setId(new ObjId(testObjId));
-        List<Obj> objlist = new ArrayList();
-        objlist.add(objbuilder.build());
-        
-        Method m4_t = hib.getClass().getMethod("setObj", List.class);
-        m4_t.invoke(hib, objlist);
-        
+        //set State Type
+        Method m5_t = hib.getClass().getMethod("setStateType", StateAllType.class);
+        m5_t.invoke(hib, StateAllType.valueOf(testStateType));
+
         GetStateInput hi = hib.build();
-        LOGGER.debug("GetStateInputFactoryTest - hi objId value = {}", hi.getObj());    
+        LOGGER.debug("GetStateInputFactoryTest - hi objId value = {}", hi.getObjId());
 
         ByteBuf out = UnpooledByteBufAllocator.DEFAULT.buffer();
         getStateInputFactory.serialize(hi, out);

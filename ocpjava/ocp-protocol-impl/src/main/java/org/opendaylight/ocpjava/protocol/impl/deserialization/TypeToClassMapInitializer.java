@@ -27,7 +27,7 @@ import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.Dele
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.ModifyStateOutput;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.ReResetOutput;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.SetTimeOutput;
-import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.StateChange;
+import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.protocol.rev150811.StateChangeInd;
 
 
 /**
@@ -56,7 +56,7 @@ public final class TypeToClassMapInitializer {
         helper.registerTypeToClass( 11, CreateObjOutput.class);
         helper.registerTypeToClass( 13, DeleteObjOutput.class);
         helper.registerTypeToClass( 15, GetStateOutput.class);
-        helper.registerTypeToClass( 16, StateChange.class);
+        helper.registerTypeToClass( 16, StateChangeInd.class);
         helper.registerTypeToClass( 18, ModifyStateOutput.class);
         helper.registerTypeToClass( 20, GetFaultOutput.class);
         helper.registerTypeToClass( 21, FaultInd.class);
