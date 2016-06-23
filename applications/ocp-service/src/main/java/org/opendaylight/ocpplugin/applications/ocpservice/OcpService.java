@@ -82,6 +82,7 @@ public class OcpService implements OcpServiceService, DataChangeListener, SalDev
     private final SalDeviceMgmtService ocpDeviceMgmtService;
     private final SalObjectLifecycleService ocpObjectLifecycleService;    
     private static final InstanceIdentifier<Nodes> NODES_IDENTIFIER = InstanceIdentifier.create(Nodes.class);
+    private boolean freshStart = true;
     
     public OcpService(final RpcConsumerRegistry rpcRegistry) {
         executor = Executors.newFixedThreadPool(1);
@@ -481,6 +482,14 @@ public class OcpService implements OcpServiceService, DataChangeListener, SalDev
                 LOG.debug("Get deviceConnected notification with notification {}", notification);                  
                 
                 try {
+                    if (!freshStart) {
+                        resourceModelBroker.deleteObj("ALL");
+                    }
+                    freshStart = false;
+                } catch (Exception exc) {
+                        LOG.info("Failed to delete node:({}, {})", notification.getNodeId(), exc);
+                }
+
                     resourceModelBroker.deleteObj("ALL");
                 } catch (Exception exc) {
                     LOG.error("Failed to delete node:({}, {})", notification.getNodeId(), exc); 
