@@ -62,7 +62,6 @@ public class ResourceModelBroker {
         int i = 0;       
         ArrayList<Long> instanceNumbers = new ArrayList<Long>();   
         ArrayList<String> objTypes = new ArrayList<String>();         
-        ResourceModelBroker5G resourceModelBroker5G = new ResourceModelBroker5G(rootPath, dataBroker);          
         
         parseObjId(objTypes, instanceNumbers, objId);     
         ReadWriteTransaction readWriteTransaction = dataBroker.newReadWriteTransaction(); 
@@ -133,7 +132,7 @@ public class ResourceModelBroker {
                     }
                     break;                       
                 default:
-                    resourceModelBroker5G.deleteObj(objId);               
+                    LOG.error("Delete object failed: unknown object {}", objTypes.get(objTypes.size()-1)); 
             }
         } catch (Exception exc) {
             LOG.error("Data delete failed, at {}, Error: {}", objTypes, exc);
@@ -146,7 +145,6 @@ public class ResourceModelBroker {
 
         ArrayList<Long> instanceNumbers = new ArrayList<Long>();   
         ArrayList<String> objTypes = new ArrayList<String>();         
-        ResourceModelBroker5G resourceModelBroker5G = new ResourceModelBroker5G(rootPath, dataBroker);              
         parseObjId(objTypes, instanceNumbers, objId);       
         ReadWriteTransaction readWriteTransaction = dataBroker.newReadWriteTransaction(); 
         
@@ -186,21 +184,6 @@ public class ResourceModelBroker {
                             case "agcSettlTimeCap":
                                 re.setAgcSettlTimeCap(params.get(i).getValue());
                                 break;   
-                            case "numAntPort":
-                                re.setNumAntPort(new XsdUnsignedShort(Integer.valueOf(params.get(i).getValue())));
-                                break;  
-                            case "numDataLinks":
-                                re.setNumDataLinks(new XsdUnsignedShort(Integer.valueOf(params.get(i).getValue())));
-                                break;  
-                            case "numSigPathPerAntenna":
-                                re.setNumSigPathPerAntenna(new XsdUnsignedShort(Integer.valueOf(params.get(i).getValue())));
-                                break;  
-                            case "resourceAllocationDenominator":
-                                re.setResourceAllocationDenominator(new XsdUnsignedShort(Integer.valueOf(params.get(i).getValue())));
-                                break;
-                            case "resourceAllcationDenominator":
-                                re.setResourceAllocationDenominator(new XsdUnsignedShort(Integer.valueOf(params.get(i).getValue())));
-                                break;                                  
                             default:
                                 LOG.debug("ObjId = {} does not exist in Re", params.get(i).getName());                                    
                         }
@@ -222,17 +205,6 @@ public class ResourceModelBroker {
                             case "portLabel":
                                 antPort.setPortLabel(params.get(i).getValue());
                                 break; 
-                            case "topology":
-                                org.opendaylight.yang.gen.v1.urn.opendaylight.params.xml.ns.yang.ocp.applications.ocp.resourcemodel.rev150811.resourcemodel.radiohead.AntPort.Topology topology = 
-                                org.opendaylight.yang.gen.v1.urn.opendaylight.params.xml.ns.yang.ocp.applications.ocp.resourcemodel.rev150811.resourcemodel.radiohead.AntPort.Topology.valueOf(params.get(i).getValue());                               
-                                antPort.setTopology(topology);          
-                                break;                                
-                            case "direction":
-                                antPort.setDirection(new XsdUnsignedShort(Integer.valueOf(params.get(i).getValue())));
-                                break;  
-                            case "angle":
-                                antPort.setAngle(new XsdUnsignedShort(Integer.valueOf(params.get(i).getValue())));
-                                break;                                  
                             default:
                                 LOG.debug("ObjId = {} does not exist in antPort", params.get(i).getName());                                    
                         }                        
@@ -742,7 +714,7 @@ public class ResourceModelBroker {
                 }   
                 break;           
             default:
-                    resourceModelBroker5G.updateObj(params, objId);                                                   
+                LOG.error("Update object failed: unknown object {}", objTypes.get(objTypes.size()-1));
         }             
     }
         
