@@ -62,7 +62,6 @@ public class ResourceModelBroker {
         int i = 0;       
         ArrayList<Long> instanceNumbers = new ArrayList<Long>();   
         ArrayList<String> objTypes = new ArrayList<String>();         
-        ResourceModelBroker5G resourceModelBroker5G = new ResourceModelBroker5G(rootPath, dataBroker);          
         
         parseObjId(objTypes, instanceNumbers, objId);     
         ReadWriteTransaction readWriteTransaction = dataBroker.newReadWriteTransaction(); 
@@ -133,7 +132,7 @@ public class ResourceModelBroker {
                     }
                     break;                       
                 default:
-                    resourceModelBroker5G.deleteObj(objId);               
+                    LOG.error("Delete object failed: unknown object {}", objTypes.get(objTypes.size()-1)); 
             }
         } catch (Exception exc) {
             LOG.error("Data delete failed, at {}, Error: {}", objTypes, exc);
@@ -146,7 +145,6 @@ public class ResourceModelBroker {
 
         ArrayList<Long> instanceNumbers = new ArrayList<Long>();   
         ArrayList<String> objTypes = new ArrayList<String>();         
-        ResourceModelBroker5G resourceModelBroker5G = new ResourceModelBroker5G(rootPath, dataBroker);              
         parseObjId(objTypes, instanceNumbers, objId);       
         ReadWriteTransaction readWriteTransaction = dataBroker.newReadWriteTransaction(); 
         
@@ -742,7 +740,7 @@ public class ResourceModelBroker {
                 }   
                 break;           
             default:
-                    resourceModelBroker5G.updateObj(params, objId);                                                   
+                LOG.error("Update object failed: unknown object {}", objTypes.get(objTypes.size()-1));
         }             
     }
         
