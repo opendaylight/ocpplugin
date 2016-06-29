@@ -13,7 +13,7 @@ module ocp-radiohead-connection-provider-impl {
 
     import config {prefix config; revision-date 2013-04-05; }
     import ocp-radiohead-connection-provider {prefix ocp-radiohead-connection-provider; revision-date 2015-08-11; }
-    import ietf-inet-types {prefix ietf-inet; revision-date 2010-09-24; }
+    import ietf-inet-types {prefix ietf-inet; revision-date 2013-07-15; }
     import ocp-configuration {prefix ocp-config; revision-date 2015-08-11; }
     import rpc-context { prefix rpcx; revision-date 2013-06-17; }
 

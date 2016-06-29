@@ -5,7 +5,7 @@ module ocp-resourcemodel {
     prefix "ocp-resourcemodel";
 
     import ocp-types { prefix ocpt; }
-    import ietf-yang-types { prefix yang; revision-date 2010-09-24;}
+    import ietf-yang-types { prefix yang; revision-date 2013-07-15;}
     import ietf-inet-types { prefix inet; }
     import config { prefix config; revision-date 2013-04-05; }
     import opendaylight-inventory { prefix inv; revision-date "2013-08-19";}
