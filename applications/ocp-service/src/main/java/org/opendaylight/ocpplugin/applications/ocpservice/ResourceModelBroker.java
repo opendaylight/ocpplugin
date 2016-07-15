@@ -70,7 +70,7 @@ public class ResourceModelBroker {
             switch (objTypes.get((objTypes.size())-1)) {  
                 case "antPort":  
                     readWriteTransaction.delete(LogicalDatastoreType.OPERATIONAL, rootPath.child(AntPort.class, new AntPortKey(new XsdUnsignedInt(instanceNumbers.get(instanceNumbers.size()-1)))));   
-                    readWriteTransaction.submit();
+                    readWriteTransaction.submit();                  
                     break;
                 case "TxSigPath_UTRAFDD":  
                     readWriteTransaction.delete(LogicalDatastoreType.OPERATIONAL, rootPath.child(TxSigPathUTRAFDD.class,
@@ -118,7 +118,7 @@ public class ResourceModelBroker {
                         readWriteTransaction.submit();                                                        
                     break;
                 case "aisgALD":               
-                    InstanceIdentifier<AisgPort> aisgPath = rootPath.child(AisgPort.class, new AisgPortKey(new XsdUnsignedInt(instanceNumbers.get(instanceNumbers.size())-2)));
+                    InstanceIdentifier<AisgPort> aisgPath = rootPath.child(AisgPort.class, new AisgPortKey(new XsdUnsignedInt(instanceNumbers.get(instanceNumbers.size()-2))));
                     readWriteTransaction.delete(LogicalDatastoreType.OPERATIONAL,
                         aisgPath.child(AisgALD.class, new AisgALDKey(new XsdUnsignedInt(instanceNumbers.get(instanceNumbers.size()-1)))));   
                     readWriteTransaction.submit();                                     
@@ -223,7 +223,7 @@ public class ResourceModelBroker {
                     txSigPathUTRAFDD.setKey(new TxSigPathUTRAFDDKey(new XsdUnsignedInt(instanceNumbers.get(instanceNumbers.size()-1))));                                   
                     i = 0;
                     while (i < params.size()) {
-                        LOG.debug("In TxSigPath_UTRAFDD, Get param Name: {}", params.get(i).getName());                        
+                        LOG.debug("Processing param Name: {} in TxSigPath_UTRAFDD", params.get(i).getName());                          
                         switch (params.get(i).getName()) {
                             case "maxTxPwr":
                                 txSigPathUTRAFDD.setMaxTxPwr(new XsdUnsignedShort(Integer.valueOf(params.get(i).getValue())));
@@ -300,7 +300,7 @@ public class ResourceModelBroker {
                                 txSigPathEUTRAFDD.setEnableIQDLComp(Boolean.valueOf(params.get(i).getValue()));      
                                 break;             
                             default:
-                                LOG.debug("ObjId = {} does not exist in Re", params.get(i).getName());                                   
+                                LOG.debug("ObjId = {} does not exist in TxSigPath_EUTRAFDD", params.get(i).getName());                                   
                         }
                         i++;
                     } 
@@ -367,7 +367,7 @@ public class ResourceModelBroker {
                                 txSigPathEUTRATDD.setEnableIQDLComp(Boolean.valueOf(params.get(i).getValue()));     
                                 break;
                             default:
-                                LOG.debug("ObjId = {} does not exist in Re", params.get(i).getName());                                   
+                                LOG.debug("ObjId = {} does not exist in TxSigPath_EUTRATDD", params.get(i).getName());                                   
                         }
                         i++;
                     } 
@@ -413,9 +413,10 @@ public class ResourceModelBroker {
                                 txSigPathGSM.setOriLink(new ObjId(params.get(i).getValue())); 
                                 break;
                             case "antPort":
-                                txSigPathGSM.setAntPort(new ObjId(params.get(i).getValue()));   
+                                txSigPathGSM.setAntPort(new ObjId(params.get(i).getValue()));  
+                                break;                                
                             default:
-                                LOG.debug("ObjId = {} does not exist in Re", params.get(i).getName());                                   
+                                LOG.debug("ObjId = {} does not exist in TxSigPath_GSM", params.get(i).getName());                                   
                         }
                         i++;
                     } 
@@ -471,7 +472,7 @@ public class ResourceModelBroker {
                                 rxSigPathUTRAFDD.setUlAGCSetlgTime(new XsdUnsignedByte(Short.valueOf(params.get(i).getValue())));
                                 break;              
                             default:
-                                LOG.debug("ObjId = {} does not exist in Re", params.get(i).getName());                                   
+                                LOG.debug("ObjId = {} does not exist in RxSigPath_UTRAFDD", params.get(i).getName());                                   
                                 }
                         i++;
                     } 
@@ -524,7 +525,7 @@ public class ResourceModelBroker {
                                 rxSigPathEUTRAFDD.setEnableIQDLComp(Boolean.valueOf(params.get(i).getValue()));
                                 break;
                             default:
-                                LOG.debug("ObjId = {} does not exist in Re", params.get(i).getName());                                   
+                                LOG.debug("ObjId = {} does not exist in RxSigPath_EUTRAFDD", params.get(i).getName());                                   
                         }
                         i++;
                     } 
@@ -585,7 +586,7 @@ public class ResourceModelBroker {
                                 rxSigPathEUTRATDD.setEnableIQDLComp(Boolean.valueOf(params.get(i).getValue()));
                                 break;
                             default:
-                                LOG.debug("ObjId = {} does not exist in Re", params.get(i).getName());                                   
+                                LOG.debug("ObjId = {} does not exist in RxSigPath_EUTRATDD", params.get(i).getName());                                   
                         }
                         i++;
                     } 
@@ -634,7 +635,7 @@ public class ResourceModelBroker {
                                 rxSigPathGSM.setAntPort(new ObjId(params.get(i).getValue()));
                                 break;
                             default:
-                                LOG.debug("ObjId = {} does not exist in Re", params.get(i).getName());                                   
+                                LOG.debug("ObjId = {} does not exist in RxSigPath_GSM", params.get(i).getName());                                   
                         }
                         i++;
                     } 
@@ -701,11 +702,11 @@ public class ResourceModelBroker {
                                 aisgALD.setHdlcAddress(new XsdUnsignedByte(Short.valueOf(params.get(i).getValue())));      
                                 break;
                             default:
-                                LOG.debug("ObjId = {} does not exist in Re", params.get(i).getName());                                   
+                                LOG.debug("ObjId = {} does not exist in aisgALD", params.get(i).getName());                                   
                         }
                         i++;
                     } 
-                    InstanceIdentifier<AisgPort> aisgPath = rootPath.child(AisgPort.class, new AisgPortKey(new XsdUnsignedInt(instanceNumbers.get(instanceNumbers.size())-2)));
+                    InstanceIdentifier<AisgPort> aisgPath = rootPath.child(AisgPort.class, new AisgPortKey(new XsdUnsignedInt(instanceNumbers.get(instanceNumbers.size()-2))));
                     readWriteTransaction.merge(LogicalDatastoreType.OPERATIONAL,
                         aisgPath.child(AisgALD.class, new AisgALDKey(new XsdUnsignedInt(instanceNumbers.get(instanceNumbers.size()-1)))), aisgALD.build(), true);   
                     readWriteTransaction.submit();                                     
