@@ -30,6 +30,7 @@
       <module>ocpplugin-controller-config</module>
       <module>model</module>
       <module>applications</module>
+      <module>simple-agent</module>
       <module>features</module>
   </modules>
 </project>
