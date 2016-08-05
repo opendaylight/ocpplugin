@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7a6b29fe_9082d350",
+        "filename": "ocpjava/ocp-protocol-api/pom.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 2046
+      },
+      "writtenOn": "2016-08-05T08:07:54Z",
+      "side": 1,
+      "message": "This is dangerous, as Beryllium versions use the 2010-09-24 revision of ietf-inet-types. Also, this would probably get bumped (incorrectly) after Boron (the original release) is out.\n\nAs a side note, this also catches released Beryllium-SR3 version, as evidenced here: https://lists.opendaylight.org/pipermail/release/2016-August/007649.html",
+      "range": {
+        "startLine": 70,
+        "startChar": 19,
+        "endLine": 70,
+        "endChar": 35
+      },
+      "revId": "a2894533968e13ad224d8242f936120eeb914f91",
+      "serverId": "7fc14799-209e-464c-9743-7a06c2c21a81",
+      "unresolved": false
+    }
+  ]
+}
