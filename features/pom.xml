@@ -5,22 +5,22 @@
     <parent>
         <groupId>org.opendaylight.odlparent</groupId>
         <artifactId>features-parent</artifactId>
-        <version>1.7.0-SNAPSHOT</version>
+        <version>1.7.0-Boron</version>
         <relativePath/>
     </parent>
 
     <groupId>org.opendaylight.ocpplugin</groupId>
     <artifactId>features-ocpplugin</artifactId>
-    <version>0.1.0-SNAPSHOT</version>
+    <version>0.1.0-Boron</version>
     <packaging>jar</packaging>
 
     <properties>
-        <controller.model.version>1.4.0-SNAPSHOT</controller.model.version>
-        <mdsal.version>1.4.0-SNAPSHOT</mdsal.version>
-        <mdsal.model.version>0.9.0-SNAPSHOT</mdsal.model.version>
-        <yangtools.version>1.0.0-SNAPSHOT</yangtools.version>
-        <restconf.version>1.4.0-SNAPSHOT</restconf.version>
-        <ocpjava.version>0.1.0-SNAPSHOT</ocpjava.version>
+        <controller.model.version>1.4.0-Boron</controller.model.version>
+        <mdsal.version>1.4.0-Boron</mdsal.version>
+        <mdsal.model.version>0.9.0-Boron</mdsal.model.version>
+        <yangtools.version>1.0.0-Boron</yangtools.version>
+        <restconf.version>1.4.0-Boron</restconf.version>
+        <ocpjava.version>0.1.0-Boron</ocpjava.version>
     </properties>
 
     <dependencies>
