@@ -18,7 +18,6 @@
         <feature version='${config.version}'>odl-config-api</feature>
         <feature version='${controller.mdsal.version}'>odl-mdsal-common</feature>
         <feature version='[4.0.30,4.1.0)'>odl-netty</feature>
-        <bundle>mvn:org.slf4j/slf4j-log4j12/1.7.10</bundle>
         <bundle>mvn:org.opendaylight.controller.model/model-inventory/${controller.mdsal.version}</bundle>
         <bundle>mvn:org.opendaylight.ocpplugin.ocpjava/ocp-protocol-api/{{VERSION}}</bundle>
         <bundle>mvn:org.opendaylight.ocpplugin.ocpjava/ocp-protocol-spi/{{VERSION}}</bundle>
