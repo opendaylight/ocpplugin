@@ -11,6 +11,10 @@
     <groupId>org.opendaylight.ocpplugin.applications</groupId>
     <artifactId>ocp-service</artifactId>
     <packaging>bundle</packaging>
+    <!-- <name> formatting is used by autorelease to parse and notify projects on
+         build failure. Please do not modify this unless you have a good reason. -->
+    <name>ODL :: ocpplugin :: ${project.artifactId}</name>
+
     <dependencies>
         <dependency>
             <groupId>org.opendaylight.ocpplugin</groupId>
