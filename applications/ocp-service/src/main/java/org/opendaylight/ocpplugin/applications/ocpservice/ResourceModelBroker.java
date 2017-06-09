@@ -27,7 +27,6 @@ import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.common.types.rev150811.
 import org.opendaylight.controller.md.sal.common.api.data.DataReader;
 import org.opendaylight.yangtools.yang.binding.DataObject;
 import org.opendaylight.yangtools.yang.binding.InstanceIdentifier;
-import org.opendaylight.controller.sal.binding.api.data.DataBrokerService;
 import org.opendaylight.controller.md.sal.binding.api.DataBroker;
 import org.opendaylight.controller.md.sal.binding.api.ReadWriteTransaction;
 import org.opendaylight.controller.md.sal.common.api.data.LogicalDatastoreType;

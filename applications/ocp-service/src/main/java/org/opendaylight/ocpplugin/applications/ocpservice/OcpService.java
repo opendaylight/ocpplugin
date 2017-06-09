@@ -32,7 +32,6 @@ import org.opendaylight.yangtools.yang.common.RpcResultBuilder;
 import org.opendaylight.controller.md.sal.common.api.data.DataReader;
 import org.opendaylight.yangtools.yang.binding.DataObject;
 import org.opendaylight.yangtools.yang.binding.InstanceIdentifier;
-import org.opendaylight.controller.sal.binding.api.data.DataBrokerService;
 import org.opendaylight.controller.md.sal.binding.api.DataBroker;
 import org.opendaylight.controller.md.sal.common.api.data.LogicalDatastoreType;
 import org.opendaylight.controller.md.sal.common.api.data.AsyncDataChangeEvent;
