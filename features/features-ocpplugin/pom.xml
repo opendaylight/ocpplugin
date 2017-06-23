@@ -1,106 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<!--
+ Copyright © 2017 Red Hat, Inc. and others.
+
+ This program and the accompanying materials are made available under the
+ terms of the Eclipse Public License v1.0 which accompanies this distribution,
+ and is available at http://www.eclipse.org/legal/epl-v10.html
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <parent>
         <groupId>org.opendaylight.odlparent</groupId>
-        <artifactId>features-parent</artifactId>
-        <version>1.9.0</version>
+        <artifactId>feature-repo-parent</artifactId>
+        <version>2.0.0</version>
         <relativePath/>
     </parent>
 
     <groupId>org.opendaylight.ocpplugin</groupId>
     <artifactId>features-ocpplugin</artifactId>
     <version>0.3.0-SNAPSHOT</version>
-    <packaging>jar</packaging>
-
-    <properties>
-        <controller.model.version>1.6.0-SNAPSHOT</controller.model.version>
-        <mdsal.version>1.6.0-SNAPSHOT</mdsal.version>
-        <mdsal.model.version>0.11.0-SNAPSHOT</mdsal.model.version>
-        <yangtools.version>1.2.0-SNAPSHOT</yangtools.version>
-        <restconf.version>1.6.0-SNAPSHOT</restconf.version>
-        <ocpjava.version>0.3.0-SNAPSHOT</ocpjava.version>
-    </properties>
+    <packaging>feature</packaging>
 
     <dependencies>
-        <!-- feature dependencies -->
         <dependency>
-            <groupId>org.opendaylight.controller</groupId>
-            <artifactId>features-mdsal</artifactId>
-            <version>${mdsal.version}</version>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>odl-ocpplugin-all</artifactId>
+            <version>${project.version}</version>
+            <type>xml</type>
             <classifier>features</classifier>
-            <type>xml</type>
         </dependency>
         <dependency>
-            <groupId>org.opendaylight.yangtools</groupId>
-            <artifactId>features-yangtools</artifactId>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>odl-ocpplugin-southbound</artifactId>
+            <version>${project.version}</version>
+            <type>xml</type>
             <classifier>features</classifier>
-            <version>${yangtools.version}</version>
-            <type>xml</type>
         </dependency>
         <dependency>
-            <groupId>org.opendaylight.netconf</groupId>
-            <artifactId>features-restconf</artifactId>
-            <version>${restconf.version}</version>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>odl-ocpplugin-app-ocp-service</artifactId>
+            <version>${project.version}</version>
+            <type>xml</type>
             <classifier>features</classifier>
-            <type>xml</type>
         </dependency>
-        <dependency>
-            <groupId>org.opendaylight.ocpplugin.ocpjava</groupId>
-            <artifactId>features-ocpjava</artifactId>
-            <version>${ocpjava.version}</version>
-            <classifier>features</classifier>
-            <type>xml</type>
-        </dependency>
-
-        <!-- bundle dependencies -->
-        <dependency>
-            <groupId>org.opendaylight.ocpplugin.model</groupId>
-            <artifactId>model-ocp-service</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.opendaylight.controller.model</groupId>
-            <artifactId>model-inventory</artifactId>
-            <version>${controller.model.version}</version>
-        </dependency>
-
-        <!-- bundle dependencies -->
-        <dependency>
-            <groupId>org.opendaylight.ocpplugin</groupId>
-            <artifactId>ocpplugin-api</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.opendaylight.ocpplugin</groupId>
-            <artifactId>ocpplugin-impl</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.opendaylight.ocpplugin.model</groupId>
-            <artifactId>model-ocp-service</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.opendaylight.ocpplugin.applications</groupId>
-            <artifactId>ocp-service</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.opendaylight.ocpplugin</groupId>
-            <artifactId>ocpplugin-controller-config</artifactId>
-            <version>${project.version}</version>
-            <type>xml</type>
-        </dependency>
-
     </dependencies>
-
-    <scm>
-      <connection>scm:git:ssh://git.opendaylight.org:29418/ocpplugin.git</connection>
-      <developerConnection>scm:git:ssh://git.opendaylight.org:29418/ocpplugin.git</developerConnection>
-      <url>https://wiki.opendaylight.org/view/OCP_Plugin:Main</url>
-      <tag>HEAD</tag>
-    </scm>
-
 </project>
