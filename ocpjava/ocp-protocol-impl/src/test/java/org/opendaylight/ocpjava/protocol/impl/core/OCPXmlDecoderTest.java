@@ -20,7 +20,7 @@ import org.slf4j.LoggerFactory;
  * Verifies the basic functionality of the {@link OCPXmlDecoder}.
  */
 public class OCPXmlDecoderTest {  
-    private static final Logger LOGGER = LoggerFactory.getLogger(OCPXmlDecoderTest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(OCPXmlDecoderTest.class);
     private static final XmlDocumentEnd XML_DOCUMENT_END = XmlDocumentEnd.INSTANCE;
 
     /**
@@ -29,7 +29,7 @@ public class OCPXmlDecoderTest {
     @Test
     public void shouldDecodeRequestWithSimpleXml() {
         XmlDocumentStart temp = new XmlDocumentStart("UTF-8", "1.0", false, null);
-        LOGGER.debug("temp = {}", temp);
+        LOG.debug("temp = {}", temp);
         assertThat(temp, instanceOf(XmlDocumentStart.class));
         assertThat(((XmlDocumentStart) temp).version(), is("1.0"));
         assertThat(((XmlDocumentStart) temp).encoding(), is("UTF-8"));
@@ -41,7 +41,7 @@ public class OCPXmlDecoderTest {
         XmlElementStart temp2 = new XmlElementStart("employee", "", "");
         XmlNamespace xmlns = new XmlNamespace("nettya", "http://netty.io/netty/a");
         temp2.namespaces().add(xmlns);
-        LOGGER.debug("temp2 = {}", temp2);
+        LOG.debug("temp2 = {}", temp2);
         assertThat(temp2, instanceOf(XmlElementStart.class));
         assertThat(((XmlElementStart) temp2).name(), is("employee"));
         assertThat(((XmlElementStart) temp2).prefix(), is(""));
@@ -53,7 +53,7 @@ public class OCPXmlDecoderTest {
         assertThat(((XmlElementStart) temp2).equals(temp2), is(true));
 
         XmlElementStart temp3 = new XmlElementStart("id", "http://netty.io/netty/a", "nettya");
-        LOGGER.debug("temp3 = {}", temp3);
+        LOG.debug("temp3 = {}", temp3);
         assertThat(temp3, instanceOf(XmlElementStart.class));
         assertThat(((XmlElementStart) temp3).name(), is("id"));
         assertThat(((XmlElementStart) temp3).prefix(), is("nettya"));
@@ -62,12 +62,12 @@ public class OCPXmlDecoderTest {
         assertThat(((XmlElementStart) temp3).namespaces().size(), is(0));
 
         XmlCharacters temp4 = new XmlCharacters("1");
-        LOGGER.debug("temp4 = {}", temp4);
+        LOG.debug("temp4 = {}", temp4);
         assertThat(temp4, instanceOf(XmlCharacters.class));
         assertThat(((XmlCharacters) temp4).data(), is("1"));
 
         XmlElementEnd temp5 = new XmlElementEnd("id", "http://netty.io/netty/a", "nettya");
-        LOGGER.debug("temp5 = {}", temp5);
+        LOG.debug("temp5 = {}", temp5);
         assertThat(temp5, instanceOf(XmlElementEnd.class));
         assertThat(((XmlElementEnd) temp5).name(), is("id"));
         assertThat(((XmlElementEnd) temp5).prefix(), is("nettya"));
@@ -75,7 +75,7 @@ public class OCPXmlDecoderTest {
         assertThat(((XmlElementEnd) temp5).equals(temp5), is(true));
 
         XmlCharacters temp6 = new XmlCharacters("\n");
-        LOGGER.debug("temp6 = {}", temp6);
+        LOG.debug("temp6 = {}", temp6);
         assertThat(temp6, instanceOf(XmlCharacters.class));
         assertThat(((XmlCharacters) temp6).data(), is("\n"));
         assertThat(((XmlCharacters) temp6).equals(temp6), is(true));
@@ -84,7 +84,7 @@ public class OCPXmlDecoderTest {
         XmlElementStart temp7 = new XmlElementStart("name", "", "");
         XmlAttribute typ= new XmlAttribute("", "type", "", "", "given");
         temp7.attributes().add(typ);
-        LOGGER.debug("temp7 = {}", temp7);
+        LOG.debug("temp7 = {}", temp7);
         assertThat(temp7, instanceOf(XmlElementStart.class));
         assertThat(((XmlElementStart) temp7).name(), is("name"));
         assertThat(((XmlElementStart) temp7).prefix(), is(""));
@@ -102,7 +102,7 @@ public class OCPXmlDecoderTest {
         temp8.attributes().add(attr);
         XmlNamespace nSpace = new XmlNamespace("nettya", "http://netty.io/netty/a");
         temp8.namespaces().add(nSpace);
-        LOGGER.debug("temp8 = {}", temp8);
+        LOG.debug("temp8 = {}", temp8);
         assertThat(temp8, instanceOf(XmlElementStart.class));
         assertThat(((XmlElementStart) temp8).name(), is("salary"));
         assertThat(((XmlElementStart) temp8).prefix(), is("nettyb"));

@@ -25,7 +25,7 @@ import org.slf4j.LoggerFactory;
  */
 public class IdleHandler extends ReadTimeoutHandler {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(IdleHandler.class);
+    private static final Logger LOG = LoggerFactory.getLogger(IdleHandler.class);
     private boolean first = true;
 
     /**
@@ -45,7 +45,7 @@ public class IdleHandler extends ReadTimeoutHandler {
     @Override
     protected void readTimedOut(final ChannelHandlerContext ctx) throws Exception {
         if (first) {
-            LOGGER.debug("RadioHead idle");
+            LOG.debug("RadioHead idle");
             RadioHeadIdleEventBuilder builder = new RadioHeadIdleEventBuilder();
             builder.setInfo("RadioHead idle");
             ctx.fireChannelRead(builder.build());

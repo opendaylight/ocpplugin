@@ -33,7 +33,7 @@ public class DeserializationFactory {
 
     private final Map<TypeToClassKey, Class<?>> messageClassMap;
     private DeserializerRegistry registry;
-    private static final Logger LOGGER = LoggerFactory.getLogger(DeserializationFactory.class);
+    private static final Logger LOG = LoggerFactory.getLogger(DeserializationFactory.class);
 
 
     /**
@@ -43,7 +43,7 @@ public class DeserializationFactory {
         final Map<TypeToClassKey, Class<?>> temp = new HashMap<>();
         TypeToClassMapInitializer.initializeTypeToClassMap(temp);
         messageClassMap = ImmutableMap.copyOf(temp);
-        LOGGER.trace("DeserializationFactory: messageClassMap = " + messageClassMap); 
+        LOG.trace("DeserializationFactory: messageClassMap = {}", messageClassMap);
     }
 
     /**

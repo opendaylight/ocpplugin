@@ -63,7 +63,7 @@ import org.slf4j.LoggerFactory;
 
 
 public class GetParamOutputFactory implements OCPDeserializer<GetParamOutput> {
-    private static final Logger LOGGER = LoggerFactory.getLogger(GetParamOutputFactory.class);
+    private static final Logger LOG = LoggerFactory.getLogger(GetParamOutputFactory.class);
     @Override
     public GetParamOutput deserialize(List<Object> rawMessage) {
         GetParamOutputBuilder builder = new GetParamOutputBuilder();
@@ -76,7 +76,7 @@ public class GetParamOutputFactory implements OCPDeserializer<GetParamOutput> {
         Iterator itr = rawMessage.iterator();
         while(itr.hasNext()) {
             Object tok = itr.next();
-            LOGGER.trace("GetParamOutputFactory - itr = " + tok);
+            LOG.trace("GetParamOutputFactory - itr = {}", tok);
             try {
                 if(tok instanceof XmlElementStart) {
                     //msgType
@@ -101,7 +101,7 @@ public class GetParamOutputFactory implements OCPDeserializer<GetParamOutput> {
                     	if(((XmlElementStart)tok).attributes().size() >= 1){
                             objbuilder.setId(new ObjId(((XmlElementStart)tok).attributes().get(0).value()));
                         }
-                        LOGGER.debug("GetParamOutputFactory - objbuilder getId = " + objbuilder.getId());
+                        LOG.debug("GetParamOutputFactory - objbuilder getId = {}", objbuilder.getId());
 
                         Object objtok = itr.next();
                         while(!(objtok instanceof XmlElementStart)){
@@ -114,13 +114,13 @@ public class GetParamOutputFactory implements OCPDeserializer<GetParamOutput> {
                             	if (((XmlElementStart)objtok).attributes().size() >= 1){
                                     parambuilder.setName(((XmlElementStart)objtok).attributes().get(0).value());
                                 }
-                                LOGGER.debug("GetParamOutputFactory - parambuilder getName = " + parambuilder.getName());
+                                LOG.debug("GetParamOutputFactory - parambuilder getName = {}", parambuilder.getName());
                                 
                                 //get param character(content)
                                 String bufStr = MessageHelper.getCharVal(itr);
                             	parambuilder.setValue(bufStr);
                                 
-                                LOGGER.debug("GetParamOutputFactory - parambuilder getValue = " + parambuilder.getValue());
+                                LOG.debug("GetParamOutputFactory - parambuilder getValue = {}", parambuilder.getValue());
                                 paramlist.add(parambuilder.build());
                                 parambuilder = new ParamBuilder();
                             }
@@ -143,17 +143,17 @@ public class GetParamOutputFactory implements OCPDeserializer<GetParamOutput> {
                         }
                         objbuilder.setParam(paramlist);                    
                         paramlist = new ArrayList();
-                        LOGGER.trace("GetParamOutputFactory - objbuilder.build(): " + objbuilder.build());
+                        LOG.trace("GetParamOutputFactory - objbuilder.build(): {}", objbuilder.build());
                         objlist.add(objbuilder.build());
                     }
                 } 
             }
             catch( Exception t ) {
-                LOGGER.error("Error " + tok + " " + t.toString());
+                LOG.error("Error {} {}", tok, t.toString());
             }
         }
         builder.setObj(objlist);
-        LOGGER.debug("GetParamOutputFactory - Builder: " + builder.build());
+        LOG.debug("GetParamOutputFactory - Builder: {}", builder.build());
         return builder.build();
     }
 }

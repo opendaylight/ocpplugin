@@ -26,25 +26,25 @@ import org.slf4j.LoggerFactory;
  */
 public class OCPEncoder extends MessageToByteEncoder<MessageListenerWrapper> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(OCPEncoder.class);
+    private static final Logger LOG = LoggerFactory.getLogger(OCPEncoder.class);
     private SerializationFactory serializationFactory;
     private OcpStatisticsCounters statisticsCounters;
 
     /** Constructor of class */
     public OCPEncoder() {
         statisticsCounters = OcpStatisticsCounters.getInstance();
-        LOGGER.trace("Creating OCPEncoder");
+        LOG.trace("Creating OCPEncoder");
     }
 
     @Override
     protected void encode(ChannelHandlerContext ctx, MessageListenerWrapper wrapper, ByteBuf out)
             throws Exception {
-        LOGGER.trace("Encoding");
+        LOG.trace("Encoding");
         try {
             serializationFactory.messageToBuffer((short)1, out, wrapper.getMsg());
             statisticsCounters.incrementCounter(CounterEventTypes.DS_ENCODE_SUCCESS);
         } catch(Exception e) {
-            LOGGER.warn("Message serialization failed ", e);
+            LOG.warn("Message serialization failed ", e);
             statisticsCounters.incrementCounter(CounterEventTypes.DS_ENCODE_FAIL);
             Future<Void> newFailedFuture = ctx.newFailedFuture(e);
             wrapper.getListener().operationComplete(newFailedFuture);

@@ -69,7 +69,7 @@ import org.slf4j.LoggerFactory;
 
 public class FaultIndFactory implements OCPDeserializer<FaultInd> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(FaultIndFactory.class);	
+    private static final Logger LOG = LoggerFactory.getLogger(FaultIndFactory.class);
     private String faultTag = "fault";
     
     @Override
@@ -79,7 +79,7 @@ public class FaultIndFactory implements OCPDeserializer<FaultInd> {
 
         while(itr.hasNext()) {
             Object tok = itr.next();
-            LOGGER.trace("FaultIndFactory - itr = " + tok);
+            LOG.trace("FaultIndFactory - itr = {}", tok);
             try {
                 if(tok instanceof XmlElementStart) {
                     //msgType
@@ -97,7 +97,7 @@ public class FaultIndFactory implements OCPDeserializer<FaultInd> {
                     else if (((XmlElementStart)tok).name().equals("obj")) {
                         //set Obj ID
                         builder.setObjId(new ObjId(((XmlElementStart)tok).attributes().get(0).value()));
-                        LOGGER.debug("FaultIndFactory - builder getObjId: " + builder.getObjId());
+                        LOG.debug("FaultIndFactory - builder getObjId: {}", builder.getObjId());
 
                         //Character
                         tok = itr.next(); 
@@ -174,10 +174,10 @@ public class FaultIndFactory implements OCPDeserializer<FaultInd> {
                 }
             }
             catch( Exception t ) {
-                LOGGER.error("Error " + tok + " " + t.toString());
+                LOG.error("Error {} {}", tok, t.toString());
             }
         }
-        LOGGER.debug("FaultIndFactory - Builder: " + builder.build());
+        LOG.debug("FaultIndFactory - Builder: {}", builder.build());
         return builder.build();
     }
 }

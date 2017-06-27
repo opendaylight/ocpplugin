@@ -40,7 +40,7 @@ import org.slf4j.LoggerFactory;
  *
  */
 public class ModifyParamInputFactoryTest {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ModifyParamInputFactoryTest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ModifyParamInputFactoryTest.class);
 
     private SerializerRegistry registry;
     private OCPSerializer<ModifyParamInput> modifyParamInputFactory;
@@ -93,13 +93,13 @@ public class ModifyParamInputFactoryTest {
         m3_t.invoke(hib, plist);
         
         ModifyParamInput hi = hib.build();
-        LOGGER.debug("ModifyParamInputFactoryTest - hi objId value = {}", hi.getObjId());
+        LOG.debug("ModifyParamInputFactoryTest - hi objId value = {}", hi.getObjId());
 
         ByteBuf out = UnpooledByteBufAllocator.DEFAULT.buffer();
         modifyParamInputFactory.serialize(hi, out);
 
         //Verify and check the bytebuf info
-        LOGGER.debug("ModifyParamInputFactoryTest - out = {}", out.readableBytes());    
+        LOG.debug("ModifyParamInputFactoryTest - out = {}", out.readableBytes());    
         byte[] bytes = new byte[out.readableBytes()];
         int readerIndex = out.readerIndex();
         out.getBytes(readerIndex, bytes);

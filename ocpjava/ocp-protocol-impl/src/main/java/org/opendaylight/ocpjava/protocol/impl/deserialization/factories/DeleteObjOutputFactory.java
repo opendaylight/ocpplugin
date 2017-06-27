@@ -50,7 +50,7 @@ import org.slf4j.LoggerFactory;
 
 
 public class DeleteObjOutputFactory implements OCPDeserializer<DeleteObjOutput> {
-    private static final Logger LOGGER = LoggerFactory.getLogger(DeleteObjOutputFactory.class);
+    private static final Logger LOG = LoggerFactory.getLogger(DeleteObjOutputFactory.class);
 
     @Override
     public DeleteObjOutput deserialize(List<Object> rawMessage) {
@@ -59,7 +59,7 @@ public class DeleteObjOutputFactory implements OCPDeserializer<DeleteObjOutput> 
         Iterator itr = rawMessage.iterator();
         while(itr.hasNext()) {
             Object tok = itr.next();
-            LOGGER.trace("DeleteObjOutputFactory - itr = " + tok);
+            LOG.trace("DeleteObjOutputFactory - itr = {}", tok);
             try {
                 if(tok instanceof XmlElementStart) {
                     //msgType
@@ -81,10 +81,10 @@ public class DeleteObjOutputFactory implements OCPDeserializer<DeleteObjOutput> 
                 } 
             }
             catch( Exception t ) {
-                 LOGGER.error("Error " + tok + " " + t.toString());
+                 LOG.error("Error {} {}", tok, t.toString());
             }
         }
-        LOGGER.debug("DeleteObjOutputFactory - Builder: " + builder.build());
+        LOG.debug("DeleteObjOutputFactory - Builder: {}", builder.build());
         return builder.build();
     }
 }

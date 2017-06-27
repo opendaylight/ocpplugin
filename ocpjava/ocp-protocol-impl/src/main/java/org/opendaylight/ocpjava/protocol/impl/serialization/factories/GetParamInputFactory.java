@@ -47,12 +47,12 @@ public class GetParamInputFactory implements OCPSerializer<GetParamInput> {
 
     /** Code type of GetParamRequest message */
     private static final String MESSAGE_TYPE = "getParamReq";
-    private static final Logger LOGGER = LoggerFactory.getLogger(GetParamInputFactory.class);
+    private static final Logger LOG = LoggerFactory.getLogger(GetParamInputFactory.class);
 
     @Override
     public void serialize(GetParamInput message, ByteBuf outBuffer) {
 
-        LOGGER.debug("GetParamInputFactory - message = " + message.toString());
+        LOG.debug("GetParamInputFactory - message = {}", message.toString());
         StringBuilder seq = new StringBuilder("");
         //Generate from DTO to XML string
         seq.append("<msg xmlns=");
@@ -78,7 +78,7 @@ public class GetParamInputFactory implements OCPSerializer<GetParamInput> {
             seq.append("</body>");
         seq.append("</msg>");
 
-        LOGGER.debug("GetParamInputFactory - composed xml-string = " + seq);
+        LOG.debug("GetParamInputFactory - composed xml-string = {}", seq);
         ByteBufUtil.writeUtf8(outBuffer, seq);
     }
 }

@@ -26,7 +26,7 @@ import org.slf4j.LoggerFactory;
  * @author Marko Lai <marko.ch.lai@foxconn.com>
  */
 public class SimpleClientFramer extends ByteToMessageDecoder {
-    private static final Logger LOGGER = LoggerFactory.getLogger(SimpleClientFramer.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SimpleClientFramer.class);
 
     private List<Object> out;    
     private String buf = "";
@@ -35,12 +35,12 @@ public class SimpleClientFramer extends ByteToMessageDecoder {
      * Constructor of class.
      */
     public SimpleClientFramer() {
-        LOGGER.debug("Creating OCPFrameDecoder");
+        LOG.debug("Creating OCPFrameDecoder");
     }
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        LOGGER.warn("Unexpected exception from downstream.", cause);
+        LOG.warn("Unexpected exception from downstream.", cause);
         ctx.close();
     }
 

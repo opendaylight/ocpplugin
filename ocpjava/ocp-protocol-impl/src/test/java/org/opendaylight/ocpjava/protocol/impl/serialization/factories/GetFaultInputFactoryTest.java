@@ -38,7 +38,7 @@ import org.slf4j.LoggerFactory;
  *
  */
 public class GetFaultInputFactoryTest {
-    private static final Logger LOGGER = LoggerFactory.getLogger(GetFaultInputFactoryTest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(GetFaultInputFactoryTest.class);
 
     private SerializerRegistry registry;
     private OCPSerializer<GetFaultInput> getFaultInputFactory;
@@ -77,13 +77,13 @@ public class GetFaultInputFactoryTest {
         m4_t.invoke(hib, new Boolean(testEvent));
 
         GetFaultInput hi = hib.build();
-        LOGGER.debug("GetFaultInputFactoryTest - hi objId value = {}", hi.getObjId());
+        LOG.debug("GetFaultInputFactoryTest - hi objId value = {}", hi.getObjId());
 
         ByteBuf out = UnpooledByteBufAllocator.DEFAULT.buffer();
         getFaultInputFactory.serialize(hi, out);
 
         //Verify and check the bytebuf info
-        LOGGER.debug("HealthCheckInputMessageFactoryTest - out = {}", out.readableBytes());    
+        LOG.debug("HealthCheckInputMessageFactoryTest - out = {}", out.readableBytes());    
         byte[] bytes = new byte[out.readableBytes()];
         int readerIndex = out.readerIndex();
         out.getBytes(readerIndex, bytes);

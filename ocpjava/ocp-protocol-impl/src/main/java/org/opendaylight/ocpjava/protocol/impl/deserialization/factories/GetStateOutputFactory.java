@@ -64,7 +64,7 @@ import org.slf4j.LoggerFactory;
 
 public class GetStateOutputFactory implements OCPDeserializer<GetStateOutput> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(GetStateOutputFactory.class);
+    private static final Logger LOG = LoggerFactory.getLogger(GetStateOutputFactory.class);
     @Override
     public GetStateOutput deserialize(List<Object> rawMessage) {
         GetStateOutputBuilder builder = new GetStateOutputBuilder();
@@ -73,7 +73,7 @@ public class GetStateOutputFactory implements OCPDeserializer<GetStateOutput> {
         
         while(itr.hasNext()) {
             Object tok = itr.next();
-            LOGGER.trace("GetStateOutputFactory - itr = " + tok);
+            LOG.trace("GetStateOutputFactory - itr = {}", tok);
             try {
                 if(tok instanceof XmlElementStart) {
                     //msgType
@@ -99,7 +99,7 @@ public class GetStateOutputFactory implements OCPDeserializer<GetStateOutput> {
 
                         //set Obj ID
                         objbuilder.setId(new ObjId(((XmlElementStart)tok).attributes().get(0).value()));
-                        LOGGER.trace("GetStateOutputFactory - getId = " + objbuilder.getId());
+                        LOG.trace("GetStateOutputFactory - getId = {}", objbuilder.getId());
 
                         Object objtok = itr.next();
                         while(!(objtok instanceof XmlElementStart)){
@@ -114,13 +114,13 @@ public class GetStateOutputFactory implements OCPDeserializer<GetStateOutput> {
                                 //set state Type
                                 String tmp = ((XmlElementStart)objtok).attributes().get(0).value();                                
                                 statebuilder.setType(StateType.valueOf(tmp));
-                                LOGGER.trace("GetStateOutputFactory - getType = " + statebuilder.getType());
+                                LOG.trace("GetStateOutputFactory - getType = {}", statebuilder.getType());
 
                                 //set state Value
                                 String bufStr = MessageHelper.getMsgUID(itr);
                                 statebuilder.setValue(StateVal.valueOf(bufStr));
                                 
-                                LOGGER.trace("GetStateOutputFactory - getValue = " + statebuilder.getValue());
+                                LOG.trace("GetStateOutputFactory - getValue = {}", statebuilder.getValue());
                                 statelist.add(statebuilder.build());
                                 
                                 //skip remain of XmlCharacters
@@ -128,13 +128,13 @@ public class GetStateOutputFactory implements OCPDeserializer<GetStateOutput> {
                                 while((objtok instanceof XmlCharacters)){
                                     objtok = itr.next(); 
                                 }
-                                LOGGER.debug("ModifyStateOutputFactory - found next: {}", objtok);
+                                LOG.debug("ModifyStateOutputFactory - found next: {}", objtok);
                             }
 
                             if (objtok instanceof XmlElementEnd) {
-                                LOGGER.debug("GetStateOutputFactory - found XmlElementEnd: {}", objtok);
+                                LOG.debug("GetStateOutputFactory - found XmlElementEnd: {}", objtok);
                                 if(((XmlElementEnd)objtok).name().equals("obj")) {
-                                    LOGGER.debug("GetStateOutputFactory - objtok20 = " + objtok);
+                                    LOG.debug("GetStateOutputFactory - objtok20 = {}", objtok);
                                 }
                             }
                             else{
@@ -144,17 +144,17 @@ public class GetStateOutputFactory implements OCPDeserializer<GetStateOutput> {
                             }
                         }
                         objbuilder.setState(statelist);                    
-                        LOGGER.trace("GetStateOutputFactory - objbuilder.build() = " + objbuilder.build());
+                        LOG.trace("GetStateOutputFactory - objbuilder.build() = {}", objbuilder.build());
                         objlist.add(objbuilder.build());
                     }
                 } 
             }
             catch( Exception t ) {
-                LOGGER.error("Error " + tok + " " + t.toString());
+                LOG.error("Error {} {}", tok, t.toString());
             }
         }
         builder.setObj(objlist);
-        LOGGER.debug("GetStateOutputFactory - Builder: " + builder.build());
+        LOG.debug("GetStateOutputFactory - Builder: {}", builder.build());
         return builder.build();
     }
 }

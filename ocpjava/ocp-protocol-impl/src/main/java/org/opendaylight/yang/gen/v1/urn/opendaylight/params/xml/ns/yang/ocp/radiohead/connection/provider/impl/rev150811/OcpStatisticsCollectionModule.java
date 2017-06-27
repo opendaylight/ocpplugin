@@ -19,7 +19,7 @@ import org.slf4j.LoggerFactory;
 */
 public class OcpStatisticsCollectionModule extends org.opendaylight.yang.gen.v1.urn.opendaylight.params.xml.ns.yang.ocp.radiohead.connection.provider.impl.rev150811.AbstractOcpStatisticsCollectionModule {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(OcpStatisticsCollectionModule.class);
+    private static final Logger LOG = LoggerFactory.getLogger(OcpStatisticsCollectionModule.class);
 
     public OcpStatisticsCollectionModule(org.opendaylight.controller.config.api.ModuleIdentifier identifier, org.opendaylight.controller.config.api.DependencyResolver dependencyResolver) {
         super(identifier, dependencyResolver);
@@ -62,7 +62,7 @@ public class OcpStatisticsCollectionModule extends org.opendaylight.yang.gen.v1.
         if (statsConfig != null) {
             statsCounter.startCounting(statsConfig.getOcpStatisticsCollect(), statsConfig.getLogReportDelay());
         } else {
-            LOGGER.debug("Unable to start OcpStatisticCounter - wrong configuration");
+            LOG.debug("Unable to start OcpStatisticCounter - wrong configuration");
         }
 
         /* Internal MXBean implementation */
@@ -101,11 +101,11 @@ public class OcpStatisticsCollectionModule extends org.opendaylight.yang.gen.v1.
                     }
                     catch (Exception e) {
                         String errMsg = "Error by stoping OcpStatisticsCollectionService.";
-                        LOGGER.error(errMsg, e);
+                        LOG.error(errMsg, e);
                         throw new IllegalStateException(errMsg, e);
                     }
                 }
-                LOGGER.info("OcpStatisticsCollection Service consumer (instance {} turn down.)", this);
+                LOG.info("OcpStatisticsCollection Service consumer (instance {} turn down.)", this);
             }
 
             @Override
@@ -120,7 +120,7 @@ public class OcpStatisticsCollectionModule extends org.opendaylight.yang.gen.v1.
         }
 
         AutoCloseable ret = new AutoClosableOcpStatisticsCollection();
-        LOGGER.info("OcpStatisticsCollection service (instance {}) initialized.", ret);
+        LOG.info("OcpStatisticsCollection service (instance {}) initialized.", ret);
         return ret;
     }
 }

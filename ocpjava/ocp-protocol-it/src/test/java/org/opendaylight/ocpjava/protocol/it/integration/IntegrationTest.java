@@ -43,7 +43,7 @@ import org.slf4j.LoggerFactory;
  */
 public class IntegrationTest {
 
-    private static final Logger LOGGER = LoggerFactory
+    private static final Logger LOG = LoggerFactory
             .getLogger(IntegrationTest.class);
 
     private static int port;
@@ -63,10 +63,10 @@ public class IntegrationTest {
      * @throws Exception
      */
     public void setUp(TransportProtocol protocol) throws Exception {
-        LOGGER.debug("\n starting test -------------------------------");
+        LOG.debug("\n starting test -------------------------------");
 
         String currentDir = System.getProperty("user.dir");
-        LOGGER.debug("Current dir using System: {}", currentDir);
+        LOG.debug("Current dir using System: {}", currentDir);
         startupAddress = InetAddress.getLocalHost();
         tlsConfiguration = null;
         if (protocol.equals(TransportProtocol.TLS)) {
@@ -94,7 +94,7 @@ public class IntegrationTest {
     @After
     public void tearDown() throws Exception {
         radioHeadConnectionProvider.close();
-        LOGGER.debug("\n ending test -------------------------------");
+        LOG.debug("\n ending test -------------------------------");
     }
 
     /**
@@ -107,7 +107,7 @@ public class IntegrationTest {
             TransportProtocol protocol, ClientType clientType) throws ExecutionException {
         List<OCPClient> clientsHorde = new ArrayList<>();
         for (int i = 0; i < amountOfCLients; i++) {
-            LOGGER.debug("startup address in createclient: {}", startupAddress.getHostAddress());
+            LOG.debug("startup address in createclient: {}", startupAddress.getHostAddress());
             OCPClient sc = null;
             if (clientType == ClientType.SIMPLE) {
                 if (protocol.equals(TransportProtocol.TCP)) {
@@ -122,7 +122,7 @@ public class IntegrationTest {
                 sc.setScenarioHandler(scenarioHandler);
                 sc.setSecuredClient(false);
             } else {
-                LOGGER.error("Unknown type of client.");
+                LOG.error("Unknown type of client.");
                 throw new IllegalStateException("Unknown type of client.");
             }
 
@@ -136,7 +136,7 @@ public class IntegrationTest {
             try {
                 sc.getIsOnlineFuture().get(CONNECTION_TIMEOUT, TimeUnit.MILLISECONDS);
             } catch (Exception e) {
-                LOGGER.error("createAndStartClient: Something borked ... ", e.getMessage(), e);
+                LOG.error("createAndStartClient: Something borked ... ", e.getMessage(), e);
                 throw new ExecutionException(e);
             }
         }
@@ -149,7 +149,7 @@ public class IntegrationTest {
     @Test
     public void testInitiateConnection() throws Exception {
         setUp(TransportProtocol.TCP);
-        LOGGER.debug("testInitiateConnection() Starting") ;
+        LOG.debug("testInitiateConnection() Starting") ;
 
         Deque<ClientEvent> scenario = ScenarioFactory.createHandshakeScenario();
         ScenarioHandler handler = new ScenarioHandler(scenario);
@@ -159,6 +159,6 @@ public class IntegrationTest {
         int listeningClientPort = ((ListeningSimpleClient) ocpClient).getPort();
         mockPlugin.initiateConnection(radioHeadConnectionProvider, "localhost", listeningClientPort);
         ocpClient.getScenarioDone().get();
-        LOGGER.debug("testInitiateConnection() Finished") ;
+        LOG.debug("testInitiateConnection() Finished") ;
     }
 }

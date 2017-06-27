@@ -26,7 +26,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
 
 public class OCPXmlDecoder extends ByteToMessageDecoder {
-    private static final Logger LOGGER = LoggerFactory.getLogger(OCPXmlDecoder.class);
+    private static final Logger LOG = LoggerFactory.getLogger(OCPXmlDecoder.class);
     private static final XMLInputFactory factory = XMLInputFactory.newFactory();
 
     private List<Object> out;    
@@ -37,7 +37,7 @@ public class OCPXmlDecoder extends ByteToMessageDecoder {
 
 
     public OCPXmlDecoder(ConnectionFacade connectionFacade, boolean tlsPresent) {
-        LOGGER.trace("Creating OCPXmlDecoder");
+        LOG.trace("Creating OCPXmlDecoder");
     }
 
     @Override
@@ -55,7 +55,7 @@ public class OCPXmlDecoder extends ByteToMessageDecoder {
         int index = buf.indexOf("</msg>");
         while (index != -1) {
             String msg = buf.substring(0, index + 6);
-            LOGGER.debug("Message = {}", msg);
+            LOG.debug("Message = {}", msg);
             parseDocument(msg);
             if (index + 6 == buf.length()) {
                 buf = "";
@@ -112,7 +112,7 @@ public class OCPXmlDecoder extends ByteToMessageDecoder {
                 else if (bodyElmFound) {
                     boolean isOcpMsgType = EnumSet.allOf(OcpMsgType.class).toString().contains(elementStart.name().toUpperCase());
 	            if (!isOcpMsgType) {
-	                LOGGER.warn("OCPXmlDecoder - unknown OcpMsgType format");
+	                LOG.warn("OCPXmlDecoder - unknown OcpMsgType format");
                         //unknown Message
 	                msgType = 99; 
 	            }
@@ -120,7 +120,7 @@ public class OCPXmlDecoder extends ByteToMessageDecoder {
                         msgType = OcpMsgType.valueOf(elementStart.name().toUpperCase()).getIntValue();
                     }
                     bodyElmFound = false;
-                    LOGGER.trace("Message start: " + elementStart.name());
+                    LOG.trace("Message start: {}", elementStart.name());
                 }
                 xmlElms.add(elementStart);
                 break;
@@ -138,7 +138,7 @@ public class OCPXmlDecoder extends ByteToMessageDecoder {
                 xmlElms.add(elementEnd);
 
                 if (elementEnd.name().equals("msg")) {
-                    LOGGER.trace("Message end: " + elementEnd.name());
+                    LOG.trace("Message end: {}", elementEnd.name());
                     out.add(new DefaultMessageWrapper((short)1, msgType, xmlElms));
                 }
                 break;

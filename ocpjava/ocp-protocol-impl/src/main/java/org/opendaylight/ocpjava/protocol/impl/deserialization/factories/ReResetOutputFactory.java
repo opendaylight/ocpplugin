@@ -48,7 +48,7 @@ import org.slf4j.LoggerFactory;
 
 public class ReResetOutputFactory implements OCPDeserializer<ReResetOutput> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ReResetOutputFactory.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ReResetOutputFactory.class);
     @Override
     public ReResetOutput deserialize(List<Object> rawMessage) {
         ReResetOutputBuilder builder = new ReResetOutputBuilder();
@@ -56,7 +56,7 @@ public class ReResetOutputFactory implements OCPDeserializer<ReResetOutput> {
         Iterator itr = rawMessage.iterator();
         while(itr.hasNext()) {
             Object tok = itr.next();
-            LOGGER.trace("ReResetOutputFactory - itr = " + tok);
+            LOG.trace("ReResetOutputFactory - itr = {}", tok);
             try {
                 if(tok instanceof XmlElementStart) {
                     //msgType
@@ -78,10 +78,10 @@ public class ReResetOutputFactory implements OCPDeserializer<ReResetOutput> {
                 } 
             }
             catch( Exception t ) {
-                 LOGGER.error("Error " + tok + " " + t.toString());
+                 LOG.error("Error {} {}", tok, t.toString());
             }
         }
-        LOGGER.debug("ReResetOutputFactory - Builder: " + builder.build());
+        LOG.debug("ReResetOutputFactory - Builder: {}", builder.build());
         return builder.build();
     }
 }

@@ -57,21 +57,21 @@ import com.google.common.util.concurrent.SettableFuture;
 public class MockPlugin implements OcpProtocolListener, OcpExtensionListener, RadioHeadConnectionHandler,
         SystemNotificationsListener, ConnectionReadyListener {
 
-    protected static final Logger LOGGER = LoggerFactory.getLogger(MockPlugin.class);
+    private static final Logger LOG = LoggerFactory.getLogger(MockPlugin.class);
     protected volatile ConnectionAdapter adapter;
     private SettableFuture<Void> finishedFuture;
     private int idleCounter = 0;
 
     /** Creates MockPlugin */
     public MockPlugin() {
-        LOGGER.trace("Creating MockPlugin");
+        LOG.trace("Creating MockPlugin");
         finishedFuture = SettableFuture.create();
-        LOGGER.debug("mockPlugin: {}", System.identityHashCode(this));
+        LOG.debug("mockPlugin: {}", System.identityHashCode(this));
     }
 
     @Override
     public void onRadioHeadConnected(ConnectionAdapter connection) {
-        LOGGER.debug("onRadioHeadConnected: {}", connection);
+        LOG.debug("onRadioHeadConnected: {}", connection);
         this.adapter = connection;
         connection.setMessageListener(this);
         connection.setMessageExtListener(this);
@@ -81,19 +81,19 @@ public class MockPlugin implements OcpProtocolListener, OcpExtensionListener, Ra
 
     @Override
     public boolean accept(InetAddress radioHeadAddress) {
-        LOGGER.debug("MockPlugin.accept(): {}", radioHeadAddress.toString());
+        LOG.debug("MockPlugin.accept(): {}", radioHeadAddress.toString());
 
         return true;
     }
 
     @Override
     public void onStateChangeInd(StateChangeInd notification) {
-        LOGGER.debug("StateChange message received"); 
+        LOG.debug("StateChange message received"); 
     }
 
     @Override
     public void onFaultInd(FaultInd notification) {
-        LOGGER.debug("FaultInd message received");
+        LOG.debug("FaultInd message received");
     }
 
     @Override
@@ -101,13 +101,13 @@ public class MockPlugin implements OcpProtocolListener, OcpExtensionListener, Ra
         new Thread(new Runnable() {
             @Override
             public void run() {
-                LOGGER.debug("MockPlugin.onHelloMessage().run() Hello message received");
+                LOG.debug("MockPlugin.onHelloMessage().run() Hello message received");
                 HelloInputBuilder hib = new HelloInputBuilder();
                 hib.setXid(0L);
                 hib.setResult(OriHelloAckRes.valueOf("SUCCESS"));
                 HelloInput hi = hib.build();
                 adapter.hello(hi);
-                LOGGER.debug("hello msg sent");
+                LOG.debug("hello msg sent");
                 
                 new Thread(new Runnable() {
                     @Override
@@ -133,18 +133,18 @@ public class MockPlugin implements OcpProtocolListener, OcpExtensionListener, Ra
         SetTimeInput setTimeInput = setTimeBuilder.build();
         
         try {
-            LOGGER.debug("Requesting setTimeReq ");
+            LOG.debug("Requesting setTimeReq ");
             RpcResult<SetTimeOutput> rpcResult = adapter.setTime(
                     setTimeInput).get(2500, TimeUnit.MILLISECONDS);
             if (rpcResult.isSuccessful()) {
                 String rel = rpcResult.getResult().toString();
-                LOGGER.debug("rpcResult: {}", rel);
+                LOG.debug("rpcResult: {}", rel);
             } else {
                 RpcError rpcError = rpcResult.getErrors().iterator().next();
-                LOGGER.warn("rpcResult failed", rpcError.getCause());
+                LOG.warn("rpcResult failed", rpcError.getCause());
             }
         } catch (InterruptedException | ExecutionException | TimeoutException e) {
-            LOGGER.error("getTime() exception caught: ", e.getMessage(), e);
+            LOG.error("getTime() exception caught: ", e.getMessage(), e);
         }
     }
 
@@ -158,39 +158,39 @@ public class MockPlugin implements OcpProtocolListener, OcpExtensionListener, Ra
         GetParamInput getParamInput = builder.build();
         
         try {
-            LOGGER.debug("Requesting getParamReq ");
+            LOG.debug("Requesting getParamReq ");
             RpcResult<GetParamOutput> rpcResult = adapter.getParam(
                     getParamInput).get(2500, TimeUnit.MILLISECONDS);
             if (rpcResult.isSuccessful()) {
                 String rel = rpcResult.getResult().toString();
-                LOGGER.debug("rpcResult: {}", rel);
+                LOG.debug("rpcResult: {}", rel);
             } else {
                 RpcError rpcError = rpcResult.getErrors().iterator().next();
-                LOGGER.warn("rpcResult failed", rpcError.getCause());
+                LOG.warn("rpcResult failed", rpcError.getCause());
             }
         } catch (InterruptedException | ExecutionException | TimeoutException e) {
-            LOGGER.error("getParam() exception caught: ", e.getMessage(), e);
+            LOG.error("getParam() exception caught: ", e.getMessage(), e);
         }
     }
     
     protected void shutdown() {
         try {
-            LOGGER.debug("MockPlugin.shutdown() sleeping 5... : {}", System.identityHashCode(this));
+            LOG.debug("MockPlugin.shutdown() sleeping 5... : {}", System.identityHashCode(this));
             Thread.sleep(500);
             if (adapter != null) {
                 Future<Boolean> disconnect = adapter.disconnect();
                 disconnect.get();
-                LOGGER.debug("MockPlugin.shutdown() Disconnected");
+                LOG.debug("MockPlugin.shutdown() Disconnected");
             }
         } catch (Exception e) {
-            LOGGER.error("MockPlugin.shutdown() exception caught: ", e.getMessage(), e);
+            LOG.error("MockPlugin.shutdown() exception caught: ", e.getMessage(), e);
         }
         finishedFuture.set(null);
     }
 
     @Override
     public void onDisconnectEvent(DisconnectEvent notification) {
-        LOGGER.debug("disconnection occured: {}", notification.getInfo());
+        LOG.debug("disconnection occured: {}", notification.getInfo());
     }
 
     /**
@@ -202,7 +202,7 @@ public class MockPlugin implements OcpProtocolListener, OcpExtensionListener, Ra
 
     @Override
     public void onRadioHeadIdleEvent(RadioHeadIdleEvent notification) {
-        LOGGER.debug("MockPlugin.onRadioHeadIdleEvent() radioHead status: {}", notification.getInfo());
+        LOG.debug("MockPlugin.onRadioHeadIdleEvent() radioHead status: {}", notification.getInfo());
         idleCounter ++;
     }
 
@@ -215,7 +215,7 @@ public class MockPlugin implements OcpProtocolListener, OcpExtensionListener, Ra
 
     @Override
     public void onConnectionReady() {
-        LOGGER.trace("MockPlugin().onConnectionReady()");
+        LOG.trace("MockPlugin().onConnectionReady()");
     }
 
     /**
@@ -225,7 +225,7 @@ public class MockPlugin implements OcpProtocolListener, OcpExtensionListener, Ra
      * @param port - port number
      */
     public void initiateConnection(RadioHeadConnectionProviderImpl radioHeadConnectionProvider, String host, int port) {
-        LOGGER.trace("MockPlugin().initiateConnection()");
+        LOG.trace("MockPlugin().initiateConnection()");
         radioHeadConnectionProvider.initiateConnection(host, port);
     }
 }

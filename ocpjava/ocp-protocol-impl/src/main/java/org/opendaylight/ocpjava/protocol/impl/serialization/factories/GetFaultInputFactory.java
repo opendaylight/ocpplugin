@@ -44,11 +44,11 @@ public class GetFaultInputFactory implements OCPSerializer<GetFaultInput> {
 
     /** Code type of GetFaultInput message */
     private static final String MESSAGE_TYPE = "getFaultReq";
-    private static final Logger LOGGER = LoggerFactory.getLogger(GetFaultInputFactory.class);
+    private static final Logger LOG = LoggerFactory.getLogger(GetFaultInputFactory.class);
 
     @Override
     public void serialize(GetFaultInput message, ByteBuf outBuffer) {
-        LOGGER.debug("GetFaultInputFactory - message = " + message.toString());
+        LOG.debug("GetFaultInputFactory - message = {}", message.toString());
         StringBuilder seq = new StringBuilder("");
         //Generate from DTO to XML string
         seq.append("<msg xmlns=");
@@ -76,7 +76,7 @@ public class GetFaultInputFactory implements OCPSerializer<GetFaultInput> {
             seq.append("</body>");
         seq.append("</msg>");
 
-        LOGGER.debug("GetFaultInputFactory - composed xml-string = " + seq);
+        LOG.debug("GetFaultInputFactory - composed xml-string = {}", seq);
         ByteBufUtil.writeUtf8(outBuffer, seq);
     }
 }

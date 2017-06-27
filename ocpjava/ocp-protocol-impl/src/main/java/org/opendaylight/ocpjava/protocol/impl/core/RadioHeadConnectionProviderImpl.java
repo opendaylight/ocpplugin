@@ -37,7 +37,7 @@ import com.google.common.util.concurrent.SettableFuture;
  */
 public class RadioHeadConnectionProviderImpl implements RadioHeadConnectionProvider, ConnectionInitializer {
 
-    private static final Logger LOGGER = LoggerFactory
+    private static final Logger LOG = LoggerFactory
             .getLogger(RadioHeadConnectionProviderImpl.class);
     private RadioHeadConnectionHandler radioHeadConnectionHandler;
     private ServerFacade serverFacade;
@@ -67,15 +67,15 @@ public class RadioHeadConnectionProviderImpl implements RadioHeadConnectionProvi
 
     @Override
     public void setRadioHeadConnectionHandler(RadioHeadConnectionHandler radioHeadConnectionHandler) {
-        LOGGER.debug("setRadioHeadConnectionHandler");
+        LOG.debug("setRadioHeadConnectionHandler");
         this.radioHeadConnectionHandler = radioHeadConnectionHandler;
     }
 
     @Override
     public ListenableFuture<Boolean> shutdown() {
-        LOGGER.debug("Shutdown summoned");
+        LOG.debug("Shutdown summoned");
         if(serverFacade == null){
-            LOGGER.warn("Can not shutdown - not configured or started");
+            LOG.warn("Can not shutdown - not configured or started");
             throw new IllegalStateException("RadioHeadConnectionProvider is not started or not configured.");
         }
         return serverFacade.shutdown();
@@ -83,7 +83,7 @@ public class RadioHeadConnectionProviderImpl implements RadioHeadConnectionProvi
 
     @Override
     public ListenableFuture<Boolean> startup() {
-        LOGGER.debug("Startup summoned");
+        LOG.debug("Startup summoned");
         ListenableFuture<Boolean> result = null;
         try {
             serverFacade = createAndConfigureServer();
@@ -104,7 +104,7 @@ public class RadioHeadConnectionProviderImpl implements RadioHeadConnectionProvi
      * @return
      */
     private ServerFacade createAndConfigureServer() {
-        LOGGER.debug("Configuring ..");
+        LOG.debug("Configuring ..");
         ServerFacade server = null;
         ChannelInitializerFactory factory = new ChannelInitializerFactory();
         factory.setRadioHeadConnectionHandler(radioHeadConnectionHandler);

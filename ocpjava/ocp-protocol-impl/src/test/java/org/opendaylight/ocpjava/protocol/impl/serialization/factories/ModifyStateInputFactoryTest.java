@@ -39,7 +39,7 @@ import org.slf4j.LoggerFactory;
  *
  */
 public class ModifyStateInputFactoryTest {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ModifyStateInputFactoryTest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ModifyStateInputFactoryTest.class);
 
     private SerializerRegistry registry;
     private OCPSerializer<ModifyStateInput> modifyStateInputFactory;
@@ -85,13 +85,13 @@ public class ModifyStateInputFactoryTest {
         m5_t.invoke(hib, StateVal.valueOf(testVal));
 
         ModifyStateInput hi = hib.build();
-        LOGGER.debug("ModifyStateInputFactoryTest - hi objId value = {}", hi.getObjId());
+        LOG.debug("ModifyStateInputFactoryTest - hi objId value = {}", hi.getObjId());
 
         ByteBuf out = UnpooledByteBufAllocator.DEFAULT.buffer();
         modifyStateInputFactory.serialize(hi, out);
 
         //Verify and check the bytebuf info
-        LOGGER.debug("ModifyStateInputFactoryTest - out = {}", out.readableBytes());    
+        LOG.debug("ModifyStateInputFactoryTest - out = {}", out.readableBytes());    
         byte[] bytes = new byte[out.readableBytes()];
         int readerIndex = out.readerIndex();
         out.getBytes(readerIndex, bytes);

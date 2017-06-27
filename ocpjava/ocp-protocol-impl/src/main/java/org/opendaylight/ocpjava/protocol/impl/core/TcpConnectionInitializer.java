@@ -21,7 +21,7 @@ import com.google.common.util.concurrent.SettableFuture;
 public class TcpConnectionInitializer implements ServerFacade,
         ConnectionInitializer {
 
-    private static final Logger LOGGER = LoggerFactory
+    private static final Logger LOG = LoggerFactory
             .getLogger(TcpConnectionInitializer.class);
     private EventLoopGroup workerGroup;
     private ThreadConfiguration threadConfig;
@@ -67,7 +67,7 @@ public class TcpConnectionInitializer implements ServerFacade,
         try {
             b.connect(host, port).sync();
         } catch (InterruptedException e) {
-            LOGGER.error("Unable to initiate connection", e);
+            LOG.error("Unable to initiate connection", e);
         }
     }
 

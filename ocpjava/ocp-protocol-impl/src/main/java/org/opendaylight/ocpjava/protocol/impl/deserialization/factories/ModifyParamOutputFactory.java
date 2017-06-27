@@ -67,7 +67,7 @@ import org.slf4j.LoggerFactory;
 
 public class ModifyParamOutputFactory implements OCPDeserializer<ModifyParamOutput> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ModifyParamOutputFactory.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ModifyParamOutputFactory.class);
     @Override
     public ModifyParamOutput deserialize(List<Object> rawMessage) {
         ModifyParamOutputBuilder builder = new ModifyParamOutputBuilder();
@@ -77,7 +77,7 @@ public class ModifyParamOutputFactory implements OCPDeserializer<ModifyParamOutp
 
         while(itr.hasNext()) {
             Object tok = itr.next();
-            LOGGER.trace("ModifyParamOutputFactory - itr = " + tok);
+            LOG.trace("ModifyParamOutputFactory - itr = {}", tok);
             try {
                 if(tok instanceof XmlElementStart) {
                     //msgType
@@ -101,7 +101,7 @@ public class ModifyParamOutputFactory implements OCPDeserializer<ModifyParamOutp
                         if(((XmlElementStart)tok).attributes().size() >= 1){
                             builder.setObjId(new ObjId(((XmlElementStart)tok).attributes().get(0).value()));
                     	}
-                        LOGGER.debug("ModifyParamOutputFactory - getObjId = " + builder.getObjId());
+                        LOG.debug("ModifyParamOutputFactory - getObjId = {}", builder.getObjId());
 
                         tok = itr.next();                                                	
                         while(!(tok instanceof XmlElementStart)) {
@@ -111,7 +111,7 @@ public class ModifyParamOutputFactory implements OCPDeserializer<ModifyParamOutp
                         	if(((XmlElementStart)tok).name().equals("param")) {
                                 //param name
                                 parambuilder.setName(((XmlElementStart)tok).attributes().get(0).value());
-                                LOGGER.debug("ModifyParamOutputFactory - getName = " + parambuilder.getName());
+                                LOG.debug("ModifyParamOutputFactory - getName = {}", parambuilder.getName());
 
                                 Object nexttok = itr.next();
                                 while(!(nexttok instanceof XmlElementStart)){
@@ -146,15 +146,15 @@ public class ModifyParamOutputFactory implements OCPDeserializer<ModifyParamOutp
                         }
                         builder.setParam(paramlist);
                         paramlist = new ArrayList();
-                        LOGGER.trace("ModifyParamOutputFactory - builder.getParam() = " + builder.getParam());
+                        LOG.trace("ModifyParamOutputFactory - builder.getParam() = {}", builder.getParam());
                     }
                 } 
             }
             catch( Exception t ) {
-                LOGGER.error("Error " + tok + " " + t.toString());
+                LOG.error("Error {} {}", tok, t.toString());
             }
         }
-        LOGGER.info("ModifyParamOutputFactory - Builder: " + builder.build());
+        LOG.info("ModifyParamOutputFactory - Builder: {}", builder.build());
         return builder.build();
     }
 }

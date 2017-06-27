@@ -27,7 +27,7 @@ import com.google.common.util.concurrent.SettableFuture;
  */
 public class SimpleClientHandler extends ChannelInboundHandlerAdapter {
 
-    protected static final Logger LOGGER = LoggerFactory.getLogger(SimpleClientHandler.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SimpleClientHandler.class);
     private SettableFuture<Boolean> isOnlineFuture;
     protected ScenarioHandler scenarioHandler;
 
@@ -42,19 +42,19 @@ public class SimpleClientHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        LOGGER.debug("channel Read message: " + msg);
+        LOG.debug("channel Read message: {}", msg);
 
         byte[] bs = (byte[])msg;
         scenarioHandler.addOcpMsg(bs);
 
         String buf = new String(bs, "UTF-8");
-        LOGGER.debug("<< {}", buf);
-        LOGGER.debug("end of read");
+        LOG.debug("<< {}", buf);
+        LOG.debug("end of read");
     }
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        LOGGER.debug("Client1 is active");
+        LOG.debug("Client1 is active");
         if (isOnlineFuture != null) {
             isOnlineFuture.set(true);
             isOnlineFuture = null;

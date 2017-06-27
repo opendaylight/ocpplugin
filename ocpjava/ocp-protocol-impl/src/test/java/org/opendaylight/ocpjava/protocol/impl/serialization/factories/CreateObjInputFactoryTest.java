@@ -44,7 +44,7 @@ import org.slf4j.LoggerFactory;
  *
  */
 public class CreateObjInputFactoryTest {
-    private static final Logger LOGGER = LoggerFactory.getLogger(CreateObjInputFactoryTest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(CreateObjInputFactoryTest.class);
 
     private SerializerRegistry registry;
     private OCPSerializer<CreateObjInput> createObjInputFactory;
@@ -93,13 +93,13 @@ public class CreateObjInputFactoryTest {
         m4_t.invoke(hib, plist);
         
         CreateObjInput hi = hib.build();
-        LOGGER.debug("CreateObjInputFactoryTest - hi objId value = {}", hi.getObjType());
+        LOG.debug("CreateObjInputFactoryTest - hi objId value = {}", hi.getObjType());
 
         ByteBuf out = UnpooledByteBufAllocator.DEFAULT.buffer();
         createObjInputFactory.serialize(hi, out);
 
         //Verify and check the bytebuf info
-        LOGGER.debug("HealthCheckInputMessageFactoryTest - out = {}", out.readableBytes());    
+        LOG.debug("HealthCheckInputMessageFactoryTest - out = {}", out.readableBytes()); 
         byte[] bytes = new byte[out.readableBytes()];
         int readerIndex = out.readerIndex();
         out.getBytes(readerIndex, bytes);

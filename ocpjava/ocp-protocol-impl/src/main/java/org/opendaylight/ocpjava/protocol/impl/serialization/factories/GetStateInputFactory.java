@@ -46,11 +46,11 @@ public class GetStateInputFactory implements OCPSerializer<GetStateInput> {
 
     /** Code type of GetParamRequest message */
     private static final String MESSAGE_TYPE = "getStateReq";
-    private static final Logger LOGGER = LoggerFactory.getLogger(GetStateInputFactory.class);
+    private static final Logger LOG = LoggerFactory.getLogger(GetStateInputFactory.class);
 
     @Override
     public void serialize(GetStateInput message, ByteBuf outBuffer) {
-        LOGGER.debug("GetStateInputFactory - message = " + message.toString());
+        LOG.debug("GetStateInputFactory - message = {}", message.toString());
         StringBuilder seq = new StringBuilder("");
         //Generate from DTO to XML string
         seq.append("<msg xmlns=");
@@ -83,7 +83,7 @@ public class GetStateInputFactory implements OCPSerializer<GetStateInput> {
             seq.append("</body>");
         seq.append("</msg>");
 
-        LOGGER.debug("GetStateInputFactory - composed xml-string = " + seq);
+        LOG.debug("GetStateInputFactory - composed xml-string = {}", seq);
         ByteBufUtil.writeUtf8(outBuffer, seq);
     }
 }

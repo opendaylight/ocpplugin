@@ -27,7 +27,7 @@ import org.slf4j.LoggerFactory;
  */
 public class SerializerRegistryImpl implements SerializerRegistry {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SerializerRegistryImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SerializerRegistryImpl.class);
     private Map<MessageTypeKey<?>, OCPGeneralSerializer> registry;
 
 
@@ -63,7 +63,7 @@ public class SerializerRegistryImpl implements SerializerRegistry {
         }
         OCPGeneralSerializer serInRegistry = registry.put(msgTypeKey, serializer);
         if (serInRegistry != null) {
-            LOGGER.debug("Serializer for key {} overwritten. Old serializer: {}, new serializer: {}",
+            LOG.debug("Serializer for key {} overwritten. Old serializer: {}, new serializer: {}",
                     msgTypeKey, serInRegistry.getClass().getName(), serializer.getClass().getName());
         }
         if (serializer instanceof SerializerRegistryInjector) {

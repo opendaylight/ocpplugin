@@ -27,7 +27,7 @@ import org.slf4j.LoggerFactory;
  */
 public class OCPDecoder extends MessageToMessageDecoder<DefaultMessageWrapper> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(OCPDecoder.class);
+    private static final Logger LOG = LoggerFactory.getLogger(OCPDecoder.class);
     private final OcpStatisticsCounters statisticsCounter;
 
     // TODO: make this final?
@@ -37,7 +37,7 @@ public class OCPDecoder extends MessageToMessageDecoder<DefaultMessageWrapper> {
      * Constructor of class
      */
     public OCPDecoder() {
-        LOGGER.trace("Creating OCP Decoder");
+        LOG.trace("Creating OCP Decoder");
 	// TODO: pass as argument
         statisticsCounter = OcpStatisticsCounters.getInstance();
     }
@@ -47,8 +47,8 @@ public class OCPDecoder extends MessageToMessageDecoder<DefaultMessageWrapper> {
             List<Object> out) throws Exception {
         
         statisticsCounter.incrementCounter(CounterEventTypes.US_RECEIVED_IN_OCPJAVA);
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("DefaultMessageWrapper received");
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("DefaultMessageWrapper received");
         }
 
         try {
@@ -56,14 +56,14 @@ public class OCPDecoder extends MessageToMessageDecoder<DefaultMessageWrapper> {
                                                                              msg.getTypeId(), 
                                                                              msg.getMessageBuffer());
             if (dataObject == null) {
-                LOGGER.warn("Translated POJO is null");
+                LOG.warn("Translated POJO is null");
                 statisticsCounter.incrementCounter(CounterEventTypes.US_DECODE_FAIL);
             } else {
                 out.add(dataObject);
                 statisticsCounter.incrementCounter(CounterEventTypes.US_DECODE_SUCCESS);
             }
         } catch (Exception e) {
-            LOGGER.warn("Message deserialization failed", e);
+            LOG.warn("Message deserialization failed", e);
             statisticsCounter.incrementCounter(CounterEventTypes.US_DECODE_FAIL);
         } finally {
             msg.getMessageBuffer().clear();

@@ -28,7 +28,7 @@ import org.slf4j.LoggerFactory;
  */
 
 public abstract class MessageHelper {
-    private static final Logger LOGGER = LoggerFactory.getLogger(MessageHelper.class);
+    private static final Logger LOG = LoggerFactory.getLogger(MessageHelper.class);
 
     //get the msgType value
     public static String getMsgType(Iterator itr){
@@ -37,7 +37,7 @@ public abstract class MessageHelper {
             tok = itr.next();
         }
         String type = ((XmlElementStart)tok).name().toUpperCase();
-        LOGGER.debug("MessageHelper - getMsgType = {}", type);
+        LOG.debug("MessageHelper - getMsgType = {}", type);
         return type;
     }
     
@@ -49,7 +49,7 @@ public abstract class MessageHelper {
             rel = rel.concat(((XmlCharacters)tok).data().toString().replace(" ", "").replace("\n", ""));
             tok = itr.next();
         }
-        LOGGER.debug("MessageHelper - getMsgUID = {}", rel);
+        LOG.debug("MessageHelper - getMsgUID = {}", rel);
         return rel;
     }
 
@@ -61,7 +61,7 @@ public abstract class MessageHelper {
             rel = rel.concat(((XmlCharacters)tok).data().toString().replace("_", "").replace(" ", "").replace("\n", ""));
             tok = itr.next();
         }
-        LOGGER.debug("MessageHelper - getResult = {}", rel);
+        LOG.debug("MessageHelper - getResult = {}", rel);
         return rel;
     }
 
@@ -73,7 +73,7 @@ public abstract class MessageHelper {
             rel = rel.concat(((XmlCharacters)tok).data().toString().replace("_", "").replace(" ", "").replace("\n", ""));
             tok = itr.next();
         }
-        LOGGER.debug("MessageHelper - getCharVal = {}", rel);
+        LOG.debug("MessageHelper - getCharVal = {}", rel);
         return rel;
     }
 }

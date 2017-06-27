@@ -23,7 +23,7 @@ import org.slf4j.LoggerFactory;
 
 public final class RadioHeadConnectionProviderModule extends org.opendaylight.yang.gen.v1.urn.opendaylight.params.xml.ns.yang.ocp.radiohead.connection.provider.impl.rev150811.AbstractRadioHeadConnectionProviderModule {
 
-    private static Logger LOG = LoggerFactory
+    private static final Logger LOG = LoggerFactory
             .getLogger(RadioHeadConnectionProviderModule.class);
 
     /**

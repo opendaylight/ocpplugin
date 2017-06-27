@@ -40,11 +40,11 @@ import org.slf4j.LoggerFactory;
 
 public class HealthCheckInputFactory implements OCPSerializer<HealthCheckInput> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(HealthCheckInputFactory.class);
+    private static final Logger LOG = LoggerFactory.getLogger(HealthCheckInputFactory.class);
 
     @Override
     public void serialize(HealthCheckInput message, ByteBuf outBuffer) {
-        LOGGER.debug("HealthCheckInputFactory - message = " + message.toString());
+        LOG.debug("HealthCheckInputFactory - message = {}", message.toString());
         StringBuilder seq = new StringBuilder("");
         //Generate from DTO to XML string
         seq.append("<msg xmlns=");
@@ -62,7 +62,7 @@ public class HealthCheckInputFactory implements OCPSerializer<HealthCheckInput> 
             seq.append("</body>");
             seq.append("</msg>");
 
-        LOGGER.debug("HealthCheckInputFactory - composed xml-string = " + seq);    
+        LOG.debug("HealthCheckInputFactory - composed xml-string = {}", seq);
             
         //write Xml string to ByteBuf by ByteBufUtil of netty-buffer
         ByteBufUtil.writeUtf8(outBuffer, seq);

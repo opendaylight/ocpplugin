@@ -48,7 +48,7 @@ import org.slf4j.LoggerFactory;
 
 public class HealthCheckOutputFactory implements OCPDeserializer<HealthCheckOutput> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(HealthCheckOutputFactory.class);
+    private static final Logger LOG = LoggerFactory.getLogger(HealthCheckOutputFactory.class);
     @Override
     public HealthCheckOutput deserialize(List<Object> rawMessage) {
         HealthCheckOutputBuilder builder = new HealthCheckOutputBuilder();
@@ -56,7 +56,7 @@ public class HealthCheckOutputFactory implements OCPDeserializer<HealthCheckOutp
         Iterator itr = rawMessage.iterator();
         while(itr.hasNext()) {
             Object tok = itr.next();
-            LOGGER.trace("HealthCheckOutputFactory - itr = " + tok);
+            LOG.trace("HealthCheckOutputFactory - itr = {}", tok);
             try {
                 if(tok instanceof XmlElementStart) {
                     //msgType
@@ -80,10 +80,10 @@ public class HealthCheckOutputFactory implements OCPDeserializer<HealthCheckOutp
                 } 
             }
             catch( Exception t ) {
-                 LOGGER.error("Error " + tok + " " + t.toString());
+                 LOG.error("Error {} {}", tok, t.toString());
             }
         }
-        LOGGER.debug("HealthCheckOutputFactory - Builder: " + builder.build());
+        LOG.debug("HealthCheckOutputFactory - Builder: {}", builder.build());
         return builder.build();
     }
 }

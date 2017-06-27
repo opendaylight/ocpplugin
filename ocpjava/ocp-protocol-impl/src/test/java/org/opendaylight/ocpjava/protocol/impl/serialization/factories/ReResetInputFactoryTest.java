@@ -39,7 +39,7 @@ import org.slf4j.LoggerFactory;
  *
  */
 public class ReResetInputFactoryTest {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ReResetInputFactoryTest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ReResetInputFactoryTest.class);
 
     private SerializerRegistry registry;
     private OCPSerializer<ReResetInput> reResetFactory;
@@ -70,13 +70,13 @@ public class ReResetInputFactoryTest {
         m_t.invoke(hib, new Long(0));
 
         ReResetInput hi = hib.build();
-        LOGGER.debug("ReResetInputFactoryTest - hi Xid value = {}", hi.getXid());    
+        LOG.debug("ReResetInputFactoryTest - hi Xid value = {}", hi.getXid());    
 
         ByteBuf out = UnpooledByteBufAllocator.DEFAULT.buffer();
         reResetFactory.serialize(hi, out);
 
         //Verify and check the bytebuf info
-        LOGGER.debug("ReResetInputFactoryTest - out = {}", out.readableBytes());    
+        LOG.debug("ReResetInputFactoryTest - out = {}", out.readableBytes());    
         byte[] bytes = new byte[out.readableBytes()];
         int readerIndex = out.readerIndex();
         out.getBytes(readerIndex, bytes);

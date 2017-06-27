@@ -64,7 +64,7 @@ import org.slf4j.LoggerFactory;
 */
 
 public class CreateObjOutputFactory implements OCPDeserializer<CreateObjOutput> {
-    private static final Logger LOGGER = LoggerFactory.getLogger(CreateObjOutputFactory.class);
+    private static final Logger LOG = LoggerFactory.getLogger(CreateObjOutputFactory.class);
 
     @Override
     public CreateObjOutput deserialize(List<Object> rawMessage) {
@@ -73,7 +73,7 @@ public class CreateObjOutputFactory implements OCPDeserializer<CreateObjOutput> 
 
         while(itr.hasNext()) {
             Object tok = itr.next();
-            LOGGER.trace("CreateObjOutputFactory - itr = " + tok);
+            LOG.trace("CreateObjOutputFactory - itr = {}", tok);
             try {
                 if(tok instanceof XmlElementStart) {
                     //msgType
@@ -100,15 +100,15 @@ public class CreateObjOutputFactory implements OCPDeserializer<CreateObjOutput> 
                     	}
                         builder.setParam(getListParam(itr));
               
-                        LOGGER.trace("CreateObjOutputFactory - builder.getParam() " + builder.getParam());
+                        LOG.trace("CreateObjOutputFactory - builder.getParam(): {}", builder.getParam());
                     }
                 } 
             }
             catch( Exception t ) {
-                LOGGER.error("Error {} ", tok, t);
+                LOG.error("Error {} ", tok, t);
             }
         }
-        LOGGER.info("CreateObjOutputFactory - Builder: " + builder.build());
+        LOG.info("CreateObjOutputFactory - Builder: {}", builder.build());
         return builder.build();
     }
 
@@ -131,7 +131,7 @@ public class CreateObjOutputFactory implements OCPDeserializer<CreateObjOutput> 
                         String rel = "";
                         while(tok instanceof XmlCharacters){
                             rel = rel.concat(((XmlCharacters)tok).data().toString().replace("_", ""));
-                            LOGGER.debug("CreateObjOutputFactory - result = {}", ((XmlCharacters)tok).data().toString().replace("_", ""));
+                            LOG.debug("CreateObjOutputFactory - result = {}", ((XmlCharacters)tok).data().toString().replace("_", ""));
                             tok = itr.next();
                         }
                         parambuilder.setResult(CreateObjRes.valueOf(rel));
@@ -140,7 +140,7 @@ public class CreateObjOutputFactory implements OCPDeserializer<CreateObjOutput> 
                         tok = itr.next();
                     }
                     
-                    LOGGER.debug("CreateObjOutputFactory - parambuilder.build() " + parambuilder.build());
+                    LOG.debug("CreateObjOutputFactory - parambuilder.build(): {}", parambuilder.build());
                     plist.add(parambuilder.build());
                     parambuilder = new ParamBuilder();
                     

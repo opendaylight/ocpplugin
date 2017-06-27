@@ -22,7 +22,7 @@ import org.slf4j.LoggerFactory;
  */
 public class SendEvent implements ClientEvent {
 
-    protected static final Logger LOGGER = LoggerFactory.getLogger(SendEvent.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SendEvent.class);
     protected byte[] msgToSend;
     protected ChannelHandlerContext ctx;
 
@@ -30,7 +30,7 @@ public class SendEvent implements ClientEvent {
      * @param msgToSend message to be sent
      */
     public SendEvent(byte[] msgToSend) {
-        LOGGER.debug("SendEvent init");
+        LOG.debug("SendEvent init");
         this.msgToSend = new byte[msgToSend.length];
         for (int i = 0; i < msgToSend.length; i++) {
             this.msgToSend[i] = msgToSend[i];
@@ -39,22 +39,22 @@ public class SendEvent implements ClientEvent {
 
     @Override
     public boolean eventExecuted() {
-        LOGGER.debug("sending message");
-        LOGGER.debug("start of run");
+        LOG.debug("sending message");
+        LOG.debug("start of run");
         
         ByteBuf buffer = ctx.alloc().buffer();
         buffer.writeBytes(msgToSend);
         ctx.writeAndFlush(buffer);
 
-        if (LOGGER.isDebugEnabled()) {
+        if (LOG.isDebugEnabled()) {
             try{
                 String buf = new String(msgToSend, "UTF-8");
-                LOGGER.debug(">> {}", buf);        
+                LOG.debug(">> {}", buf);        
             }catch (Exception e) {
                     e.printStackTrace();
             }
-            LOGGER.debug(">> {}", ByteBufUtils.bytesToHexString(msgToSend));
-            LOGGER.debug("message sent");
+            LOG.debug(">> {}", ByteBufUtils.bytesToHexString(msgToSend));
+            LOG.debug("message sent");
         }
         return true;
     }

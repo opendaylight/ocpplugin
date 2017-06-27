@@ -38,7 +38,7 @@ import org.slf4j.LoggerFactory;
  *
  */
 public class DeleteObjInputFactoryTest {
-    private static final Logger LOGGER = LoggerFactory.getLogger(DeleteObjInputFactoryTest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(DeleteObjInputFactoryTest.class);
 
     private SerializerRegistry registry;
     private OCPSerializer<DeleteObjInput> deleteObjInputFactory;
@@ -73,13 +73,13 @@ public class DeleteObjInputFactoryTest {
         m4_t.invoke(hib, new ObjId(testObjId));
         
         DeleteObjInput hi = hib.build();
-        LOGGER.debug("GetFaultInputFactoryTest - hi objId value = {}", hi.getObjId());    
+        LOG.debug("GetFaultInputFactoryTest - hi objId value = {}", hi.getObjId()); 
 
         ByteBuf out = UnpooledByteBufAllocator.DEFAULT.buffer();
         deleteObjInputFactory.serialize(hi, out);
 
         //Verify and check the bytebuf info
-        LOGGER.debug("DeleteObjInputFactoryTest - out = {}", out.readableBytes());    
+        LOG.debug("DeleteObjInputFactoryTest - out = {}", out.readableBytes()); 
         byte[] bytes = new byte[out.readableBytes()];
         int readerIndex = out.readerIndex();
         out.getBytes(readerIndex, bytes);

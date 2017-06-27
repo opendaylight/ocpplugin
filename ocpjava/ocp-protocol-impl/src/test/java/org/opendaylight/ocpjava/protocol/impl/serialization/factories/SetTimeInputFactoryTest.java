@@ -39,7 +39,7 @@ import org.slf4j.LoggerFactory;
  *
  */
 public class SetTimeInputFactoryTest {
-    private static final Logger LOGGER = LoggerFactory.getLogger(SetTimeInputFactoryTest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SetTimeInputFactoryTest.class);
 
     private SerializerRegistry registry;
     private OCPSerializer<SetTimeInput> setTimeInputFactory;
@@ -74,13 +74,13 @@ public class SetTimeInputFactoryTest {
         m2_t.invoke(hib, new Long(0));
 
         SetTimeInput hi = hib.build();
-        LOGGER.debug("HealthCheckInputMessageFactoryTest - hi testNewTime value = {}", hi.getNewTime().getValue().toString());    
+        LOG.debug("HealthCheckInputMessageFactoryTest - hi testNewTime value = {}", hi.getNewTime().getValue().toString());    
 
         ByteBuf out = UnpooledByteBufAllocator.DEFAULT.buffer();
         setTimeInputFactory.serialize(hi, out);
 
         //Verify and check the bytebuf info
-        LOGGER.debug("SetTimeInputFactoryTest - out = {}", out.readableBytes());    
+        LOG.debug("SetTimeInputFactoryTest - out = {}", out.readableBytes());    
         byte[] bytes = new byte[out.readableBytes()];
         int readerIndex = out.readerIndex();
         out.getBytes(readerIndex, bytes);

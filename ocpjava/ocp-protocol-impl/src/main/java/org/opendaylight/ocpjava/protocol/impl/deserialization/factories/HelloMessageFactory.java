@@ -55,7 +55,7 @@ import org.slf4j.LoggerFactory;
 public class HelloMessageFactory implements OCPDeserializer<HelloInd> {
 
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(HelloMessageFactory.class);
+	private static final Logger LOG = LoggerFactory.getLogger(HelloMessageFactory.class);
 
 	@Override
     public HelloMessage deserialize(List<Object> rawMessage) {
@@ -64,7 +64,7 @@ public class HelloMessageFactory implements OCPDeserializer<HelloInd> {
         Iterator itr = rawMessage.iterator();
         while(itr.hasNext()) {
             Object tok = itr.next();
-            LOGGER.trace("HelloMessageFactory - itr = " + tok);
+            LOG.trace("HelloMessageFactory - itr = {}", tok);
             try {
                 if(tok instanceof XmlElementStart) {
                     //msgType
@@ -96,10 +96,10 @@ public class HelloMessageFactory implements OCPDeserializer<HelloInd> {
                 } 
             }
             catch( Exception t ) {
-                 LOGGER.error("Error " + tok + " " + t.toString());
+                 LOG.error("Error {} {}", tok, t.toString());
             }
         }
-        LOGGER.debug("HelloMessageFactory - Builder: " + builder.build());
+        LOG.debug("HelloMessageFactory - Builder: {}", builder.build());
         return builder.build();
     }
 }

@@ -21,7 +21,7 @@ public class TypeToClassInitHelper {
 
     private short version;
     private Map<TypeToClassKey, Class<?>> messageClassMap;
-    private static final Logger LOGGER = LoggerFactory.getLogger(TypeToClassInitHelper.class);
+    private static final Logger LOG = LoggerFactory.getLogger(TypeToClassInitHelper.class);
 
     /**
      * Constructor
@@ -40,7 +40,7 @@ public class TypeToClassInitHelper {
      * @param clazz class corresponding to the code
      */
     public void registerTypeToClass(int type, Class<?> clazz) {
-    	LOGGER.info("registerTypeToClass: clazz(string) = " + clazz.getName()); 
+        LOG.info("registerTypeToClass: clazz(string) = {}", clazz.getName());
         messageClassMap.put(new TypeToClassKey(version, type), clazz);
     }
 }

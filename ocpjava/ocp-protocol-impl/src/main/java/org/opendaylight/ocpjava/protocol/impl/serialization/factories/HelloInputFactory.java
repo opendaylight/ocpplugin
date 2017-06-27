@@ -42,11 +42,11 @@ import org.slf4j.LoggerFactory;
 
 public class HelloInputFactory implements OCPSerializer<HelloInput>{
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(HelloInputFactory.class);
+    private static final Logger LOG = LoggerFactory.getLogger(HelloInputFactory.class);
 
     @Override
     public void serialize(HelloInput message, ByteBuf outBuffer) {
-        LOGGER.debug("HelloInputFactory - message = " + message.toString());
+        LOG.debug("HelloInputFactory - message = {}", message.toString());
         StringBuilder seq = new StringBuilder("");
         //Generate from DTO to XML string
         seq.append("<msg xmlns=");
@@ -62,7 +62,7 @@ public class HelloInputFactory implements OCPSerializer<HelloInput>{
             seq.append("</body>");
         seq.append("</msg>");
 
-        LOGGER.debug("HelloInputFactory - composed xml-string = " + seq);
+        LOG.debug("HelloInputFactory - composed xml-string = {}", seq);
         
         ByteBufUtil.writeUtf8(outBuffer, seq);
     }

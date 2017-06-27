@@ -35,7 +35,7 @@ import org.slf4j.LoggerFactory;
  *
  */
 public class HealthCheckInputFactoryTest {
-    private static final Logger LOGGER = LoggerFactory.getLogger(HealthCheckInputFactoryTest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(HealthCheckInputFactoryTest.class);
 
     private SerializerRegistry registry;
     private OCPSerializer<HealthCheckInput> healthCheckFactory;
@@ -70,13 +70,13 @@ public class HealthCheckInputFactoryTest {
         m2_t.invoke(hib, new Long(0));
 
         HealthCheckInput hi = hib.build();
-        LOGGER.debug("HealthCheckInputMessageFactoryTest - hi testTimeout value = {}", hi.getTcpLinkMonTimeout().getValue());    
+        LOG.debug("HealthCheckInputMessageFactoryTest - hi testTimeout value = {}", hi.getTcpLinkMonTimeout().getValue());    
 
         ByteBuf out = UnpooledByteBufAllocator.DEFAULT.buffer();
         healthCheckFactory.serialize(hi, out);
 
         //Verify and check the bytebuf info
-        LOGGER.debug("HealthCheckInputMessageFactoryTest - out = {}", out.readableBytes());    
+        LOG.debug("HealthCheckInputMessageFactoryTest - out = {}", out.readableBytes());    
         byte[] bytes = new byte[out.readableBytes()];
         int readerIndex = out.readerIndex();
         out.getBytes(readerIndex, bytes);

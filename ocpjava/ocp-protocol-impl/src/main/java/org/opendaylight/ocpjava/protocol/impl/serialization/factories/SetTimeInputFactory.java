@@ -41,11 +41,11 @@ import org.slf4j.LoggerFactory;
 
 public class SetTimeInputFactory implements OCPSerializer<SetTimeInput> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SetTimeInputFactory.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SetTimeInputFactory.class);
 
     @Override
     public void serialize(SetTimeInput message, ByteBuf outBuffer) {
-        LOGGER.debug("SetTimeInputFactory - message = " + message.toString());
+        LOG.debug("SetTimeInputFactory - message = {}", message.toString());
         StringBuilder seq = new StringBuilder("");
         //Generate from DTO to XML string
         seq.append("<msg xmlns=");
@@ -63,7 +63,7 @@ public class SetTimeInputFactory implements OCPSerializer<SetTimeInput> {
             seq.append("</body>");
         seq.append("</msg>");
 
-        LOGGER.debug("SetTimeInputFactory - composed xml-string = " + seq);
+        LOG.debug("SetTimeInputFactory - composed xml-string = {}", seq);
         
         //write Xml string to ByteBuf by ByteBufUtil of netty-buffer
         ByteBufUtil.writeUtf8(outBuffer, seq);

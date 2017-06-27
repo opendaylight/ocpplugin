@@ -20,7 +20,7 @@ import org.slf4j.LoggerFactory;
  */
 public class WaitForMessageEvent implements ClientEvent {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(WaitForMessageEvent.class);
+    private static final Logger LOG = LoggerFactory.getLogger(WaitForMessageEvent.class);
     private byte[] messageExpected;
     private byte[] messageReceived;
 
@@ -28,8 +28,8 @@ public class WaitForMessageEvent implements ClientEvent {
      * @param expactation of received message
      */
     public WaitForMessageEvent(byte[] messageExpected) {
-        LOGGER.debug("WaitForMessageEvent init");
-        LOGGER.debug("headerExpected length: {}", messageExpected.length);
+        LOG.debug("WaitForMessageEvent init");
+        LOG.debug("headerExpected length: {}", messageExpected.length);
 
         this.messageExpected = new byte[messageExpected.length];
         for (int i = 0; i < messageExpected.length; i++) {
@@ -43,13 +43,13 @@ public class WaitForMessageEvent implements ClientEvent {
             return false;
         }
         if (!Arrays.equals(messageExpected, messageReceived)) {
-            if (LOGGER.isDebugEnabled()) {
-                LOGGER.debug("expected msg: {}", ByteBufUtils.bytesToHexString(messageExpected));
-                LOGGER.debug("received msg: {}", ByteBufUtils.bytesToHexString(messageReceived));
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("expected msg: {}", ByteBufUtils.bytesToHexString(messageExpected));
+                LOG.debug("received msg: {}", ByteBufUtils.bytesToHexString(messageReceived));
             }
             return false;
         }
-        LOGGER.debug("Headers OK");
+        LOG.debug("Headers OK");
         return true;
     }
 

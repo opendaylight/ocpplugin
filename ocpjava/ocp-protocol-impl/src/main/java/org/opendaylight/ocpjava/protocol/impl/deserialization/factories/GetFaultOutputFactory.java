@@ -76,7 +76,7 @@ import org.slf4j.LoggerFactory;
 */
 
 public class GetFaultOutputFactory implements OCPDeserializer<GetFaultOutput> {
-    private static final Logger LOGGER = LoggerFactory.getLogger(GetFaultOutputFactory.class);
+    private static final Logger LOG = LoggerFactory.getLogger(GetFaultOutputFactory.class);
     private String faultTag = "fault";
     
     @Override
@@ -90,7 +90,7 @@ public class GetFaultOutputFactory implements OCPDeserializer<GetFaultOutput> {
 
         while(itr.hasNext()) {
             Object tok = itr.next();
-            LOGGER.trace("GetFaultOutputFactory - itr = " + tok);
+            LOG.trace("GetFaultOutputFactory - itr = {}", tok);
             try {
                 if(tok instanceof XmlElementStart) {
                     //msgType
@@ -108,13 +108,13 @@ public class GetFaultOutputFactory implements OCPDeserializer<GetFaultOutput> {
                     else if (((XmlElementStart)tok).name().equals("result")){
                         String rel = MessageHelper.getResult(itr);
                         builder.setResult(GetFaultRes.valueOf(rel));
-                        LOGGER.trace("GetFaultOutputFactory - getResult: " + builder.getResult());
+                        LOG.trace("GetFaultOutputFactory - getResult: {}", builder.getResult());
                     }
                     //obj
                     else if (((XmlElementStart)tok).name().equals("obj")) {
                         //set Obj ID
                         objbuilder.setId(new ObjId(((XmlElementStart)tok).attributes().get(0).value()));
-                        LOGGER.trace("GetFaultOutputFactory - objbuilder getId: " + objbuilder.getId());
+                        LOG.trace("GetFaultOutputFactory - objbuilder getId: {}", objbuilder.getId());
 
                          //find the token is XmlElementEnd:obj or XmlElementStart:fault.
                     	Object faulttok = itr.next();
@@ -192,7 +192,7 @@ public class GetFaultOutputFactory implements OCPDeserializer<GetFaultOutput> {
 
                                             //find if XmlElementEnd:fault
                                             if (faulttok instanceof XmlElementEnd) {
-        	                                    LOGGER.trace("GetFaultOutputFactory - found XmlElementEnd: {}", faulttok);
+        	                                    LOG.trace("GetFaultOutputFactory - found XmlElementEnd: {}", faulttok);
         	                                    if(((XmlElementEnd)faulttok).name().equals(faultTag)) {
                                                     //find the next token is XmlElementStart:fault or XmlElementEnd:obj
         	                                        faulttok = itr.next();
@@ -205,7 +205,7 @@ public class GetFaultOutputFactory implements OCPDeserializer<GetFaultOutput> {
         	                            }
                             	    }
                             	    else if ((faulttok instanceof XmlElementEnd) && ((XmlElementEnd)faulttok).name().equals(faultTag)){
-                                        LOGGER.debug("GetFaultOutputFactory - No Fault happened");
+                                        LOG.debug("GetFaultOutputFactory - No Fault happened");
                                 	    faulttok = itr.next();
                                         while(!(faulttok instanceof XmlElementStart)){
                                             if((faulttok instanceof XmlElementEnd) && ((XmlElementEnd)faulttok).name().equals("obj")){
@@ -215,13 +215,13 @@ public class GetFaultOutputFactory implements OCPDeserializer<GetFaultOutput> {
                                         }
                             	    }
                                     
-                                    LOGGER.trace("GetFaultOutputFactory - faultbuilder = " + faultbuilder.build());
+                                    LOG.trace("GetFaultOutputFactory - faultbuilder = {}", faultbuilder.build());
                                     fault.add(faultbuilder.build());
                                     faultbuilder = new FaultBuilder();
                             	}
                             	
                             	if (faulttok instanceof XmlElementEnd) {
-                                    LOGGER.trace("GetFaultOutputFactory - found XmlElementEnd: {}", faulttok);
+                                    LOG.trace("GetFaultOutputFactory - found XmlElementEnd: {}", faulttok);
                                     if(((XmlElementEnd)faulttok).name().equals("obj")) {
                                 	break;
                                     }
@@ -234,21 +234,21 @@ public class GetFaultOutputFactory implements OCPDeserializer<GetFaultOutput> {
                             }
                 	    }
                 	    else if ((faulttok instanceof XmlElementEnd) && ((XmlElementEnd)faulttok).name().equals("obj")){
-                    	    LOGGER.info("GetFaultOutputFactory - No fault obj return");
+                    	    LOG.info("GetFaultOutputFactory - No fault obj return");
                         }
                         objbuilder.setFault(fault);
                         
-                        LOGGER.trace("GetFaultOutputFactory - objbuilder getObj = " + objbuilder.build());
+                        LOG.trace("GetFaultOutputFactory - objbuilder getObj = {}", objbuilder.build());
                         obj.add(objbuilder.build());
                     } 
                 }
             }
             catch( Exception t ) {
-                LOGGER.error("Error " + tok + " " + t.toString());
+                LOG.error("Error {} {}", tok, t.toString());
             }
         }
         builder.setObj(obj);
-        LOGGER.debug("GetFaultOutputFactory - Builder: " + builder.build());
+        LOG.debug("GetFaultOutputFactory - Builder: {}", builder.build());
         return builder.build();
     }
 }

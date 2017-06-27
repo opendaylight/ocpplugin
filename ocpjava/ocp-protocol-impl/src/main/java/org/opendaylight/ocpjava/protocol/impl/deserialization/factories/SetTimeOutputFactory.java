@@ -48,7 +48,7 @@ import org.slf4j.LoggerFactory;
 
 public class SetTimeOutputFactory implements OCPDeserializer<SetTimeOutput> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SetTimeOutputFactory.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SetTimeOutputFactory.class);
 
     @Override
     public SetTimeOutput deserialize(List<Object> rawMessage) {
@@ -57,7 +57,7 @@ public class SetTimeOutputFactory implements OCPDeserializer<SetTimeOutput> {
         Iterator itr = rawMessage.iterator();
         while(itr.hasNext()) {
             Object tok = itr.next();
-            LOGGER.trace("SetTimeOutputFactory - itr = " + tok);
+            LOG.trace("SetTimeOutputFactory - itr = {}", tok);
             try {
                 if(tok instanceof XmlElementStart) {
                     //msgType
@@ -79,10 +79,10 @@ public class SetTimeOutputFactory implements OCPDeserializer<SetTimeOutput> {
                 }
             }
             catch( Exception t ) {
-                 LOGGER.error("Error " + tok + " " + t.toString());
+                 LOG.error("Error {} {}", tok, t.toString());
             }
         }
-        LOGGER.debug("SetTimeOutputFactory - Builder: " + builder.build());
+        LOG.debug("SetTimeOutputFactory - Builder: {}", builder.build());
         return builder.build();
     }
 }

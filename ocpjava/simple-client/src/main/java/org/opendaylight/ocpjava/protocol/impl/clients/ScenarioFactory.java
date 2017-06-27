@@ -26,7 +26,7 @@ import org.slf4j.LoggerFactory;
  * @author Marko Lai <marko.ch.lai@foxconn.com>
  */
 public final class ScenarioFactory {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ScenarioFactory.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ScenarioFactory.class);
     private ScenarioFactory() {
         throw new UnsupportedOperationException("Utility class shouldn't be instantiated");
     }

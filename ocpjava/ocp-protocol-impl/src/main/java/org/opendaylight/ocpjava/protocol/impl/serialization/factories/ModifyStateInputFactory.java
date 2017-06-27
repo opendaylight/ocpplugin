@@ -45,11 +45,11 @@ public class ModifyStateInputFactory implements OCPSerializer<ModifyStateInput> 
 
     /** Code type of ModifyStateRequest message */
     private static final String MESSAGE_TYPE = "modifyStateReq";
-    private static final Logger LOGGER = LoggerFactory.getLogger(ModifyStateInputFactory.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ModifyStateInputFactory.class);
 
     @Override
     public void serialize(ModifyStateInput message, ByteBuf outBuffer) {
-        LOGGER.debug("ModifyStateInputFactory - message = " + message.toString());
+        LOG.debug("ModifyStateInputFactory - message = {}", message.toString());
         StringBuilder seq = new StringBuilder("");
         //Generate from DTO to XML string
         seq.append("<msg xmlns=");
@@ -87,7 +87,7 @@ public class ModifyStateInputFactory implements OCPSerializer<ModifyStateInput> 
             seq.append("</body>");
         seq.append("</msg>");
 
-        LOGGER.debug("ModifyStateInputFactory - composed xml-string = " + seq);
+        LOG.debug("ModifyStateInputFactory - composed xml-string = {}", seq);
         ByteBufUtil.writeUtf8(outBuffer, seq);
     }
 }

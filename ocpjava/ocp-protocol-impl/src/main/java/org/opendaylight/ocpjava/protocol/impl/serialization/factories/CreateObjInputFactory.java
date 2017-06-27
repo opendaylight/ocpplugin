@@ -48,11 +48,11 @@ public class CreateObjInputFactory implements OCPSerializer<CreateObjInput> {
 
     /** Code type of CreateObjRequest message */
     private static final String MESSAGE_TYPE = "createObjReq";
-    private static final Logger LOGGER = LoggerFactory.getLogger(CreateObjInputFactory.class);
+    private static final Logger LOG = LoggerFactory.getLogger(CreateObjInputFactory.class);
 
     @Override
     public void serialize(CreateObjInput message, ByteBuf outBuffer) {
-        LOGGER.debug("CreateObjInputFactory - message = " + message.toString());
+        LOG.debug("CreateObjInputFactory - message = {}", message.toString());
         StringBuilder seq = new StringBuilder("");
         //Generate from DTO to XML string
         seq.append("<msg xmlns=");
@@ -84,7 +84,7 @@ public class CreateObjInputFactory implements OCPSerializer<CreateObjInput> {
             seq.append("</body>");
         seq.append("</msg>");
 
-        LOGGER.debug("CreateObjInputFactory - composed xml-string = " + seq);
+        LOG.debug("CreateObjInputFactory - composed xml-string = {}", seq);
         ByteBufUtil.writeUtf8(outBuffer, seq);
     }
 }

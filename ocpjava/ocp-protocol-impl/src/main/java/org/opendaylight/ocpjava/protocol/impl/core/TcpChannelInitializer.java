@@ -31,7 +31,7 @@ import org.slf4j.LoggerFactory;
  */
 public class TcpChannelInitializer extends ProtocolChannelInitializer<SocketChannel> {
 
-    private static final Logger LOGGER = LoggerFactory
+    private static final Logger LOG = LoggerFactory
             .getLogger(TcpChannelInitializer.class);
     private final DefaultChannelGroup allChannels;
     private ConnectionAdapterFactory connectionAdapterFactory;
@@ -58,21 +58,21 @@ public class TcpChannelInitializer extends ProtocolChannelInitializer<SocketChan
             InetAddress radioHeadAddress = ch.remoteAddress().getAddress();
             int port = ch.localAddress().getPort();
             int remotePort = ch.remoteAddress().getPort();
-            LOGGER.debug("Incoming connection from (remote address): {}:{} --> :{}",
+            LOG.debug("Incoming connection from (remote address): {}:{} --> :{}",
 			    radioHeadAddress.toString(), remotePort, port);
 
             if (!getRadioHeadConnectionHandler().accept(radioHeadAddress)) {
                 ch.disconnect();
-                LOGGER.debug("Incoming connection rejected");
+                LOG.debug("Incoming connection rejected");
                 return;
             }
         }
-        LOGGER.debug("Incoming connection accepted - building pipeline");
+        LOG.debug("Incoming connection accepted - building pipeline");
         allChannels.add(ch);
         ConnectionFacade connectionFacade = null;
         connectionFacade = connectionAdapterFactory.createConnectionFacade(ch, null);
         try {
-            LOGGER.trace("initChannel - getRadioHeadConnectionHandler: {}" + getRadioHeadConnectionHandler());
+            LOG.trace("initChannel - getRadioHeadConnectionHandler: {}", getRadioHeadConnectionHandler());
             getRadioHeadConnectionHandler().onRadioHeadConnected(connectionFacade);
             connectionFacade.checkListeners();
             ch.pipeline().addLast(PipelineHandlers.IDLE_HANDLER.name(), new IdleHandler(getRadioHeadIdleTimeout(), TimeUnit.MILLISECONDS));
@@ -89,27 +89,27 @@ public class TcpChannelInitializer extends ProtocolChannelInitializer<SocketChan
             }
 
             ch.pipeline().addLast(PipelineHandlers.OCP_XML_DECODER.name(), new OCPXmlDecoder(connectionFacade, tlsPresent));
-            LOGGER.trace("TcpChannelInitializer - initChannel OCPXmlDecoder()");
+            LOG.trace("TcpChannelInitializer - initChannel OCPXmlDecoder()");
 
             OCPDecoder ocpDecoder = new OCPDecoder();
             ocpDecoder.setDeserializationFactory(getDeserializationFactory());
             ch.pipeline().addLast(PipelineHandlers.OCP_DECODER.name(), ocpDecoder);
-            LOGGER.trace("TcpChannelInitializer - initChannel ocpDecoder()");
+            LOG.trace("TcpChannelInitializer - initChannel ocpDecoder()");
 
             OCPEncoder ocpEncoder = new OCPEncoder();
             ocpEncoder.setSerializationFactory(getSerializationFactory());
             ch.pipeline().addLast(PipelineHandlers.OCP_ENCODER.name(), ocpEncoder);
-            LOGGER.trace("TcpChannelInitializer - initChannel ocpEncoder()");
+            LOG.trace("TcpChannelInitializer - initChannel ocpEncoder()");
 
             ch.pipeline().addLast(PipelineHandlers.DELEGATING_INBOUND_HANDLER.name(), new DelegatingInboundHandler(connectionFacade));
-            LOGGER.trace("TcpChannelInitializer - initChannel DelegatingInboundHandler()");
+            LOG.trace("TcpChannelInitializer - initChannel DelegatingInboundHandler()");
             
             if (!tlsPresent) {
                 connectionFacade.fireConnectionReadyNotification();
             }
-            LOGGER.trace("TcpChannelInitializer - initChannel End");
+            LOG.trace("TcpChannelInitializer - initChannel End");
         } catch (Exception e) {
-            LOGGER.warn("Failed to initialize channel", e);
+            LOG.warn("Failed to initialize channel", e);
             ch.close();
         }
     }

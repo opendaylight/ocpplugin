@@ -42,11 +42,11 @@ public class DeleteObjInputFactory implements OCPSerializer<DeleteObjInput> {
 
     /** Code type of DeleteObjRequest message */
     private static final String MESSAGE_TYPE = "deleteObjReq";
-    private static final Logger LOGGER = LoggerFactory.getLogger(DeleteObjInputFactory.class);
+    private static final Logger LOG = LoggerFactory.getLogger(DeleteObjInputFactory.class);
 
     @Override
     public void serialize(DeleteObjInput message, ByteBuf outBuffer) {
-        LOGGER.debug("DeleteObjInputFactory - message = " + message.toString());
+        LOG.debug("DeleteObjInputFactory - message = {}", message.toString());
         StringBuilder seq = new StringBuilder("");
         //Generate from DTO to XML string
         seq.append("<msg xmlns=");
@@ -64,7 +64,7 @@ public class DeleteObjInputFactory implements OCPSerializer<DeleteObjInput> {
             seq.append("</body>");
             seq.append("</msg>");
 
-        LOGGER.debug("DeleteObjInputFactory - composed xml-string = " + seq);
+        LOG.debug("DeleteObjInputFactory - composed xml-string = {}", seq);
         ByteBufUtil.writeUtf8(outBuffer, seq);
     }
 }

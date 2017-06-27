@@ -49,11 +49,11 @@ public class ModifyParamInputFactory implements OCPSerializer<ModifyParamInput> 
 
     /** Code type of ModifyParamRequest message */
     private static final String MESSAGE_TYPE = "modifyParamReq";
-    private static final Logger LOGGER = LoggerFactory.getLogger(ModifyParamInputFactory.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ModifyParamInputFactory.class);
 
     @Override
     public void serialize(ModifyParamInput message, ByteBuf outBuffer) {
-        LOGGER.debug("ModifyParamInputFactory - message = " + message.toString());
+        LOG.debug("ModifyParamInputFactory - message = {}", message.toString());
         StringBuilder seq = new StringBuilder("");
         //Generate from DTO to XML string
         seq.append("<msg xmlns=");
@@ -83,7 +83,7 @@ public class ModifyParamInputFactory implements OCPSerializer<ModifyParamInput> 
             seq.append("</body>");
         seq.append("</msg>");
 
-        LOGGER.debug("ModifyParamInputFactory - composed xml-string = " + seq);
+        LOG.debug("ModifyParamInputFactory - composed xml-string = {}", seq);
         ByteBufUtil.writeUtf8(outBuffer, seq);
     }
 }
