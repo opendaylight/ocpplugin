@@ -6,7 +6,7 @@
   <parent>
     <groupId>org.opendaylight.ocpplugin.model</groupId>
     <artifactId>model-parent</artifactId>
-    <version>0.2.1-SNAPSHOT</version>
+    <version>0.2.2-SNAPSHOT</version>
   </parent>
   <artifactId>model-ocp-service</artifactId>
   <packaging>bundle</packaging>
