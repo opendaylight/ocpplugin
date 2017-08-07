@@ -8,8 +8,5 @@
 -->
 <features name="ocpplugin-${project.version}" xmlns="http://karaf.apache.org/xmlns/features/v1.2.0">
     <feature name="odl-ocpplugin-southbound" version="${project.version}">
-        <configfile finalname="etc/opendaylight/karaf/62-ocpplugin.xml">
-            mvn:org.opendaylight.ocpplugin/ocpplugin-controller-config/${project.version}/xml
-        </configfile>
     </feature>
 </features>
