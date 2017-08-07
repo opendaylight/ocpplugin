@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+           xmlns:odl="http://opendaylight.org/xmlns/blueprint/v1.0.0"
+    odl:use-default-for-reference-types="true">
+
+  <reference id="dataBroker" interface="org.opendaylight.controller.md.sal.binding.api.DataBroker"/>
+  <reference id="notificationService" interface="org.opendaylight.controller.sal.binding.api.NotificationProviderService"/>
+
+  <odl:rpc-service id="salConfigMgmtService"
+      interface="org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.config.mgmt.rev150811.SalConfigMgmtService"/>
+  <odl:rpc-service id="salFaultMgmtService"
+      interface="org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.fault.mgmt.rev150811.SalFaultMgmtService"/>
+  <odl:rpc-service id="salObjectStateMgmtService"
+      interface="org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.object.state.mgmt.rev150811.SalObjectStateMgmtService"/>
+  <odl:rpc-service id="salDeviceMgmtService"
+      interface="org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.device.mgmt.rev150811.SalDeviceMgmtService"/>
+  <odl:rpc-service id="salObjectLifecycleService"
+      interface="org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.object.lifecycle.rev150811.SalObjectLifecycleService"/>
+
+  <bean id="ocpService" class="org.opendaylight.ocpplugin.applications.ocpservice.OcpService"
+      init-method = "init" destroy-method="close">
+    <argument ref="dataBroker"/>
+    <argument ref="notificationService"/>
+    <argument ref="salConfigMgmtService"/>
+    <argument ref="salFaultMgmtService"/>
+    <argument ref="salObjectStateMgmtService"/>
+    <argument ref="salDeviceMgmtService"/>
+    <argument ref="salObjectLifecycleService"/>
+  </bean>
+
+  <odl:rpc-implementation ref="ocpService"/>
+</blueprint>

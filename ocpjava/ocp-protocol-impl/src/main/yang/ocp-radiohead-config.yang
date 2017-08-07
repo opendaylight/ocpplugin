@@ -1,0 +1,105 @@
+module ocp-radiohead-config {
+    yang-version 1;
+    namespace "urn:opendaylight:ocp:radiohead:config";
+    prefix "ocp-radiohead-config";
+
+    import ietf-inet-types {prefix ietf-inet; revision-date 2013-07-15; }
+    import ocp-configuration {prefix ocp-config; revision-date 2015-08-11; }
+
+    description
+        "Configuration for a radiohead connection";
+
+    revision "2017-08-07" {
+        description
+            "Initial revision";
+    }
+
+    list radiohead-connection-config {
+        key "instance-name";
+
+        leaf instance-name {
+            description "Name of the connection instance.";
+            type string;
+        }
+
+        leaf port {
+            description "local listening port";
+            type uint16;
+            mandatory true;
+        }
+
+        leaf address {
+            description "address of local listening interface";
+            type ietf-inet:ip-address;
+        }
+
+        leaf transport-protocol {
+            description "Transport protocol used for communication.";
+            type ocp-config:transport-protocol;
+            mandatory true;
+        }
+
+        leaf radioHead-idle-timeout {
+            description "idle timeout in [ms]";
+            type uint32;
+            mandatory true;
+        }
+
+        container tls {
+            leaf keystore {
+                description "keystore location";
+                type string;
+            }
+
+            leaf keystore-type {
+                description "keystore type (JKS or PKCS12)";
+                type ocp-config:keystore-type;
+            }
+
+            leaf keystore-path-type {
+                description "keystore path type (CLASSPATH or PATH)";
+                type ocp-config:path-type;
+            }
+
+            leaf keystore-password {
+                description "password protecting keystore";
+                type string;
+            }
+
+            leaf certificate-password {
+                description "password protecting certificate";
+                type string;
+            }
+
+            leaf truststore {
+                description "truststore location";
+                type string;
+            }
+
+            leaf truststore-type {
+                description "truststore type (JKS or PKCS12)";
+                type ocp-config:keystore-type;
+            }
+
+            leaf truststore-path-type {
+                description "truststore path type (CLASSPATH or PATH)";
+                type ocp-config:path-type;
+            }
+
+            leaf truststore-password {
+                description "password protecting truststore";
+                type string;
+            }
+        }
+
+        container threads {
+            leaf boss-threads {
+                type uint16;
+            }
+
+            leaf worker-threads {
+                type uint16;
+            }
+        }
+    }
+}

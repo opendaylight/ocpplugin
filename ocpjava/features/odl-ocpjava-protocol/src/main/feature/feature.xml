@@ -8,8 +8,5 @@
 -->
 <features name="odl-ocpjava-${project.version}" xmlns="http://karaf.apache.org/xmlns/features/v1.2.0">
     <feature name="odl-ocpjava-protocol" version="${project.version}">
-        <configfile finalname="etc/opendaylight/karaf/65-ocpjava-stats.xml">
-            mvn:org.opendaylight.ocpplugin.ocpjava/ocpjava-config/${project.version}/xml/configstats
-        </configfile>
     </feature>
 </features>

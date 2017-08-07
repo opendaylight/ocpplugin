@@ -10,9 +10,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <parent>
-        <groupId>org.opendaylight.controller</groupId>
-        <artifactId>config-parent</artifactId>
-        <version>0.8.0-SNAPSHOT</version>
+        <groupId>org.opendaylight.mdsal</groupId>
+        <artifactId>binding-parent</artifactId>
+        <version>0.12.0-SNAPSHOT</version>
         <relativePath/>
     </parent>
 
@@ -62,6 +62,13 @@
                 <version>${ocpjava.version}</version>
                 <scope>import</scope>
                 <type>pom</type>
+            </dependency>
+            <dependency>
+              <groupId>org.opendaylight.controller</groupId>
+              <artifactId>mdsal-artifacts</artifactId>
+              <version>1.7.0-SNAPSHOT</version>
+              <type>pom</type>
+              <scope>import</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>

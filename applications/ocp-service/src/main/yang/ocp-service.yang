@@ -6,55 +6,18 @@ module ocp-service {
 
     import ocp-types { prefix ocpt; }
     import ietf-inet-types { prefix inet; }
-    import config { prefix config; revision-date 2013-04-05; }
-    import opendaylight-md-sal-binding { prefix md-sal-binding; revision-date 2013-10-28;}
     import opendaylight-inventory { prefix inv; revision-date "2013-08-19";}
     import ocp-xsd { prefix ocpx; revision-date "2015-08-11"; }
 
     organization "FACA";
     contact "FACA Web: <https://sites.google.com/site/facafoxconn/>";
-    description "OCP Northbound API";    
+    description "OCP Northbound API";
 
     revision "2015-08-11" {
       description
         "Initial revision.";
     }
 
-    identity ocp-service {
-        base config:module-type;
-        config:java-name-prefix ocp-service;
-    }
-
-    augment "/config:modules/config:module/config:configuration" {
-        case ocp-service {
-            when "/config:modules/config:module/config:type = 'ocp-service'";
-            container rpc-registry {
-               uses config:service-ref {
-                    refine type {
-                       mandatory true;
-                       config:required-identity md-sal-binding:binding-rpc-registry;
-                    }
-               }
-            }
-            container data-broker {
-                uses config:service-ref {
-                    refine type {
-                        mandatory false;
-                        config:required-identity md-sal-binding:binding-async-data-broker;
-                    }
-                }
-            }
-            container notification-service {
-                uses config:service-ref {
-                    refine type {
-                        mandatory true;
-                        config:required-identity md-sal-binding:binding-notification-service;
-                    }
-                }
-            }
-        }
-    }
-    
     rpc health-check-nb {
         input {
             leaf nodeId {
@@ -65,8 +28,8 @@ module ocp-service {
                 type ocpx:xsd-unsignedShort{
                     range "30..max";
                 }
-                mandatory true;                    
-            } 
+                mandatory true;
+            }
         }
         output {
             leaf result {
@@ -126,7 +89,7 @@ module ocp-service {
             uses ocpt:getParamOutput;
         }
     }  // rpc get-param
-   
+
 
     rpc modify-param-nb {
         input {
@@ -141,7 +104,7 @@ module ocp-service {
             leaf globResult {
                 type ocpt:ModifyParamGlobRes;
             }
-            uses ocpt:modifyParamOutput; 
+            uses ocpt:modifyParamOutput;
         }
     }  // rpc modify-param
 
@@ -173,7 +136,7 @@ module ocp-service {
             leaf result {
                 type ocpt:ModifyStateRes;
             }
-            uses ocpt:modifyStateOutput; 
+            uses ocpt:modifyStateOutput;
         }
     } // rpc modify-state
 
@@ -189,10 +152,10 @@ module ocp-service {
             leaf result {
                 type ocpt:GetFaultRes;
             }
-            uses ocpt:getFaultOutput; 
+            uses ocpt:getFaultOutput;
         }
     } // rpc get-fault
-    
+
     rpc create-obj-nb {
         input {
             leaf nodeId {
@@ -201,7 +164,7 @@ module ocp-service {
             }
             uses ocpt:createObjInput;
         }
-        
+
         output {
             leaf globResult {
                 type ocpt:CreateObjGlobRes;
@@ -215,7 +178,7 @@ module ocp-service {
             leaf nodeId {
                 type inv:node-id;
                 mandatory true;
-            }       
+            }
             leaf obj-id {
                 type ocpt:ObjId;
                 mandatory true;
@@ -227,7 +190,7 @@ module ocp-service {
                 type ocpt:DeleteObjRes;
             }
         }
-    } 
+    }
 
     notification alignment-completed {
         leaf nodeId {
@@ -237,5 +200,5 @@ module ocp-service {
             type inet:ipv4-address;
         }
     }
-   
+
 }

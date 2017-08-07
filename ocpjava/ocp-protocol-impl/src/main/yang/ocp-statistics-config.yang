@@ -1,0 +1,26 @@
+module ocp-statistics-config {
+    yang-version 1;
+    namespace "urn:opendaylight:ocp:statistics:config";
+    prefix "ocp-statistics-config";
+
+    description
+        "Configuration for the OCP statistics module";
+
+    revision "2017-08-07" {
+        description
+            "Initial revision";
+    }
+
+    container ocp-statistics-config {
+        leaf ocp-statistics-collect {
+            description "Toggle ocp-statistics collecting";
+            type boolean;
+            default true;
+        }
+        leaf log-report-delay {
+            description "Delay between ocp-statistics logs";
+            type uint16;
+            default 10000;
+        }
+    }
+}

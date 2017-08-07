@@ -18,6 +18,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.opendaylight.ocpjava.protocol.api.connection.ConnectionConfigurationImpl;
 import org.opendaylight.ocpjava.protocol.api.connection.RadioHeadConnectionHandler;
 import org.opendaylight.ocpjava.protocol.api.connection.TlsConfiguration;
 import org.opendaylight.ocpjava.protocol.api.connection.TlsConfigurationImpl;

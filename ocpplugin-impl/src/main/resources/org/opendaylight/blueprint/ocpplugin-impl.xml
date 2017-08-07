@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+           xmlns:odl="http://opendaylight.org/xmlns/blueprint/v1.0.0">
+
+  <reference id="dataBroker" interface="org.opendaylight.controller.md.sal.binding.api.DataBroker"
+      odl:type="pingpong"/>
+  <reference id="rpcRegistry" interface="org.opendaylight.controller.sal.binding.api.RpcProviderRegistry"/>
+  <reference id="notificationPublishService"
+          interface="org.opendaylight.controller.md.sal.binding.api.NotificationPublishService"/>
+  <reference id="notificationService"
+          interface="org.opendaylight.controller.md.sal.binding.api.NotificationService"/>
+
+  <odl:clustered-app-config id="ocpPluginConfig"
+      binding-class="org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.plugin.config.rev170807.OcpPluginConfig">
+  </odl:clustered-app-config>
+
+  <bean id="ocpPluginProvider" class="org.opendaylight.ocpplugin.impl.OcpPluginProviderImpl"
+      init-method="initialize" destroy-method="close">
+    <argument ref="ocpPluginConfig"/>
+    <argument ref="dataBroker"/>
+    <argument ref="rpcRegistry"/>
+    <argument ref="notificationService"/>
+    <argument ref="notificationPublishService"/>
+  </bean>
+
+  <reference-list id="radioHeadConnectionProviders" availability="optional"
+           interface="org.opendaylight.ocpjava.protocol.spi.connection.RadioHeadConnectionProvider">
+    <reference-listener ref="ocpPluginProvider"
+           bind-method="radioHeadConnectionProviderAdded" unbind-method="radioHeadConnectionProviderRemoved"/>
+  </reference-list>
+
+</blueprint>
