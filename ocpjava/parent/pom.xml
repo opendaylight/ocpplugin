@@ -2,9 +2,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>org.opendaylight.odlparent</groupId>
-        <artifactId>odlparent</artifactId>
-        <version>2.0.2</version>
+        <groupId>org.opendaylight.controller</groupId>
+        <artifactId>config-parent</artifactId>
+        <version>0.8.0-SNAPSHOT</version>
         <relativePath/>
     </parent>
 
@@ -36,13 +36,9 @@
     <properties>
         <sitedeploy>dav:http://nexus.opendaylight.org/content/sites/site</sitedeploy>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <jmxGeneratorPath>${project.build.directory}/yang-gen-config</jmxGeneratorPath>
         <karaf.distro.empty.version>2.0.2</karaf.distro.empty.version>
-        <salGeneratorPath>${project.build.directory}/yang-gen-sal</salGeneratorPath>
-        <config.version>0.8.0-SNAPSHOT</config.version>
         <controller.mdsal.version>1.7.0-SNAPSHOT</controller.mdsal.version>
         <mdsal.model.version>0.12.0-SNAPSHOT</mdsal.model.version>
-        <yangtools.version>2.0.0-SNAPSHOT</yangtools.version>
         <additionalparam>-Xdoclint:none</additionalparam>
     </properties>
 
@@ -54,27 +50,6 @@
               <version>${project.version}</version>
               <type>pom</type>
               <scope>import</scope>
-            </dependency>
-            <dependency>
-              <groupId>org.opendaylight.yangtools</groupId>
-              <artifactId>yangtools-artifacts</artifactId>
-              <version>${yangtools.version}</version>
-              <type>pom</type>
-              <scope>import</scope>
-            </dependency>
-            <dependency>
-              <groupId>org.opendaylight.controller</groupId>
-              <artifactId>config-artifacts</artifactId>
-              <version>${config.version}</version>
-              <type>pom</type>
-              <scope>import</scope>
-            </dependency>
-            <dependency>
-              <groupId>org.opendaylight.controller</groupId>
-              <artifactId>mdsal-artifacts</artifactId>
-              <version>${controller.mdsal.version}</version>
-              <scope>import</scope>
-              <type>pom</type>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -148,11 +123,6 @@
         </plugins>
         <pluginManagement>
             <plugins>
-                <plugin>
-                    <groupId>org.opendaylight.yangtools</groupId>
-                    <artifactId>yang-maven-plugin</artifactId>
-                    <version>${yangtools.version}</version>
-                </plugin>
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>build-helper-maven-plugin</artifactId>
