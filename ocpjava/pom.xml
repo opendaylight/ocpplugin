@@ -14,7 +14,6 @@
     <modules>
         <module>artifacts</module>
         <module>features</module>
-        <module>ocpjava-config</module>
         <module>ocp-protocol-api</module>
         <module>ocp-protocol-impl</module>
         <module>ocp-protocol-it</module>

@@ -10,8 +10,10 @@
 
 package org.opendaylight.ocpjava.protocol.impl.core;
 
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
+import com.google.common.util.concurrent.SettableFuture;
 import io.netty.channel.nio.NioEventLoopGroup;
-
 import org.opendaylight.ocpjava.protocol.api.connection.ConnectionConfiguration;
 import org.opendaylight.ocpjava.protocol.api.connection.RadioHeadConnectionHandler;
 import org.opendaylight.ocpjava.protocol.api.extensibility.DeserializerRegistry;
@@ -22,12 +24,8 @@ import org.opendaylight.ocpjava.protocol.impl.serialization.SerializationFactory
 import org.opendaylight.ocpjava.protocol.impl.serialization.SerializerRegistryImpl;
 import org.opendaylight.ocpjava.protocol.spi.connection.RadioHeadConnectionProvider;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.config.rev150811.TransportProtocol;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.google.common.util.concurrent.ListenableFuture;
-import com.google.common.util.concurrent.SettableFuture;
 
 /**
  * Exposed class for server handling<br>
@@ -42,10 +40,10 @@ public class RadioHeadConnectionProviderImpl implements RadioHeadConnectionProvi
     private RadioHeadConnectionHandler radioHeadConnectionHandler;
     private ServerFacade serverFacade;
     private ConnectionConfiguration connConfig;
-    private SerializationFactory serializationFactory;
-    private SerializerRegistry serializerRegistry;
-    private DeserializerRegistry deserializerRegistry;
-    private DeserializationFactory deserializationFactory;
+    private final SerializationFactory serializationFactory;
+    private final SerializerRegistry serializerRegistry;
+    private final DeserializerRegistry deserializerRegistry;
+    private final DeserializationFactory deserializationFactory;
     private TcpConnectionInitializer connectionInitializer;
 
     /** Constructor */
@@ -76,7 +74,8 @@ public class RadioHeadConnectionProviderImpl implements RadioHeadConnectionProvi
         LOG.debug("Shutdown summoned");
         if(serverFacade == null){
             LOG.warn("Can not shutdown - not configured or started");
-            throw new IllegalStateException("RadioHeadConnectionProvider is not started or not configured.");
+            return Futures.immediateFailedFuture(
+                    new IllegalStateException("RadioHeadConnectionProvider is not started or not configured."));
         }
         return serverFacade.shutdown();
     }
@@ -147,4 +146,8 @@ public class RadioHeadConnectionProviderImpl implements RadioHeadConnectionProvi
         connectionInitializer.initiateConnection(host, port);
     }
 
+    @Override
+    public String toString() {
+        return "RadioHeadConnectionProviderImpl [connConfig=" + connConfig + "]";
+    }
 }

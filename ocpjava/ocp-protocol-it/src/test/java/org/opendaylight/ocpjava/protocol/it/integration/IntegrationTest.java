@@ -30,7 +30,7 @@ import org.opendaylight.ocpjava.protocol.impl.clients.SleepEvent;
 import org.opendaylight.ocpjava.protocol.impl.clients.WaitForMessageEvent;
 import org.opendaylight.ocpjava.protocol.impl.core.RadioHeadConnectionProviderImpl;
 import org.opendaylight.ocpjava.protocol.impl.core.TcpHandler;
-import org.opendaylight.ocpjava.protocol.impl.core.connection.ConnectionConfigurationImpl;
+import org.opendaylight.ocpjava.protocol.api.connection.ConnectionConfigurationImpl;
 import org.opendaylight.ocpjava.util.ByteBufUtils;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.config.rev150811.KeystoreType;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.config.rev150811.PathType;
