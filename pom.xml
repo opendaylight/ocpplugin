@@ -27,7 +27,6 @@
       <module>parent</module>
       <module>ocpplugin-api</module>
       <module>ocpplugin-impl</module>
-      <module>ocpplugin-controller-config</module>
       <module>model</module>
       <module>applications</module>
       <module>simple-agent</module>

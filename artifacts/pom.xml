@@ -37,12 +37,6 @@
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>ocpplugin-controller-config</artifactId>
-                <version>${project.version}</version>
-                <type>xml</type>
-            </dependency>
-            <dependency>
-                <groupId>${project.groupId}</groupId>
                 <artifactId>features-ocpplugin</artifactId>
                 <version>${project.version}</version>
                 <type>xml</type>

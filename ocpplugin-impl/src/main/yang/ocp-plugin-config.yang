@@ -1,0 +1,30 @@
+module ocp-plugin-config {
+    yang-version 1;
+    namespace "urn:opendaylight:ocp:plugin:config";
+    prefix "ocp-plugin-config";
+
+    description
+        "Configuration for the OCP plugin";
+
+    revision "2017-08-07" {
+        description
+            "Initial revision";
+    }
+
+    container ocp-plugin-config {
+        leaf ocp-version {
+            type string;
+            default "4.1.1";
+        }
+
+        leaf rpc-requests-quota {
+            type uint32;
+            default 20000;
+        }
+
+        leaf global-notification-quota {
+            type uint32;
+            default 64000;
+        }
+    }
+}

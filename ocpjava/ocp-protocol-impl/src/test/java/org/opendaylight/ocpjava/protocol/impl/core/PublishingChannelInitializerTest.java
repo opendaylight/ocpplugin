@@ -15,18 +15,16 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.ssl.SslHandler;
-
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
-
 import javax.net.ssl.SSLEngine;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -40,7 +38,7 @@ import org.opendaylight.ocpjava.protocol.impl.deserialization.DeserializationFac
 import org.opendaylight.ocpjava.protocol.impl.serialization.SerializationFactory;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.config.rev150811.KeystoreType;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.config.rev150811.PathType;
-import org.opendaylight.yang.gen.v1.urn.opendaylight.params.xml.ns.yang.ocp.radiohead.connection.provider.impl.rev150811.Tls;
+import org.opendaylight.yang.gen.v1.urn.opendaylight.ocp.radiohead.config.rev170807.radiohead.connection.config.Tls;
 
 /**
  *

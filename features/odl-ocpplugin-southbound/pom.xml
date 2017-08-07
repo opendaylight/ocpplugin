@@ -45,12 +45,5 @@
             <artifactId>ocpplugin-impl</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <dependency>
-            <!-- finalname="etc/opendaylight/karaf/62-ocpplugin.xml" -->
-            <groupId>${project.groupId}</groupId>
-            <artifactId>ocpplugin-controller-config</artifactId>
-            <version>${project.version}</version>
-            <type>xml</type>
-        </dependency>
     </dependencies>
 </project>
