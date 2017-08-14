@@ -20,7 +20,7 @@
 
     <groupId>org.opendaylight.ocpplugin</groupId>
     <artifactId>odl-ocpplugin-app-ocp-service</artifactId>
-    <version>0.3.0-SNAPSHOT</version>
+    <version>0.4.0-SNAPSHOT</version>
     <packaging>feature</packaging>
 
     <name>OpenDaylight :: OCP Plugin :: Application - ocp-service</name>
