@@ -15,8 +15,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import org.opendaylight.controller.md.sal.binding.api.DataBroker;
-import org.opendaylight.controller.md.sal.binding.api.DataChangeListener;
-import org.opendaylight.controller.md.sal.common.api.data.AsyncDataChangeEvent;
 import org.opendaylight.controller.sal.binding.api.NotificationProviderService;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.inventory.rev130819.NodeId;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.inventory.rev130819.NodeRef;
@@ -92,7 +90,6 @@ import org.opendaylight.yang.gen.v1.urn.opendaylight.params.xml.ns.yang.ocp.appl
 import org.opendaylight.yang.gen.v1.urn.opendaylight.params.xml.ns.yang.ocp.applications.ocp.service.rev150811.SetTimeNbOutput;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.params.xml.ns.yang.ocp.applications.ocp.service.rev150811.SetTimeNbOutputBuilder;
 import org.opendaylight.yangtools.concepts.ListenerRegistration;
-import org.opendaylight.yangtools.yang.binding.DataObject;
 import org.opendaylight.yangtools.yang.binding.InstanceIdentifier;
 import org.opendaylight.yangtools.yang.binding.NotificationListener;
 import org.opendaylight.yangtools.yang.common.RpcError;
@@ -105,7 +102,7 @@ import org.slf4j.LoggerFactory;
  * @author Jason Yuan <jason.cw.yuan@foxconn.com>
  *
  */
-public class OcpService implements OcpServiceService, DataChangeListener, SalDeviceMgmtListener, AutoCloseable {
+public class OcpService implements OcpServiceService, SalDeviceMgmtListener, AutoCloseable {
     private static final Logger LOG = LoggerFactory.getLogger(OcpService.class);
     public static final InstanceIdentifier<ResourceModel> RM_IID = InstanceIdentifier.builder(ResourceModel.class).build();
 
@@ -138,17 +135,6 @@ public class OcpService implements OcpServiceService, DataChangeListener, SalDev
 
     public void init() {
         ocpListenerReg = notificationProvider.registerNotificationListener(this);
-    }
-
-    @Override
-    public void onDataChanged( final AsyncDataChangeEvent<InstanceIdentifier<?>, DataObject> change ) {
-        DataObject dataObject = change.getUpdatedSubtree();
-        if( dataObject instanceof ResourceModel )
-        {
-            ResourceModel remodel = (ResourceModel) dataObject;
-            LOG.info("onDataChanged - new dataObject config: {}", dataObject);
-        }
-
     }
 
     @Override
@@ -589,5 +575,4 @@ public class OcpService implements OcpServiceService, DataChangeListener, SalDev
 
         return dts;
     }
-
 }
