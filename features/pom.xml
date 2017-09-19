@@ -18,7 +18,7 @@
 
     <groupId>org.opendaylight.ocpplugin</groupId>
     <artifactId>features-ocpplugin-aggregator</artifactId>
-    <version>0.3.0-SNAPSHOT</version>
+    <version>0.3.0</version>
     <packaging>pom</packaging>
 
     <modules>
