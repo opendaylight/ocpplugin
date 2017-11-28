@@ -20,7 +20,7 @@
 
     <groupId>org.opendaylight.ocpplugin.ocpjava</groupId>
     <artifactId>features-ocpjava</artifactId>
-    <version>0.3.1-SNAPSHOT</version>
+    <version>0.3.2-SNAPSHOT</version>
     <packaging>feature</packaging>
     <name>ODL :: OCP Java :: ${project.artifactId}</name>
 
