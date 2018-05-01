@@ -20,7 +20,7 @@
 
     <groupId>org.opendaylight.ocpplugin</groupId>
     <artifactId>ocpplugin-artifacts</artifactId>
-    <version>0.3.3-SNAPSHOT</version>
+    <version>0.3.3</version>
     <packaging>pom</packaging>
 
     <dependencyManagement>
