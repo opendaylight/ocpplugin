@@ -1,4 +1,5 @@
 # UUID                                                                   	Group Name
 #
+8650fb6879ec9393319de3b8991e5a17c2a057d9                                 	saml/odl-gerrit-ocpplugin-committers
 c9025ab9ddc1e3171919e085449f22c54f8f7b54                                 	GitHub Replication
 ldap:cn=odl-gerrit-ocpplugin-committers,ou=Groups,dc=freestandards,dc=org	ldap/odl-gerrit-ocpplugin-committers
